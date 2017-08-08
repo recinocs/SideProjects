@@ -42,7 +42,7 @@ public class PlayerController {
         }
 
         for(Player p : playerList) {
-            results = results + p + "<br>";
+            results += p + "<br/>";
         }
 
         return results;

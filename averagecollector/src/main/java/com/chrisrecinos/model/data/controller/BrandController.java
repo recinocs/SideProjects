@@ -35,7 +35,7 @@ public class BrandController {
         }
 
         for(Brand b : brandList) {
-            results = results + b + "<br>";
+            results += b + "<br/>";
         }
         return results;
     }

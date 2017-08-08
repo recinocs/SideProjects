@@ -35,7 +35,7 @@ public class CardYearController {
         String results = "";
 
         for(CardYear y: cardYears) {
-            results = results + y + "<br>";
+            results += y + "<br/>";
         }
 
         return results;

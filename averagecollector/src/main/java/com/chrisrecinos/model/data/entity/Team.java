@@ -44,4 +44,8 @@ public class Team {
     public void setTeamName(String teamName) {
         this.teamName = teamName;
     }
+
+    public String toString() {
+        return city + " " + teamName;
+    }
 }
