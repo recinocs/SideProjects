@@ -23,16 +23,17 @@ public class CardYearController {
 
     @RequestMapping(value = "/years", method= RequestMethod.GET)
     String getResultsForH2Test(@RequestParam(required = false) Integer year) {
+        String results = "";
         List<CardYear> cardYears = new ArrayList<>();
-        if(year == null) {
-            cardYears = this.cardYearRepository.findAll();
-        } else {
+
+        if(year != null) {
             CardYear cardYear = this.cardYearRepository.findByCardYear(year);
             if(cardYear != null)
                 cardYears.add(cardYear);
         }
 
-        String results = "";
+        if(cardYears.size() == 0)
+            cardYears = this.cardYearRepository.findAll();
 
         for(CardYear y: cardYears) {
             results += y + "<br/>";

@@ -13,7 +13,11 @@ import java.util.List;
 
 @Repository
 public interface PlayerRepository extends CrudRepository<Player, Long> {
-    Player findByFirstNameAndLastNameAndDob(String firstName, String lastName, Date dob);
-    List<Player> findByFirstNameAndLastName(String firstName, String lastName);
+    Player findByFirstNameIgnoreCaseAndLastNameIgnoreCaseAndSuffixIgnoreCase(String firstName, String lastName, String suffix);
+    Player findByFirstNameIgnoreCaseAndLastNameIgnoreCaseAndDob(String firstName, String lastName, Date dob);
+    List<Player> findByFirstNameIgnoreCaseAndLastNameIgnoreCase(String firstName, String lastName);
+    List<Player> findByFirstNameIgnoreCase(String firstName);
+    List<Player> findByLastNameIgnoreCase(String lastName);
     List<Player> findAll();
 }
+

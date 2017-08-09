@@ -26,13 +26,14 @@ public class BrandController {
         String results = "";
         List<Brand> brandList = new ArrayList<>();
 
-        if(brandName == null) {
-            brandList = this.brandRepository.findAll();
-        } else {
-            Brand brand = this.brandRepository.findByBrandName(brandName);
+        if(brandName != null) {
+            Brand brand = this.brandRepository.findByBrandNameIgnoreCase(brandName);
             if(brand != null)
                 brandList.add(brand);
         }
+
+        if(brandList.size() == 0)
+            brandList = this.brandRepository.findAll();
 
         for(Brand b : brandList) {
             results += b + "<br/>";

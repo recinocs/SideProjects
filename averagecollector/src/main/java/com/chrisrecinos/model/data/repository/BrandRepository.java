@@ -13,6 +13,6 @@ import java.util.List;
 
 @Repository
 public interface BrandRepository extends CrudRepository<Brand, Long> {
-    Brand findByBrandName(String brandName);
+    Brand findByBrandNameIgnoreCase(String brandName);
     List<Brand> findAll();
 }

@@ -28,14 +28,15 @@ public class TeamController {
         List<Team> teamList = new ArrayList<>();
 
         if(teamName != null) {
-            Team team = this.teamRepository.findByTeamName(teamName);
+            Team team = this.teamRepository.findByTeamNameIgnoreCase(teamName);
             if(team != null)
                 teamList.add(team);
         } else if(city != null) {
-            teamList = this.teamRepository.findByCity(city);
-        } else {
-            teamList = this.teamRepository.findAll();
+            teamList = this.teamRepository.findByCityIgnoreCase(city);
         }
+
+        if(teamList.size() == 0)
+            teamList = this.teamRepository.findAll();
 
         for(Team team: teamList) {
             results += team + "<br/>";

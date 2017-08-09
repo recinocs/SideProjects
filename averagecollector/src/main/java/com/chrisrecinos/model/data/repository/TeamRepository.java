@@ -12,7 +12,7 @@ import java.util.List;
 
 @Repository
 public interface TeamRepository extends CrudRepository<Team, Long>{
-    Team findByTeamName(String teamName);
-    List<Team> findByCity(String city);
+    Team findByTeamNameIgnoreCase(String teamName);
+    List<Team> findByCityIgnoreCase(String city);
     List<Team> findAll();
 }

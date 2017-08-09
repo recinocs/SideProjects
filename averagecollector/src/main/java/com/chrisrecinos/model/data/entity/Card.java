@@ -134,4 +134,15 @@ public class Card {
     public void setTeams(List<Team> teams) {
         this.teams = teams;
     }
+
+    public String toString() {
+        String res = cardYear + " " + cardSet + " ";
+
+        for(Player player : players)
+            res += player + " ";
+
+        res += "#" + cardNum;
+
+        return res;
+    }
 }
