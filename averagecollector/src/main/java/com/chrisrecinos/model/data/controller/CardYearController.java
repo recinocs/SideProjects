@@ -25,8 +25,8 @@ public class CardYearController {
     @RequestMapping(method = RequestMethod.GET)
     public String getYears(@RequestParam(required = false) Integer year,
                                    Model model) {
-        List<CardYear> cardYears = this.cardYearService.getYearsWithYearName(year);
-        model.addAttribute("cardYears", cardYears);
+        List<CardYear> cardYearList = this.cardYearService.getYearsWithYearName(year);
+        model.addAttribute("cardYears", cardYearList);
 
         return "years";
     }

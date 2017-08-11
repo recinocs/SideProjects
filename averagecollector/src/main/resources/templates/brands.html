@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head lang="en">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <title>Brands</title>
+    </head>
+    <body>
+        <h1>We are at the brands endpoint</h1>
+        <table>
+            <tr th:each="brand : ${brands}">
+                <td th:text="${brand.brandName}">Brands</td>
+            </tr>
+        </table>
+    </body>
+</html>

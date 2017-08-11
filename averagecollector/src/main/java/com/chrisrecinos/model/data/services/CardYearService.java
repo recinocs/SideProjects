@@ -15,7 +15,6 @@ import java.util.List;
 @Service
 public class CardYearService {
 
-    private Integer cardYear;
     private List<CardYear> cardYears = new ArrayList<>();
 
     private CardYearRepository cardYearRepository;
@@ -26,7 +25,6 @@ public class CardYearService {
     }
 
     public List<CardYear> getYearsWithYearName(Integer year) {
-        List<CardYear> cardYears = new ArrayList<>();
         CardYear cardYear;
         if(year != null) {
             cardYear = this.cardYearRepository.findByCardYear(year);
@@ -34,7 +32,7 @@ public class CardYearService {
                 cardYears.add(cardYear);
         }
 
-        if(cardYears.size() == 0)
+        if(cardYears.isEmpty())
             cardYears = this.cardYearRepository.findAll();
 
         return cardYears;
