@@ -15,8 +15,6 @@ import java.util.List;
 @Service
 public class BrandService {
 
-    private List<Brand> brands = new ArrayList<>();
-
     private BrandRepository brandRepository;
 
     @Autowired
@@ -25,14 +23,16 @@ public class BrandService {
     }
 
     public List<Brand> getBrandsWithBrandName(String brandName) {
+        List<Brand> brands = new ArrayList<>();
+
         if(brandName != null) {
             Brand brand = this.brandRepository.findByBrandNameIgnoreCase(brandName);
             if(brand != null)
-                this.brands.add(brand);
+                brands.add(brand);
         }
 
-        if(this.brands.isEmpty())
-            this.brands = this.brandRepository.findAll();
+        if(brands.isEmpty())
+            brands = this.brandRepository.findAll();
 
         return brands;
     }

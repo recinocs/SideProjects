@@ -15,8 +15,6 @@ import java.util.List;
 @Service
 public class CardYearService {
 
-    private List<CardYear> cardYears = new ArrayList<>();
-
     private CardYearRepository cardYearRepository;
 
     @Autowired
@@ -25,6 +23,8 @@ public class CardYearService {
     }
 
     public List<CardYear> getYearsWithYearName(Integer year) {
+        List<CardYear> cardYears = new ArrayList<>();
+
         CardYear cardYear;
         if(year != null) {
             cardYear = this.cardYearRepository.findByCardYear(year);
