@@ -1,18 +1,42 @@
 <!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Players</title>
 
-<html xmlns:th="http://www.thymeleaf.org">
-    <head lang="en">
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-        <title>Found Me</title>
-    </head>
-
-    <body>
-        <h1>We are at the teams endpoint</h1>
-        <table>
-            <tr th:each="team : ${teams}">
-                <td th:text="${team.city}">City</td>
-                <td th:text="${team.teamName}">Team Name</td>
-            </tr>
-        </table>
-    </body>
+    <link rel="stylesheet" href="css/collector_stylesheet.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
+</head>
+<body>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="players">All Teams</a>
+        </div>
+    </div>
+</nav>
+<div class="container">
+    <div class="page-header">
+        <h1>Welcome to Average Collector - Teams</h1>
+    </div>
+    <table class="table table-striped table-bordered">
+        <tr>
+            <td>City</td>
+            <td>Team Name</td>
+        </tr>
+        <tr th:each="team : ${teams}">
+            <td th:text="${team.city}">City</td>
+            <td th:text="${team.teamName}">Team Name</td>
+        </tr>
+    </table>
+</div>
+<footer class="footer navbar-inverse navbar-fixed-bottom">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-4"><p class="text-muted">@Copyright 2017 Christopher Recinos</p></div>
+        </div>
+    </div>
+</footer>
+</body>
 </html>

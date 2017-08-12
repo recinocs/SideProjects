@@ -1,5 +1,6 @@
 package com.chrisrecinos.model.data.entity;
 
+
 import javax.persistence.*;
 import java.util.Date;
 

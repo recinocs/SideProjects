@@ -87,8 +87,8 @@ public class CardController {
                         }
                     }
                 } else {
-                    List<Player> firstNameSearchResults = this.playerRepository.findByFirstNameIgnoreCase(names[0]);
-                    List<Player> lastNameSearchResults = this.playerRepository.findByLastNameIgnoreCase(names[0]);
+                    List<Player> firstNameSearchResults = this.playerRepository.findByFirstNameIgnoreCaseOrderByLastNameAsc(names[0]);
+                    List<Player> lastNameSearchResults = this.playerRepository.findByLastNameIgnoreCaseOrderByFirstNameAsc(names[0]);
 
                     if(firstNameSearchResults != null && lastNameSearchResults != null) {
                         if(lastNameSearchResults.size() > firstNameSearchResults.size()) {
