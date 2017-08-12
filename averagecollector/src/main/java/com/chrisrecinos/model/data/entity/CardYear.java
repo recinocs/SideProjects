@@ -4,6 +4,8 @@ import javax.persistence.*;
 
 /**
  * @author - Christopher Recinos
+ *
+ * This class just represents a "Year" in which a card was released
  */
 
 @Entity

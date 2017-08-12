@@ -4,6 +4,10 @@ import javax.persistence.*;
 
 /**
  * @author - Christopher Recinos
+ *
+ * This class represents a Card Set that has been released.
+ * Because a set might be released over multiple years, there
+ * is no associated year for the set.
  */
 
 @Entity

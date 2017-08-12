@@ -4,6 +4,10 @@ import javax.persistence.*;
 
 /**
  * @author - Christopher Recinos
+ *
+ * This class represents a Brand for a baseball card set.
+ *
+ * Ex. For the Topps Baseball Set, Topps is the brand
  */
 
 @Entity

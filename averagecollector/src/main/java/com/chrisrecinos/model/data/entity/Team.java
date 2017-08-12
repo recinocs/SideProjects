@@ -4,6 +4,8 @@ import javax.persistence.*;
 
 /**
  * @author - Christopher Recinos
+ *
+ * This class represents a Baseball Team
  */
 
 @Entity

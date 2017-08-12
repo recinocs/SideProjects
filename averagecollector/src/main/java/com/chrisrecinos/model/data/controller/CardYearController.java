@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 /**
  * @author - Christopher Recinos
+ *
+ * This class handles all of the communication with the front end
+ * for the "/years" endpoint.
  */
 
 @Controller
@@ -25,7 +28,7 @@ public class CardYearController {
     @RequestMapping(method = RequestMethod.GET)
     public String getYears(@RequestParam(required = false) Integer year,
                                    Model model) {
-        List<CardYear> cardYearList = this.cardYearService.getYearsWithYearName(year);
+        List<CardYear> cardYearList = this.cardYearService.getYears(year);
         model.addAttribute("cardYears", cardYearList);
 
         return "years";

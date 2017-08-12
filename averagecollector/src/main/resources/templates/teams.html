@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+    <head lang="en">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <title>Found Me</title>
+    </head>
+
+    <body>
+        <h1>We are at the teams endpoint</h1>
+        <table>
+            <tr th:each="team : ${teams}">
+                <td th:text="${team.city}">City</td>
+                <td th:text="${team.teamName}">Team Name</td>
+            </tr>
+        </table>
+    </body>
+</html>

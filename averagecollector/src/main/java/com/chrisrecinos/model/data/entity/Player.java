@@ -5,6 +5,9 @@ import java.util.Date;
 
 /**
  * @author - Christopher Recinos
+ *
+ * This class represents a player and all of the respective attributes that
+ * allow the player to be found with the best possible accuracy
  */
 
 @Entity

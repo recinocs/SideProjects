@@ -14,5 +14,6 @@ import java.util.List;
 @Repository
 public interface BrandRepository extends CrudRepository<Brand, Long> {
     Brand findByBrandNameIgnoreCase(String brandName);
-    List<Brand> findAll();
+    List<Brand> findByBrandNameIgnoreCaseStartingWithOrderByBrandNameAsc(Character c);
+    List<Brand> findAllByOrderByBrandNameAsc();
 }

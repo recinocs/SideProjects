@@ -5,6 +5,9 @@ import java.util.List;
 
 /**
  * @author - Christopher Recinos
+ *
+ * This class represents a Baseball Card, with all the respective attributes
+ * that might make up a card
  */
 
 @Entity

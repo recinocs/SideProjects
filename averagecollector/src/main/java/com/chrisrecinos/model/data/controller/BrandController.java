@@ -9,11 +9,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author - Christopher Recinos
+ *
+ * This class handles all of the communication with the front end
+ * for the "/brands" endpoint.
  */
 
 @Controller
@@ -26,7 +28,7 @@ public class BrandController {
     @RequestMapping(method = RequestMethod.GET)
     String getResultsForH2Test(@RequestParam(required = false) String brandName,
                                Model model) {
-        List<Brand> brands = this.brandService.getBrandsWithBrandName(brandName);
+        List<Brand> brands = this.brandService.getBrands(brandName);
 
         model.addAttribute("brands", brands);
 

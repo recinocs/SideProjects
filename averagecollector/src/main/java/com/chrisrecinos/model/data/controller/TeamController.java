@@ -1,47 +1,38 @@
 package com.chrisrecinos.model.data.controller;
 
-import com.chrisrecinos.model.data.repository.TeamRepository;
 import com.chrisrecinos.model.data.entity.Team;
 
+import com.chrisrecinos.model.data.services.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.List;
 /**
  * @author - Christopher Recinos
+ *
+ * This class handles all of the communication with the front end
+ * for the "/teams" endpoint.
  */
 
-@RestController
+@Controller
+@RequestMapping(value = "/teams")
 public class TeamController {
 
     @Autowired
-    private TeamRepository teamRepository;
+    private TeamService teamService;
 
-    @RequestMapping(value = "/teams", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     String getResultsForH2Test(@RequestParam(required = false) String city,
-                               @RequestParam(required = false) String teamName) {
-        String results = "";
-        List<Team> teamList = new ArrayList<>();
+                               @RequestParam(required = false) String teamName,
+                               Model model) {
+        List<Team> teams = teamService.getTeams(city, teamName);
 
-        if(teamName != null) {
-            Team team = this.teamRepository.findByTeamNameIgnoreCase(teamName);
-            if(team != null)
-                teamList.add(team);
-        } else if(city != null) {
-            teamList = this.teamRepository.findByCityIgnoreCase(city);
-        }
+        model.addAttribute("teams", teams);
 
-        if(teamList.size() == 0)
-            teamList = this.teamRepository.findAll();
-
-        for(Team team: teamList) {
-            results += team + "<br/>";
-        }
-
-        return results;
+        return "teams";
     }
 }

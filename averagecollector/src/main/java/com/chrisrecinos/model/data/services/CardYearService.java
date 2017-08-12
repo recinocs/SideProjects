@@ -8,8 +8,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+
 /**
  * @author - Christopher Recinos
+ *
+ * This class handles all of the business logic
+ * for the CardYear Controller
  */
 
 @Service
@@ -22,12 +26,22 @@ public class CardYearService {
         this.cardYearRepository = cardYearRepository;
     }
 
-    public List<CardYear> getYearsWithYearName(Integer year) {
+    /**
+     * This method handles all of the business logic behind finding as accurate
+     * search results as possible.
+     *
+     * If a year is entered, i.e. year != null, the method tries to grab an associated
+     * CardYear with that year value. If no CardYear is found, the method returns
+     * all CardYears.
+     *
+     * @param year - the year being searched for
+     * @return - a List of CardYears based on the entered year value
+     */
+    public List<CardYear> getYears(Integer year) {
         List<CardYear> cardYears = new ArrayList<>();
 
-        CardYear cardYear;
         if(year != null) {
-            cardYear = this.cardYearRepository.findByCardYear(year);
+            CardYear cardYear = getYearWithYear(year);
             if(cardYear != null)
                 cardYears.add(cardYear);
         }
@@ -36,5 +50,9 @@ public class CardYearService {
             cardYears = this.cardYearRepository.findAll();
 
         return cardYears;
+    }
+
+    private CardYear getYearWithYear(Integer year) {
+        return this.cardYearRepository.findByCardYear(year);
     }
 }
