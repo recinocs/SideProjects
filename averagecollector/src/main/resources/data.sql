@@ -5,11 +5,11 @@ INSERT INTO CARD_YEAR (CARD_YEAR) VALUES (1983), (1984), (1985),
   (2010), (2011), (2012);
 
 INSERT INTO PLAYER (FIRST_NAME, LAST_NAME, DOB) VALUES ('Derek', 'Jeter', '1974-06-26'),
-                                                       ('Ichiro', 'Suzuki', DATE '1973-10-22'),
-                                                       ('Ryan', 'Zimmerman', DATE '1984-09-28'),
-                                                       ('Alex', 'Rodriguez', DATE '1975-07-27');
+                                                       ('Ichiro', 'Suzuki', '1973-10-22'),
+                                                       ('Ryan', 'Zimmerman', '1984-09-28'),
+                                                       ('Alex', 'Rodriguez', '1975-07-27');
 
-INSERT INTO PLAYER (FIRST_NAME, LAST_NAME, SUFFIX, DOB) VALUES ('Ken', 'Griffey', 'Jr.', DATE '1969-11-21');
+INSERT INTO PLAYER (FIRST_NAME, LAST_NAME, SUFFIX, DOB) VALUES ('Ken', 'Griffey', 'Jr.', '1969-11-21');
 
 INSERT INTO BRAND (BRAND_NAME) VALUES ('Topps'),
                                       ('Upper Deck'),
@@ -17,8 +17,9 @@ INSERT INTO BRAND (BRAND_NAME) VALUES ('Topps'),
                                       ('Bowman'),
                                       ('TriStar');
 
-INSERT INTO CARD_SET (BRAND_ID) VALUES (1);
-INSERT INTO CARD_SET (BRAND_ID, SET_NAME) VALUES (2, 'Masterpieces');
+INSERT INTO CARD_SET (YEAR_ID, BRAND_ID) VALUES (24, 1), (25, 1), (26, 1);
+INSERT INTO CARD_SET (YEAR_ID, BRAND_ID, SET_NAME) VALUES (25, 2, 'Masterpieces'), (26, 2, 'Masterpieces');
+
 
 INSERT INTO TEAM (CITY, TEAM_NAME) VALUES ('New York', 'Yankees'), ('Cincinnati', 'Reds'),
   ('Seattle', 'Mariners'), ('Washington', 'Nationals'), ('Boston', 'Red Sox'), ('Baltimore', 'Orioles'),
@@ -29,10 +30,6 @@ INSERT INTO TEAM (CITY, TEAM_NAME) VALUES ('New York', 'Yankees'), ('Cincinnati'
   ('Pittsburgh', 'Pirates'), ('Milwaukee', 'Brewers'), ('St. Louis', 'Cardinals'), ('Los Angeles', 'Dodgers'),
   ('San Francisco', 'Giants'), ('San Diego', 'Padres'), ('Arizona', 'Diamondbacks'), ('Colorado', 'Rockies');
 
-INSERT INTO CARD (YEAR_ID, SET_ID, CARD_NUM, IMAGE_NAME) VALUES ((SELECT ID FROM CARD_YEAR WHERE CARD_YEAR = 2006), 1, '387', '2006_topps_ken_griffey_jr.jpg');
-INSERT INTO PLAYER_TO_CARD (PLAYER_ID, CARD_ID) VALUES (2, 1);
-INSERT INTO TEAM_TO_CARD (TEAM_ID, CARD_ID) VALUES (2, 1);
+INSERT INTO CARD (SET_ID, PLAYER_ID, TEAM_ID, CARD_NUM, IMAGE_NAME) VALUES (4, 1, 1, '30', '2007_ud_masterpieces_derek_jeter.jpg');
+INSERT INTO CARD (SET_ID, PLAYER_ID, TEAM_ID, CARD_NUM, IMAGE_NAME) VALUES (1, 5, 2, '387', '2006_topps_ken_griffey_jr.jpg');
 
-INSERT INTO CARD (YEAR_ID, SET_ID, CARD_NUM, IMAGE_NAME) VALUES ((SELECT ID FROM CARD_YEAR WHERE CARD_YEAR = 2007), 2, '30', '2007_ud_masterpieces_derek_jeter.jpg');
-INSERT INTO PLAYER_TO_CARD (PLAYER_ID, CARD_ID) VALUES (1, 2);
-INSERT INTO TEAM_TO_CARD (TEAM_ID, CARD_ID) VALUES (1, 2);

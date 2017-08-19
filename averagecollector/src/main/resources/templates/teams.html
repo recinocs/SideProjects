@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title>Players</title>
+    <title>Teams</title>
 
     <link rel="stylesheet" href="css/collector_stylesheet.css"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
@@ -24,7 +24,7 @@
             <td>City</td>
             <td>Team Name</td>
         </tr>
-        <tr th:each="team : ${teams}">
+        <tr th:each="team:${teams}">
             <td th:text="${team.city}">City</td>
             <td th:text="${team.teamName}">Team Name</td>
         </tr>

@@ -26,6 +26,10 @@ public class CardSet {
     @Column(name = "SET_NAME")
     private String setName;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "YEAR_ID")
+    private CardYear cardYear;
+
     public long getId() {
         return id;
     }
@@ -50,7 +54,15 @@ public class CardSet {
         this.brand = brand;
     }
 
+    public CardYear getCardYear() {
+        return cardYear;
+    }
+
+    public void setCardYear(CardYear cardYear) {
+        this.cardYear = cardYear;
+    }
+
     public String toString() {
-        return brand.getBrandName() + " " + setName;
+        return cardYear.getCardYear() + " " + brand.getBrandName() + " " + setName;
     }
 }

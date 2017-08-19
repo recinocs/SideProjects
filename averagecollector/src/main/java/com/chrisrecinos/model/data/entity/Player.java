@@ -2,7 +2,6 @@ package com.chrisrecinos.model.data.entity;
 
 
 import javax.persistence.*;
-import java.util.Date;
 
 /**
  * @author - Christopher Recinos
@@ -30,7 +29,7 @@ public class Player {
     private String suffix;
 
     @Column(name = "DOB")
-    private Date dob;
+    private String dob;
 
     public long getId() {
         return id;
@@ -64,11 +63,11 @@ public class Player {
         this.suffix = suffix;
     }
 
-    public Date getDob() {
+    public String getDob() {
         return dob;
     }
 
-    public void setDob(Date dob) {
+    public void setDob(String dob) {
         this.dob = dob;
     }
 

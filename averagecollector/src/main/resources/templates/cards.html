@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title>Players</title>
+    <title>Cards</title>
 
     <link rel="stylesheet" href="css/collector_stylesheet.css"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
@@ -11,20 +11,26 @@
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
-            <a class="navbar-brand" href="years">All Years</a>
+            <a class="navbar-brand" href="teams">All Cards</a>
         </div>
     </div>
 </nav>
 <div class="container">
     <div class="page-header">
-        <h1>Welcome to Average Collector - Years</h1>
+        <h1>Welcome to Average Collector - Cards</h1>
     </div>
     <table class="table table-striped table-bordered">
         <tr>
-            <td>Year</td>
+            <td>Set</td>
+            <td>Player</td>
+            <td>Team</td>
+            <td>Card Number</td>
         </tr>
-        <tr th:each="cardYear:${cardYears}">
-            <td th:text = "${cardYear.cardYear}">Year</td>
+        <tr th:each="card:${cards}">
+            <td th:text="${card.cardSet}">Set</td>
+            <td th:text="${card.player}">Player</td>
+            <td th:text="${card.team}">Team</td>
+            <td th:text="${card.cardNum}">Card Number</td>
         </tr>
     </table>
 </div>
