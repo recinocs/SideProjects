@@ -25,12 +25,22 @@
             <td>Player</td>
             <td>Team</td>
             <td>Card Number</td>
+            <td>Quantity</td>
+            <td>Insert Type</td>
+            <td>Parallel Type</td>
+            <td>Memorabilia Type</td>
+            <td>Serial Number</td>
         </tr>
         <tr th:each="card:${cards}">
             <td th:text="${card.cardSet}">Set</td>
             <td th:text="${card.player}">Player</td>
             <td th:text="${card.team}">Team</td>
             <td th:text="${card.cardNum}">Card Number</td>
+            <td th:text="${card.quantity}">Quantity</td>
+            <td th:text="${card.insertType}">Insert Type</td>
+            <td th:text="${card.parallelType}">Parallel Type</td>
+            <td th:text="${card.memType}">Memorabilia Type</td>
+            <td th:text="${card.serialNum}">Parallel Num</td>
         </tr>
     </table>
 </div>

@@ -47,8 +47,9 @@ public class PlayerService {
     public List<Player> getPlayers(String firstName, String lastName, String suffix) {
         List<Player> players = new ArrayList<>();
 
-            if(firstName != null && lastName != null) {
-                if (suffix != null) {
+            if(firstName != null && lastName != null
+                    && !firstName.equals("") && !lastName.equals("")) {
+                if (suffix != null && !suffix.equals("")) {
                     Player player = getPlayerByFirstNameAndLastNameAndSuffix(firstName, lastName, suffix);
                     if (player != null)
                         players.add(player);
@@ -60,11 +61,10 @@ public class PlayerService {
 
             if (players.isEmpty()){
                 boolean realFirst = false, realSecond = false;
-                String tempFirst = "", tempSecond = "";
 
-                if(firstName != null)
+                if(firstName != null && !firstName.equals(""))
                     realFirst = true;
-                if(lastName != null)
+                if(lastName != null && !lastName.equals(""))
                     realSecond = true;
 
                 if (players.isEmpty() && realFirst)
@@ -90,6 +90,12 @@ public class PlayerService {
 
                 if (players.isEmpty() && realSecond)
                     players = this.getPlayersByLastNameFirstChar(lastName);
+
+                if(players.isEmpty() && realSecond)
+                    players = this.getPlayersByFirstNameFirstChar(lastName);
+
+                if(players.isEmpty() && realFirst)
+                    players = this.getPlayersByLastNameFirstChar(firstName);
             }
 
         if(players.isEmpty())

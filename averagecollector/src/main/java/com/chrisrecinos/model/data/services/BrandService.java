@@ -41,7 +41,7 @@ public class BrandService {
     public List<Brand> getBrands(String brandName) {
         List<Brand> brands = new ArrayList<>();
 
-        if(brandName != null) {
+        if(brandName != null && !brandName.equals("")) {
             Brand brand = getBrandWithBrandName(brandName);
             if(brand != null)
                 brands.add(brand);

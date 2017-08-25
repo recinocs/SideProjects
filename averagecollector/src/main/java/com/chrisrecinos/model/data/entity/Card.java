@@ -34,8 +34,8 @@ public class Card {
     @Column(name = "CARD_NUM")
     private String cardNum;
 
-    @Column(name = "PARALLEL_NUM")
-    private String parallelNum;
+    @Column(name = "SERIAL_NUM")
+    private String serialNum;
 
     @Column(name = "QUANTITY")
     private int quantity;
@@ -45,6 +45,12 @@ public class Card {
 
     @Column(name = "IMAGE_NAME")
     private String imageName;
+
+    @Column(name = "INSERT_TYPE")
+    private String insertType;
+
+    @Column(name = "PARALLEL_TYPE")
+    private String parallelType;
 
     public long getId() {
         return id;
@@ -70,12 +76,12 @@ public class Card {
         this.cardNum = cardNum;
     }
 
-    public String getParallelNum() {
-        return parallelNum;
+    public String getSerialNum() {
+        return serialNum;
     }
 
-    public void setParallelNum(String parallelNum) {
-        this.parallelNum = parallelNum;
+    public void setSerialNum(String serialNum) {
+        this.serialNum = serialNum;
     }
 
     public int getQuantity() {
@@ -118,7 +124,38 @@ public class Card {
         this.team = team;
     }
 
+    public String getInsertType() {
+        return insertType;
+    }
+
+    public void setInsertType(String insertType) {
+        this.insertType = insertType;
+    }
+
+    public String getParallelType() {
+        return parallelType;
+    }
+
+    public void setParallelType(String parallelType) {
+        this.parallelType = parallelType;
+    }
+
     public String toString() {
-        return cardSet + " " + player + " #" + cardNum;
+        String str = cardSet + " " + player + " #" + cardNum;
+
+        if(!(insertType.equals("n/a")))
+            str += insertType;
+
+        if(!(parallelType.equals("n/a")))
+            str += parallelType;
+
+        if(!(memType.equals("n/a")))
+            str += memType;
+
+        if(!(serialNum.equals("n/a")))
+            str += serialNum;
+
+
+        return str;
     }
 }

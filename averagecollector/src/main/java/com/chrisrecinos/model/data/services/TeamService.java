@@ -50,7 +50,8 @@ public class TeamService {
     public List<Team> getTeams(String city, String teamName) {
         List<Team> teams = new ArrayList<>();
 
-        if(teamName != null || city != null) {
+        if((teamName != null && !teamName.equals("")) ||
+                (city != null && !city.equals(""))) {
             Team team = getTeamWithTeamName(teamName);
             if(team != null) {
                 teams.add(team);
@@ -60,10 +61,10 @@ public class TeamService {
         }
 
         if(teams.isEmpty()) {
-            if(teamName != null) {
+            if(teamName != null && !teamName.equals("")) {
                 teams = this.getTeamsStartingWith(teamName);
             }
-            if(city != null && teams.isEmpty()) {
+            if(city != null && !city.equals("") && teams.isEmpty()) {
                 teams = this.getTeamsStartingWithCity(city);
             }
         }

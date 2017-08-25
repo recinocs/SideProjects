@@ -31,27 +31,93 @@ public class CardSetService {
         this.brandRepository = brandRepository;
     }
 
+    /**
+     * 1. Year, brand, set
+     * 2. Brand, set
+     * 3. Year, set
+     * 4. Year, brand
+     * 5. Set
+     * 6. Year
+     * 7. Brand
+     * @param year
+     * @param brandName
+     * @param setName
+     * @return
+     */
     public List<CardSet> getSets(Integer year, String brandName, String setName) {
         List<CardSet> cardSets = new ArrayList<>();
+        boolean realYear = false, realBrand = false, realSetName = false;
 
         CardYear cardYear = null;
         Brand brand = null;
 
-        if(year != null)
+        if(year != null) {
             cardYear = this.cardYearRepository.findByCardYear(year);
-
-        if(brandName != null)
-            brand = this.brandRepository.findByBrandNameIgnoreCase(brandName);
-
-        if(cardYear != null && brand != null && setName != null) {
-            CardSet cardSet = this.cardSetRepository.findByCardYearAndBrandAndSetName(cardYear, brand, setName);
-            if(cardSet != null)
-                cardSets.add(cardSet);
+            if(cardYear != null)
+                realYear = true;
         }
 
-        if(cardSets.isEmpty()) {
-            if(brand != null && setName != null)
-                cardSets = this.cardSetRepository.findByBrandAndSetNameOrderByCardYearAsc(brand, setName);
+        if(brandName != null && !brandName.equals("")) {
+            brand = this.brandRepository.findByBrandNameIgnoreCase(brandName);
+            if(brand != null)
+                realBrand = true;
+        }
+
+        if(setName != null && !setName.equals(""))
+            realSetName = true;
+
+        if(realYear && realBrand) {
+            CardSet cardSet;
+
+            if(realSetName)
+                cardSet = getResultsWithYearAndBrandAndSetName(cardYear, brand, setName);
+            else
+                cardSet = getResultsWithYearAndBrandAndSetName(cardYear, brand, "Base Set");
+
+            if(cardSet != null)
+                cardSets.add(cardSet);
+
+            if(cardSets.isEmpty() && realSetName)
+                cardSets = this.getResultsWithYearAndBrandAndSetNameFirstChar(cardYear, brand, setName);
+        }
+
+        if(cardSets.isEmpty() && realBrand && realSetName) {
+            cardSets = this.getResultsWithBrandAndSetName(brand, setName);
+            if(cardSets.isEmpty())
+                cardSets = this.getResultsWithBrandAndSetNameFirstChar(brand, setName);
+        }
+
+        if(cardSets.isEmpty() && realYear && realSetName) {
+            cardSets = this.getResultsWithYearAndSetName(cardYear, setName);
+            if(cardSets.isEmpty())
+                cardSets = this.getResultsWithYearAndSetNameFirstChar(cardYear, setName);
+        }
+
+        if(cardSets.isEmpty() && realBrand && realYear)
+            cardSets = this.getResultsWithYearAndBrand(cardYear, brand);
+
+        if(cardSets.isEmpty() && realSetName) {
+            cardSets = this.getResultsWithSetName(setName);
+            if(cardSets.isEmpty())
+                cardSets = this.getResultsWithSetNameFirstChar(setName);
+        }
+
+        if(cardSets.isEmpty() && realYear)
+            cardSets = this.getResultsWithYear(cardYear);
+
+        if(cardSets.isEmpty() && realBrand)
+            cardSets = this.getResultsWithBrand(brand);
+
+        if(cardSets.isEmpty() && brandName != null && !brandName.equals("")) {
+            cardSets = this.getResultsWithSetName(brandName);
+            if(cardSets.isEmpty())
+                cardSets = this.getResultsWithSetNameFirstChar(brandName);
+        }
+
+        if(cardSets.isEmpty() && realSetName) {
+            Brand reverseBrand = this.brandRepository.findByBrandNameIgnoreCase(setName);
+            if(reverseBrand != null)
+                cardSets = this.getResultsWithBrand(reverseBrand);
         }
 
         if(cardSets.isEmpty()) {
@@ -59,5 +125,49 @@ public class CardSetService {
         }
 
         return cardSets;
+    }
+
+    private CardSet getResultsWithYearAndBrandAndSetName(CardYear year, Brand brand, String setName) {
+        return this.cardSetRepository.findByCardYearAndBrandAndSetNameIgnoreCase(year, brand, setName);
+    }
+
+    private List<CardSet> getResultsWithYearAndBrandAndSetNameFirstChar(CardYear year, Brand brand, String setName) {
+        return this.cardSetRepository.findByCardYearAndBrandAndSetNameIgnoreCaseStartingWithOrderBySetNameAsc(year, brand, setName);
+    }
+
+    private List<CardSet> getResultsWithBrandAndSetName(Brand brand, String setName) {
+        return this.cardSetRepository.findByBrandAndSetNameIgnoreCaseOrderByCardYearAsc(brand, setName);
+    }
+
+    private List<CardSet> getResultsWithBrandAndSetNameFirstChar(Brand brand, String setName) {
+        return this.cardSetRepository.findByBrandAndSetNameIgnoreCaseStartingWithOrderByCardYearAscSetNameAsc(brand, setName);
+    }
+
+    private List<CardSet> getResultsWithYearAndSetName(CardYear year, String setName) {
+        return this.cardSetRepository.findByCardYearAndSetNameIgnoreCaseOrderByBrand(year, setName);
+    }
+
+    private List<CardSet> getResultsWithYearAndSetNameFirstChar(CardYear year, String setName) {
+        return this.cardSetRepository.findByCardYearAndSetNameIgnoreCaseStartingWithOrderByBrandAscSetNameAsc(year, setName);
+    }
+
+    private List<CardSet> getResultsWithYearAndBrand(CardYear cardYear, Brand brand) {
+        return this.cardSetRepository.findByCardYearAndBrandOrderBySetNameAsc(cardYear, brand);
+    }
+
+    private List<CardSet> getResultsWithSetName(String setName) {
+        return this.cardSetRepository.findBySetNameIgnoreCaseOrderByCardYearAscBrandAsc(setName);
+    }
+
+    private List<CardSet> getResultsWithSetNameFirstChar(String setName) {
+        return this.cardSetRepository.findBySetNameIgnoreCaseStartingWithOrderByCardYearAscBrandAscSetNameAsc(setName);
+    }
+
+    private List<CardSet> getResultsWithYear(CardYear year) {
+        return this.cardSetRepository.findByCardYearOrderByBrandAscSetNameAsc(year);
+    }
+
+    private List<CardSet> getResultsWithBrand(Brand brand) {
+        return this.cardSetRepository.findByBrandOrderByCardYearAscSetNameAsc(brand);
     }
 }
