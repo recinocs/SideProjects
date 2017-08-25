@@ -47,56 +47,55 @@ public class PlayerService {
     public List<Player> getPlayers(String firstName, String lastName, String suffix) {
         List<Player> players = new ArrayList<>();
 
-            if(firstName != null && lastName != null
-                    && !firstName.equals("") && !lastName.equals("")) {
-                if (suffix != null && !suffix.equals("")) {
-                    Player player = getPlayerByFirstNameAndLastNameAndSuffix(firstName, lastName, suffix);
-                    if (player != null)
-                        players.add(player);
-                }
-                if (players.isEmpty()) {
-                    players = this.getPlayersByFirstNameAndLastName(firstName, lastName);
-                }
+        boolean realFirst = false, realLast = false;
+
+        if(firstName != null && !firstName.equals(""))
+            realFirst = true;
+        if(lastName != null && !lastName.equals(""))
+            realLast = true;
+
+        if(realFirst && realLast) {
+            if (suffix != null && !suffix.equals("")) {
+                Player player = getPlayerByFirstNameAndLastNameAndSuffix(firstName, lastName, suffix);
+                if (player != null)
+                    players.add(player);
             }
-
-            if (players.isEmpty()){
-                boolean realFirst = false, realSecond = false;
-
-                if(firstName != null && !firstName.equals(""))
-                    realFirst = true;
-                if(lastName != null && !lastName.equals(""))
-                    realSecond = true;
-
-                if (players.isEmpty() && realFirst)
-                    players = this.getPlayersByFirstName(firstName);
-
-                if (players.isEmpty() && realSecond)
-                    players = this.getPlayersByLastName(lastName);
-
-                if (players.isEmpty() && realFirst)
-                    players = this.getPlayersByFirstNameLike(firstName);
-
-                if (players.isEmpty() && realSecond)
-                    players = this.getPlayerByLastNameLike(lastName);
-
-                if(players.isEmpty() && realSecond)
-                    players = this.getPlayersByFirstNameLike(lastName);
-
-                if(players.isEmpty() && realFirst)
-                    players = this.getPlayerByLastNameLike(firstName);
-
-                if (players.isEmpty() && realFirst)
-                    players = this.getPlayersByFirstNameFirstChar(firstName);
-
-                if (players.isEmpty() && realSecond)
-                    players = this.getPlayersByLastNameFirstChar(lastName);
-
-                if(players.isEmpty() && realSecond)
-                    players = this.getPlayersByFirstNameFirstChar(lastName);
-
-                if(players.isEmpty() && realFirst)
-                    players = this.getPlayersByLastNameFirstChar(firstName);
+            if (players.isEmpty()) {
+                players = this.getPlayersByFirstNameAndLastName(firstName, lastName);
             }
+        }
+
+        if (players.isEmpty()){
+            if (players.isEmpty() && realFirst)
+                players = this.getPlayersByFirstName(firstName);
+
+            if (players.isEmpty() && realLast)
+                 players = this.getPlayersByLastName(lastName);
+
+            if (players.isEmpty() && realFirst)
+                players = this.getPlayersByFirstNameLike(firstName);
+
+            if (players.isEmpty() && realLast)
+                players = this.getPlayerByLastNameLike(lastName);
+
+            if(players.isEmpty() && realLast)
+                players = this.getPlayersByFirstNameLike(lastName);
+
+            if(players.isEmpty() && realFirst)
+                players = this.getPlayerByLastNameLike(firstName);
+
+            if (players.isEmpty() && realFirst)
+                players = this.getPlayersByFirstNameFirstChar(firstName);
+
+            if (players.isEmpty() && realLast)
+                players = this.getPlayersByLastNameFirstChar(lastName);
+
+            if(players.isEmpty() && realLast)
+                players = this.getPlayersByFirstNameFirstChar(lastName);
+
+            if(players.isEmpty() && realFirst)
+                players = this.getPlayersByLastNameFirstChar(firstName);
+        }
 
         if(players.isEmpty())
             players = this.playerRepository.findAllByOrderByFirstNameAscLastNameAsc();

@@ -50,8 +50,15 @@ public class TeamService {
     public List<Team> getTeams(String city, String teamName) {
         List<Team> teams = new ArrayList<>();
 
-        if((teamName != null && !teamName.equals("")) ||
-                (city != null && !city.equals(""))) {
+        boolean realTeamName = false, realCity = false;
+
+        if(teamName != null && !teamName.equals(""))
+            realTeamName = true;
+
+        if(city != null && !city.equals(""))
+            realCity = true;
+
+        if(realTeamName || realCity) {
             Team team = getTeamWithTeamName(teamName);
             if(team != null) {
                 teams.add(team);
@@ -61,10 +68,10 @@ public class TeamService {
         }
 
         if(teams.isEmpty()) {
-            if(teamName != null && !teamName.equals("")) {
+            if(realTeamName) {
                 teams = this.getTeamsStartingWith(teamName);
             }
-            if(city != null && !city.equals("") && teams.isEmpty()) {
+            if(teams.isEmpty() && realCity) {
                 teams = this.getTeamsStartingWithCity(city);
             }
         }
