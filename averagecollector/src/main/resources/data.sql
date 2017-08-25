@@ -5,11 +5,10 @@ INSERT INTO CARD_YEAR (CARD_YEAR) VALUES (1983), (1984), (1985),
   (2010), (2011), (2012), (2013), (2014), (2015), (2016), (2017);
 
 INSERT INTO PLAYER (FIRST_NAME, LAST_NAME, DOB) VALUES ('Derek', 'Jeter', '1974-06-26'),
-                                                       ('Ichiro', 'Suzuki', '1973-10-22'),
-                                                       ('Ryan', 'Zimmerman', '1984-09-28'),
-                                                       ('Alex', 'Rodriguez', '1975-07-27');
+  ('Ichiro', 'Suzuki', '1973-10-22'), ('Ryan', 'Zimmerman', '1984-09-28'), ('Alex', 'Rodriguez', '1975-07-27');
 
-INSERT INTO PLAYER (FIRST_NAME, LAST_NAME, SUFFIX, DOB) VALUES ('Ken', 'Griffey', 'Jr.', '1969-11-21');
+INSERT INTO PLAYER (FIRST_NAME, LAST_NAME, SUFFIX, DOB) VALUES ('Ken', 'Griffey', 'Jr.', '1969-11-21'),
+  ('Ken', 'Griffey', 'Sr.', '1950-04-10');
 
 INSERT INTO BRAND (BRAND_NAME) VALUES ('Topps'),
                                       ('Upper Deck'),

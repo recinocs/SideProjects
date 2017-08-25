@@ -98,7 +98,7 @@ public class PlayerService {
         }
 
         if(players.isEmpty())
-            players = this.playerRepository.findAllByOrderByFirstNameAscLastNameAsc();
+            players = this.playerRepository.findAllByOrderByFirstNameAscLastNameAscDobAsc();
 
         return players;
     }
@@ -108,31 +108,31 @@ public class PlayerService {
     }
 
     private List<Player> getPlayersByFirstNameAndLastName(String firstName, String lastName) {
-        return this.playerRepository.findByFirstNameIgnoreCaseAndLastNameIgnoreCase(firstName, lastName);
+        return this.playerRepository.findByFirstNameIgnoreCaseAndLastNameIgnoreCaseOrderByDobAsc(firstName, lastName);
     }
 
     private List<Player> getPlayersByFirstName(String firstName) {
-        return this.playerRepository.findByFirstNameIgnoreCaseOrderByLastNameAsc(firstName);
+        return this.playerRepository.findByFirstNameIgnoreCaseOrderByLastNameAscDobAsc(firstName);
     }
 
     private List<Player> getPlayersByLastName(String lastName) {
-        return this.playerRepository.findByLastNameIgnoreCaseOrderByFirstNameAsc(lastName);
+        return this.playerRepository.findByLastNameIgnoreCaseOrderByFirstNameAscDobAsc(lastName);
     }
 
     private List<Player> getPlayersByFirstNameLike(String firstName) {
-        return this.playerRepository.findByFirstNameIgnoreCaseStartingWithOrderByLastNameAsc(firstName);
+        return this.playerRepository.findByFirstNameIgnoreCaseStartingWithOrderByLastNameAscDobAsc(firstName);
     }
 
     private List<Player> getPlayerByLastNameLike(String lastName) {
-        return this.playerRepository.findByLastNameIgnoreCaseStartingWithOrderByFirstNameAsc(lastName);
+        return this.playerRepository.findByLastNameIgnoreCaseStartingWithOrderByFirstNameAscDobAsc(lastName);
     }
 
     private List<Player> getPlayersByFirstNameFirstChar(String firstName) {
-        return this.playerRepository.findByFirstNameIgnoreCaseStartingWithOrderByFirstNameAsc(firstName.charAt(0));
+        return this.playerRepository.findByFirstNameIgnoreCaseStartingWithOrderByFirstNameAscDobAsc(firstName.charAt(0));
     }
 
     private List<Player> getPlayersByLastNameFirstChar(String lastName) {
-        return this.playerRepository.findByLastNameIgnoreCaseStartingWithOrderByLastNameAsc(lastName.charAt(0));
+        return this.playerRepository.findByLastNameIgnoreCaseStartingWithOrderByLastNameAscDobAsc(lastName.charAt(0));
     }
 
 

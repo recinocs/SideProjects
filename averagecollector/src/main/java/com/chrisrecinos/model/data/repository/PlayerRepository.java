@@ -14,13 +14,13 @@ import java.util.List;
 @Repository
 public interface PlayerRepository extends CrudRepository<Player, Long> {
     Player findByFirstNameIgnoreCaseAndLastNameIgnoreCaseAndSuffixIgnoreCase(String firstName, String lastName, String suffix);
-    List<Player> findByFirstNameIgnoreCaseAndLastNameIgnoreCase(String firstName, String lastName);
-    List<Player> findByFirstNameIgnoreCaseOrderByLastNameAsc(String firstName);
-    List<Player> findByLastNameIgnoreCaseOrderByFirstNameAsc(String lastName);
-    List<Player> findByFirstNameIgnoreCaseStartingWithOrderByLastNameAsc(String firstName);
-    List<Player> findByLastNameIgnoreCaseStartingWithOrderByFirstNameAsc(String lastName);
-    List<Player> findByFirstNameIgnoreCaseStartingWithOrderByFirstNameAsc(Character c);
-    List<Player> findByLastNameIgnoreCaseStartingWithOrderByLastNameAsc(Character c);
-    List<Player> findAllByOrderByFirstNameAscLastNameAsc();
+    List<Player> findByFirstNameIgnoreCaseAndLastNameIgnoreCaseOrderByDobAsc(String firstName, String lastName);
+    List<Player> findByFirstNameIgnoreCaseOrderByLastNameAscDobAsc(String firstName);
+    List<Player> findByLastNameIgnoreCaseOrderByFirstNameAscDobAsc(String lastName);
+    List<Player> findByFirstNameIgnoreCaseStartingWithOrderByLastNameAscDobAsc(String firstName);
+    List<Player> findByLastNameIgnoreCaseStartingWithOrderByFirstNameAscDobAsc(String lastName);
+    List<Player> findByFirstNameIgnoreCaseStartingWithOrderByFirstNameAscDobAsc(Character c);
+    List<Player> findByLastNameIgnoreCaseStartingWithOrderByLastNameAscDobAsc(Character c);
+    List<Player> findAllByOrderByFirstNameAscLastNameAscDobAsc();
 }
 

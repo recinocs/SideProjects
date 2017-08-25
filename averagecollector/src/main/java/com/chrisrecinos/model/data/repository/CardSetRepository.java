@@ -11,7 +11,10 @@ import java.util.List;
 
 /**
  * @author - Christopher Recinos
+ *
  */
+
+//TODO - Add searching for first character in addition to LIKE
 
 @Repository
 public interface CardSetRepository extends CrudRepository<CardSet, Long> {
