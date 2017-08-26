@@ -1,7 +1,6 @@
 package com.chrisrecinos.model.data.entity;
 
 import javax.persistence.*;
-import java.util.List;
 
 /**
  * @author - Christopher Recinos
@@ -43,8 +42,8 @@ public class Card {
     @Column(name = "MEM_TYPE")
     private String memType;
 
-    @Column(name = "IMAGE_NAME")
-    private String imageName;
+    @Column(name = "IMAGE_FRONT")
+    private String imageFront;
 
     @Column(name = "INSERT_TYPE")
     private String insertType;
@@ -100,12 +99,12 @@ public class Card {
         this.memType = memType;
     }
 
-    public String getImageName() {
-        return imageName;
+    public String getImageFront() {
+        return imageFront;
     }
 
-    public void setImageName(String imageName) {
-        this.imageName = imageName;
+    public void setImageFront(String imageFront) {
+        this.imageFront = imageFront;
     }
 
     public Player getPlayer() {
