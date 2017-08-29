@@ -69,11 +69,21 @@ public class TeamService {
 
         if(teams.isEmpty()) {
             if(realTeamName) {
-                teams = this.getTeamsStartingWith(teamName);
+                teams = this.getTeamsStartingWithSubstring(teamName);
+                if(teams.isEmpty())
+                    teams = this.getTeamsStartingWithChar(teamName);
             }
+
             if(teams.isEmpty() && realCity) {
-                teams = this.getTeamsStartingWithCity(city);
+                teams = this.getTeamsStartingWithCitySubstring(city);
+                if(teams.isEmpty())
+                    teams = this.getTeamsStartingWithCityChar(city);
+                if(teams.isEmpty())
+                    teams = this.getTeamsStartingWithSubstring(city);
             }
+
+            if(teams.isEmpty() && realTeamName)
+                teams = this.getTeamsStartingWithCityChar(teamName);
         }
 
         if(teams.isEmpty())
@@ -90,11 +100,19 @@ public class TeamService {
         return this.teamRepository.findByCityIgnoreCaseOrderByCityAsc(city);
     }
 
-    private List<Team> getTeamsStartingWith(String teamName) {
+    private List<Team> getTeamsStartingWithSubstring(String teamName) {
+        return this.teamRepository.findByTeamNameIgnoreCaseStartingWithOrderByTeamNameAsc(teamName);
+    }
+
+    private List<Team> getTeamsStartingWithCitySubstring(String city) {
+        return this.teamRepository.findByCityIgnoreCaseStartingWithOrderByTeamNameAsc(city);
+    }
+
+    private List<Team> getTeamsStartingWithChar(String teamName) {
         return this.teamRepository.findByTeamNameIgnoreCaseStartingWithOrderByTeamNameAsc(teamName.charAt(0));
     }
 
-    private List<Team> getTeamsStartingWithCity(String city) {
+    private List<Team> getTeamsStartingWithCityChar(String city) {
         return this.teamRepository.findByCityIgnoreCaseStartingWithOrderByTeamNameAsc(city.charAt(0));
     }
 }
