@@ -46,7 +46,9 @@ public class BrandService {
             if(brand != null)
                 brands.add(brand);
             else {
-                brands = getBrandsStartingWith(brandName);
+                brands = getBrandsStartingWithString(brandName);
+                if(brands.isEmpty())
+                    brands = getBrandsStartingWithChar(brandName);
             }
         }
 
@@ -60,7 +62,11 @@ public class BrandService {
         return this.brandRepository.findByBrandNameIgnoreCase(brandName);
     }
 
-    private List<Brand> getBrandsStartingWith(String brandName) {
+    private List<Brand> getBrandsStartingWithString(String brandName) {
+        return this.brandRepository.findByBrandNameIgnoreCaseStartingWithOrderByBrandNameAsc(brandName);
+    }
+
+    private List<Brand> getBrandsStartingWithChar(String brandName) {
         return this.brandRepository.findByBrandNameIgnoreCaseStartingWithOrderByBrandNameAsc(brandName.charAt(0));
     }
 
