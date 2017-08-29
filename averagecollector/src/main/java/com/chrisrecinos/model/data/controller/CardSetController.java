@@ -40,10 +40,9 @@ public class CardSetController {
 
         for(CardSet c : sets) {
             Integer c_year = c.getCardYear().getCardYear();
-            if(yearsToSets.get(c_year) == null) {
+            if(yearsToSets.get(c_year) == null)
                 yearsToSets.put(c_year, new ArrayList<>());
-                yearsToSets.get(c_year).add(c);
-            }
+            yearsToSets.get(c_year).add(c);
         }
 
         List<Integer> sortedKeys = new ArrayList<>(yearsToSets.keySet());
