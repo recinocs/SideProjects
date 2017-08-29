@@ -20,14 +20,18 @@ import java.util.List;
 public interface CardSetRepository extends CrudRepository<CardSet, Long> {
     CardSet findByCardYearAndBrandAndSetNameIgnoreCase(CardYear year, Brand brand, String setName);
     List<CardSet> findByCardYearAndBrandAndSetNameIgnoreCaseStartingWithOrderBySetNameAsc(CardYear year, Brand brand, String setName);
+    List<CardSet> findByCardYearAndBrandAndSetNameIgnoreCaseStartingWithOrderBySetNameAsc(CardYear year, Brand brand, Character c);
     List<CardSet> findByBrandAndSetNameIgnoreCaseOrderByCardYearAsc(Brand brand, String setName);
-    List<CardSet> findByBrandAndSetNameIgnoreCaseStartingWithOrderByCardYearAscSetNameAsc(Brand brand, String setName);
+    List<CardSet> findByBrandAndSetNameIgnoreCaseStartingWithOrderBySetNameAsc(Brand brand, String setName);
+    List<CardSet> findByBrandAndSetNameIgnoreCaseStartingWithOrderBySetNameAsc(Brand brand, Character c);
     List<CardSet> findByCardYearAndBrandOrderBySetNameAsc(CardYear year, Brand brand);
     List<CardSet> findByCardYearAndSetNameIgnoreCaseOrderByBrand(CardYear year, String setName);
     List<CardSet> findByCardYearAndSetNameIgnoreCaseStartingWithOrderByBrandAscSetNameAsc(CardYear year, String setName);
-    List<CardSet> findByBrandOrderByCardYearAscSetNameAsc(Brand brand);
-    List<CardSet> findBySetNameIgnoreCaseOrderByCardYearAscBrandAsc(String setName);
-    List<CardSet> findBySetNameIgnoreCaseStartingWithOrderByCardYearAscBrandAscSetNameAsc(String setName);
+    List<CardSet> findByCardYearAndSetNameIgnoreCaseStartingWithOrderByBrandAscSetNameAsc(CardYear year, Character c);
+    List<CardSet> findByBrandOrderBySetNameAsc(Brand brand);
+    List<CardSet> findBySetNameIgnoreCaseOrderByBrandAsc(String setName);
+    List<CardSet> findBySetNameIgnoreCaseStartingWithOrderByBrandAscSetNameAsc(String setName);
+    List<CardSet> findBySetNameIgnoreCaseStartingWithOrderByBrandAscSetNameAsc(Character c);
     List<CardSet> findByCardYearOrderByBrandAscSetNameAsc(CardYear year);
-    List<CardSet> findAllByOrderByCardYearAscBrandAscSetNameAsc();
+    List<CardSet> findAllByOrderByBrandAscSetNameAsc();
 }

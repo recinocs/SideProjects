@@ -77,20 +77,29 @@ public class CardSetService {
             if(cardSet != null)
                 cardSets.add(cardSet);
 
-            if(cardSets.isEmpty() && realSetName)
-                cardSets = this.getResultsWithYearAndBrandAndSetNameFirstChar(cardYear, brand, setName);
+            if(cardSets.isEmpty() && realSetName) {
+                cardSets = this.getResultsWithYearAndBrandAndSetNameSubstring(cardYear, brand, setName);
+                if(cardSets.isEmpty())
+                    cardSets = this.getResultsWithYearAndBrandAndSetNameFirstChar(cardYear, brand, setName);
+            }
         }
 
         if(cardSets.isEmpty() && realBrand && realSetName) {
             cardSets = this.getResultsWithBrandAndSetName(brand, setName);
-            if(cardSets.isEmpty())
-                cardSets = this.getResultsWithBrandAndSetNameFirstChar(brand, setName);
+            if(cardSets.isEmpty()) {
+                cardSets = this.getResultsWithBrandAndSetNameSubstring(brand, setName);
+                if(cardSets.isEmpty())
+                    cardSets = this.getResultsWithBrandAndSetNameFirstChar(brand, setName);
+            }
         }
 
         if(cardSets.isEmpty() && realYear && realSetName) {
             cardSets = this.getResultsWithYearAndSetName(cardYear, setName);
-            if(cardSets.isEmpty())
-                cardSets = this.getResultsWithYearAndSetNameFirstChar(cardYear, setName);
+            if(cardSets.isEmpty()) {
+                cardSets = this.getResultsWithYearAndSetNameSubstring(cardYear, setName);
+                if(cardSets.isEmpty())
+                    cardSets = this.getResultsWithYearAndSetNameFirstChar(cardYear, setName);
+            }
         }
 
         if(cardSets.isEmpty() && realBrand && realYear)
@@ -98,8 +107,11 @@ public class CardSetService {
 
         if(cardSets.isEmpty() && realSetName) {
             cardSets = this.getResultsWithSetName(setName);
-            if(cardSets.isEmpty())
-                cardSets = this.getResultsWithSetNameFirstChar(setName);
+            if(cardSets.isEmpty()) {
+                cardSets = this.getResultsWithSetNameSubstring(setName);
+                if(cardSets.isEmpty())
+                    cardSets = this.getResultsWithSetNameFirstChar(setName);
+            }
         }
 
         if(cardSets.isEmpty() && realYear)
@@ -110,8 +122,11 @@ public class CardSetService {
 
         if(cardSets.isEmpty() && brandName != null && !brandName.equals("")) {
             cardSets = this.getResultsWithSetName(brandName);
-            if(cardSets.isEmpty())
-                cardSets = this.getResultsWithSetNameFirstChar(brandName);
+            if(cardSets.isEmpty()) {
+                cardSets = this.getResultsWithSetNameSubstring(brandName);
+                if(cardSets.isEmpty())
+                    cardSets = this.getResultsWithSetNameFirstChar(brandName);
+            }
         }
 
         if(cardSets.isEmpty() && realSetName) {
@@ -121,7 +136,7 @@ public class CardSetService {
         }
 
         if(cardSets.isEmpty()) {
-            cardSets = this.cardSetRepository.findAllByOrderByCardYearAscBrandAscSetNameAsc();
+            cardSets = this.cardSetRepository.findAllByOrderByBrandAscSetNameAsc();
         }
 
         return cardSets;
@@ -131,24 +146,36 @@ public class CardSetService {
         return this.cardSetRepository.findByCardYearAndBrandAndSetNameIgnoreCase(year, brand, setName);
     }
 
-    private List<CardSet> getResultsWithYearAndBrandAndSetNameFirstChar(CardYear year, Brand brand, String setName) {
+    private List<CardSet> getResultsWithYearAndBrandAndSetNameSubstring(CardYear year, Brand brand, String setName) {
         return this.cardSetRepository.findByCardYearAndBrandAndSetNameIgnoreCaseStartingWithOrderBySetNameAsc(year, brand, setName);
+    }
+
+    private List<CardSet> getResultsWithYearAndBrandAndSetNameFirstChar(CardYear year, Brand brand, String setName) {
+        return this.cardSetRepository.findByCardYearAndBrandAndSetNameIgnoreCaseStartingWithOrderBySetNameAsc(year, brand, setName.charAt(0));
     }
 
     private List<CardSet> getResultsWithBrandAndSetName(Brand brand, String setName) {
         return this.cardSetRepository.findByBrandAndSetNameIgnoreCaseOrderByCardYearAsc(brand, setName);
     }
 
+    private List<CardSet> getResultsWithBrandAndSetNameSubstring(Brand brand, String setName) {
+        return this.cardSetRepository.findByBrandAndSetNameIgnoreCaseStartingWithOrderBySetNameAsc(brand, setName);
+    }
+
     private List<CardSet> getResultsWithBrandAndSetNameFirstChar(Brand brand, String setName) {
-        return this.cardSetRepository.findByBrandAndSetNameIgnoreCaseStartingWithOrderByCardYearAscSetNameAsc(brand, setName);
+        return this.cardSetRepository.findByBrandAndSetNameIgnoreCaseStartingWithOrderBySetNameAsc(brand, setName.charAt(0));
     }
 
     private List<CardSet> getResultsWithYearAndSetName(CardYear year, String setName) {
         return this.cardSetRepository.findByCardYearAndSetNameIgnoreCaseOrderByBrand(year, setName);
     }
 
-    private List<CardSet> getResultsWithYearAndSetNameFirstChar(CardYear year, String setName) {
+    private List<CardSet> getResultsWithYearAndSetNameSubstring(CardYear year, String setName) {
         return this.cardSetRepository.findByCardYearAndSetNameIgnoreCaseStartingWithOrderByBrandAscSetNameAsc(year, setName);
+    }
+
+    private List<CardSet> getResultsWithYearAndSetNameFirstChar(CardYear year, String setName) {
+        return this.cardSetRepository.findByCardYearAndSetNameIgnoreCaseStartingWithOrderByBrandAscSetNameAsc(year, setName.charAt(0));
     }
 
     private List<CardSet> getResultsWithYearAndBrand(CardYear cardYear, Brand brand) {
@@ -156,11 +183,15 @@ public class CardSetService {
     }
 
     private List<CardSet> getResultsWithSetName(String setName) {
-        return this.cardSetRepository.findBySetNameIgnoreCaseOrderByCardYearAscBrandAsc(setName);
+        return this.cardSetRepository.findBySetNameIgnoreCaseOrderByBrandAsc(setName);
+    }
+
+    private List<CardSet> getResultsWithSetNameSubstring(String setName) {
+        return this.cardSetRepository.findBySetNameIgnoreCaseStartingWithOrderByBrandAscSetNameAsc(setName);
     }
 
     private List<CardSet> getResultsWithSetNameFirstChar(String setName) {
-        return this.cardSetRepository.findBySetNameIgnoreCaseStartingWithOrderByCardYearAscBrandAscSetNameAsc(setName);
+        return this.cardSetRepository.findBySetNameIgnoreCaseStartingWithOrderByBrandAscSetNameAsc(setName.charAt(0));
     }
 
     private List<CardSet> getResultsWithYear(CardYear year) {
@@ -168,6 +199,6 @@ public class CardSetService {
     }
 
     private List<CardSet> getResultsWithBrand(Brand brand) {
-        return this.cardSetRepository.findByBrandOrderByCardYearAscSetNameAsc(brand);
+        return this.cardSetRepository.findByBrandOrderBySetNameAsc(brand);
     }
 }
