@@ -30,12 +30,12 @@ public class CardSetController {
                           Model model) {
         List<CardSet> cardSetList = this.cardSetService.getSets(year, brandName, setName);
 
-        model.addAttribute("sets", sort(cardSetList));
+        model.addAttribute("sets", sortYears(cardSetList));
 
         return "sets";
     }
 
-    private List<CardSet> sort(List<CardSet> sets) {
+    private List<CardSet> sortYears(List<CardSet> sets) {
         Map<Integer, List<CardSet>> yearsToSets = new HashMap<>();
 
         for(CardSet c : sets) {
@@ -51,7 +51,31 @@ public class CardSetController {
         List<CardSet> sortedSets = new ArrayList<>();
 
         for(Integer key : sortedKeys) {
-            List<CardSet> temp = yearsToSets.get(key);
+            List<CardSet> temp = sortBrands(yearsToSets.get(key));
+            for(CardSet set : temp)
+                sortedSets.add(set);
+        }
+
+        return sortedSets;
+    }
+
+    private List<CardSet> sortBrands(List<CardSet> sets) {
+        Map<String, List<CardSet>> brandsToSets = new HashMap<>();
+
+        for(CardSet c : sets) {
+            String c_brand = c.getBrand().getBrandName();
+            if(brandsToSets.get(c_brand) == null)
+                brandsToSets.put(c_brand, new ArrayList<>());
+            brandsToSets.get(c_brand).add(c);
+        }
+
+        List<String> sortedKeys = new ArrayList<>(brandsToSets.keySet());
+        Collections.sort(sortedKeys);
+
+        List<CardSet> sortedSets = new ArrayList<>();
+
+        for(String key : sortedKeys) {
+            List<CardSet> temp = brandsToSets.get(key);
             for(CardSet set : temp)
                 sortedSets.add(set);
         }
