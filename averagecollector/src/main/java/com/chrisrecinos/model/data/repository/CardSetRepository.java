@@ -33,5 +33,5 @@ public interface CardSetRepository extends CrudRepository<CardSet, Long> {
     List<CardSet> findBySetNameIgnoreCaseStartingWithOrderByBrandAscSetNameAsc(String setName);
     List<CardSet> findBySetNameIgnoreCaseStartingWithOrderByBrandAscSetNameAsc(Character c);
     List<CardSet> findByCardYearOrderByBrandAscSetNameAsc(CardYear year);
-    List<CardSet> findAllByOrderByBrandAscSetNameAsc();
+    List<CardSet> findAllByOrderBySetNameAsc();
 }

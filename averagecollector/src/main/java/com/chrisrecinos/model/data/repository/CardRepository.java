@@ -18,5 +18,5 @@ public interface CardRepository extends CrudRepository<Card, Long> {
     Card findByCardSetAndCardNumIgnoreCase(CardSet cardSet, String cardNum);
     List<Card> findByPlayerAndCardNumIgnoreCase(Player player, String cardNum);
     List<Card> findByCardSetAndPlayerOrderByCardNumAsc(CardSet cardSet, Player player);
-    List<Card> findAllByOrderByCardSetAscCardNumAsc();
+    List<Card> findAllByOrderByCardNumAsc();
 }

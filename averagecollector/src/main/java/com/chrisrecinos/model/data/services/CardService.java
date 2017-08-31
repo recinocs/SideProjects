@@ -97,7 +97,7 @@ public class CardService {
             cards = this.getCardsWithSetAndPlayer(set, player);
 
         if(cards.isEmpty())
-            cards = this.cardRepository.findAllByOrderByCardSetAscCardNumAsc();
+            cards = this.cardRepository.findAllByOrderByCardNumAsc();
 
         return cards;
     }

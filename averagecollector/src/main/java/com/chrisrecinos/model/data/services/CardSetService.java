@@ -136,7 +136,7 @@ public class CardSetService {
         }
 
         if(cardSets.isEmpty()) {
-            cardSets = this.cardSetRepository.findAllByOrderByBrandAscSetNameAsc();
+            cardSets = this.cardSetRepository.findAllByOrderBySetNameAsc();
         }
 
         return cardSets;
