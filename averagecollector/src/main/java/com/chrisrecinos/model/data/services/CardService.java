@@ -34,35 +34,83 @@ public class CardService {
         this.teamRepository = teamRepository;
     }
 
-    public List<Card> getCards(Integer cardYear, String brandName, String setName, String cardNum) {
+    //TODO Add searching for city and lists
+    public List<Card> getCards(Integer cardYear, String brandName, String setName, String cardNum,
+                               String firstName, String lastName, String suffix, String teamName) {
         List<Card> cards = new ArrayList<>();
 
         CardYear year = null;
         Brand brand = null;
         CardSet set = null;
+        Player player = null;
+        Team team = null;
+
+        boolean realSet = false;
+        boolean realNum = false;
+        boolean realPlayer = false;
+        boolean realTeam = false;
 
         if(cardYear != null)
             year = this.cardYearRepository.findByCardYear(cardYear);
 
-        if(brandName != null)
+        if(brandName != null && !brandName.equals(""))
             brand = this.brandRepository.findByBrandNameIgnoreCase(brandName);
 
         if(brand != null && year != null) {
-            if(setName != null)
+            if(setName != null && !setName.equals(""))
                 set = this.cardSetRepository.findByCardYearAndBrandAndSetNameIgnoreCase(year, brand, setName);
             else
                 set = this.cardSetRepository.findByCardYearAndBrandAndSetNameIgnoreCase(year, brand, "Base Set");
         }
 
-        if(set != null && cardNum != null) {
-            Card card = this.cardRepository.findByCardSetAndCardNum(set, cardNum);
+        if(firstName != null && !firstName.equals("") && lastName != null && !lastName.equals("")) {
+            if(suffix != null && !suffix.equals(""))
+                player = this.playerRepository.findByFirstNameIgnoreCaseAndLastNameIgnoreCaseAndSuffixIgnoreCase(firstName, lastName, suffix);
+        }
+
+        if(teamName != null && !teamName.equals("")) {
+            team = this.teamRepository.findByTeamNameIgnoreCase(teamName);
+        }
+
+        if(player != null)
+            realPlayer = true;
+
+        if(team != null)
+            realTeam = true;
+
+        if(set != null)
+            realSet = true;
+
+        if(cardNum != null && !cardNum.equals(""))
+            realNum = true;
+
+        if(realSet && realNum) {
+            Card card = getCardWithSetAndCardNum(set, cardNum);
             if(card != null)
                 cards.add(card);
         }
+
+        if(cards.isEmpty() && realPlayer && realNum)
+            cards = this.getCardsWithPlayerAndCardNum(player, cardNum);
+
+        if(cards.isEmpty() && realPlayer && realSet)
+            cards = this.getCardsWithSetAndPlayer(set, player);
 
         if(cards.isEmpty())
             cards = this.cardRepository.findAllByOrderByCardSetAscCardNumAsc();
 
         return cards;
+    }
+
+    private Card getCardWithSetAndCardNum(CardSet set, String cardNum) {
+        return this.cardRepository.findByCardSetAndCardNumIgnoreCase(set, cardNum);
+    }
+
+    private List<Card> getCardsWithPlayerAndCardNum(Player player, String cardNum) {
+        return this.cardRepository.findByPlayerAndCardNumIgnoreCase(player, cardNum);
+    }
+
+    private List<Card> getCardsWithSetAndPlayer(CardSet set, Player player) {
+        return this.cardRepository.findByCardSetAndPlayerSortByCardNumAsc(set, player);
     }
 }

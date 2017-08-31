@@ -28,8 +28,13 @@ public class CardController {
                            @RequestParam(required = false) String brandName,
                            @RequestParam(required = false) String setName,
                            @RequestParam(required = false) String cardNum,
+                           @RequestParam(required = false) String firstName,
+                           @RequestParam(required = false) String lastName,
+                           @RequestParam(required = false) String suffix,
+                           @RequestParam(required = false) String teamName,
                            Model model) {
-        List<Card> cards = this.cardService.getCards(year, brandName, setName, cardNum);
+        List<Card> cards = this.cardService.getCards(year, brandName, setName, cardNum, firstName,
+                lastName, suffix, teamName);
         model.addAttribute("cards", sort(cards));
         return "cards";
     }
