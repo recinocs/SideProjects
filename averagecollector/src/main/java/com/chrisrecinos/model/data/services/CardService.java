@@ -111,6 +111,6 @@ public class CardService {
     }
 
     private List<Card> getCardsWithSetAndPlayer(CardSet set, Player player) {
-        return this.cardRepository.findByCardSetAndPlayerSortByCardNumAsc(set, player);
+        return this.cardRepository.findByCardSetAndPlayerOrderByCardNumAsc(set, player);
     }
 }

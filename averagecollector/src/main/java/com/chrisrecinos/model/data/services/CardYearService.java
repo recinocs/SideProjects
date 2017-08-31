@@ -47,7 +47,7 @@ public class CardYearService {
         }
 
         if(cardYears.isEmpty())
-            cardYears = this.cardYearRepository.findAll();
+            cardYears = this.cardYearRepository.findAllByOrderByCardYear();
 
         return cardYears;
     }

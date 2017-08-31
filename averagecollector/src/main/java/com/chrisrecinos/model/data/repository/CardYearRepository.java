@@ -14,5 +14,5 @@ import java.util.List;
 @Repository
 public interface CardYearRepository extends CrudRepository<CardYear, Long> {
     CardYear findByCardYear(int cardYear);
-    List<CardYear> findAll();
+    List<CardYear> findAllByOrderByCardYear();
 }
