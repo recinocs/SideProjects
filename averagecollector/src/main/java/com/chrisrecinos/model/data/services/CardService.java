@@ -36,11 +36,11 @@ public class CardService {
 
     /**
      * Order to find by
-     * 1. cardset and cardnum and insert and player
-     * 2. cardset and cardnum and insert
-     * 3. cardset and cardnum
-     * 4. cardset and player
-     * 5. player and mem
+     * 1. cardset and cardnum and insert and player - DONE
+     * 2. cardset and cardnum and insert - DONE
+     * 3. cardset and cardnum - DONE
+     * 4. cardset and player - DONE
+     * 5. player and mem - DONE
      * 6. player and cardnum
      * 7. cardset and insert
      * 8. cardset and team
@@ -56,7 +56,7 @@ public class CardService {
      */
     public List<Card> getCards(Integer cardYear, String brandName, String setName, String cardNum,
                                String firstName, String lastName, String suffix, String teamName,
-                               String insertType) {
+                               String insertType, String memType) {
         List<Card> cards = new ArrayList<>();
 
         CardYear year = null;
@@ -119,21 +119,32 @@ public class CardService {
         if(insertType != null && !insertType.equals(""))
             realInsert = true;
 
-        if(realSet && realNum) {
-            if(realInsert) {
-                if(realPlayer) {
-                    Card card = getCardWithSetAndNumAndInsertAndPlayer(set, cardNum, insertType, player);
-                    if (card != null)
-                        cards.add(card);
+        if(memType != null && !memType.equals(""))
+            hasMem = true;
+
+        if(realSet) {
+            if(realNum) {
+                if(realInsert) {
+                    if(realPlayer) {
+                        Card card = getCardWithSetAndNumAndInsertAndPlayer(set, cardNum, insertType, player);
+                        if (card != null)
+                            cards.add(card);
+                    }
+
+                    if(cards.isEmpty())
+                        cards = getCardsWithSetAndNumAndInsert(set, cardNum, insertType);
                 }
 
                 if(cards.isEmpty())
-                    cards = getCardsWithSetAndNumAndInsert(set, cardNum, insertType);
+                    cards = this.getCardsWithSetAndNum(set, cardNum);
             }
 
-            if(cards.isEmpty())
-                cards = this.getCardsWithSetAndNum(set, cardNum);
+            if(cards.isEmpty() && realPlayer)
+                cards = getCardsWithSetAndPlayer(set, player);
         }
+
+        if(cards.isEmpty() && realPlayer && hasMem)
+            cards = getCardsWithPlayerAndMem(player, memType);
 
         if(cards.isEmpty())
             cards = this.cardRepository.findAllByOrderByInsertTypeAscSerialNumAscCardNumAsc();
@@ -151,5 +162,13 @@ public class CardService {
 
     private List<Card> getCardsWithSetAndNum(CardSet cardSet, String cardNum) {
         return this.cardRepository.findByCardSetAndCardNumIgnoreCaseOrderByInsertTypeAscSerialNumAsc(cardSet, cardNum);
+    }
+
+    private List<Card> getCardsWithSetAndPlayer(CardSet cardSet, Player player) {
+        return this.cardRepository.findByCardSetAndPlayerOrderByInsertTypeAscMemTypeAsc(cardSet, player);
+    }
+
+    private List<Card> getCardsWithPlayerAndMem(Player player, String memType) {
+        return this.cardRepository.findByPlayerAndMemTypeIgnoreCaseOrderByInsertType(player, memType);
     }
 }
