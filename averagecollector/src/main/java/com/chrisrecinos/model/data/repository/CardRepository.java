@@ -15,8 +15,8 @@ import java.util.List;
 
 @Repository
 public interface CardRepository extends CrudRepository<Card, Long> {
-    Card findByCardSetAndCardNumIgnoreCase(CardSet cardSet, String cardNum);
-    List<Card> findByPlayerAndCardNumIgnoreCase(Player player, String cardNum);
-    List<Card> findByCardSetAndPlayerOrderByCardNumAsc(CardSet cardSet, Player player);
-    List<Card> findAllByOrderByCardNumAsc();
+    Card findByCardSetAndCardNumIgnoreCaseAndInsertTypeIgnoreCaseAndPlayer(CardSet cardSet, String cardNum, String insertType, Player player);
+    List<Card> findByCardSetAndCardNumIgnoreCaseAndInsertTypeIgnoreCase(CardSet cardSet, String cardNum, String insertType);
+    List<Card> findByCardSetAndCardNumIgnoreCaseOrderByInsertTypeAscSerialNumAsc(CardSet cardSet, String cardNum);
+    List<Card> findAllByOrderByInsertTypeAscSerialNumAscCardNumAsc();
 }
