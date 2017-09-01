@@ -16,7 +16,7 @@ INSERT INTO TEAM (CITY, TEAM_NAME) VALUES ('New York', 'Yankees'), ('Cincinnati'
   ('Not a player', 'Not a player'), ('Japan', 'National Team');
 
 INSERT INTO BRAND (BRAND_NAME) VALUES ('Topps'), ('Upper Deck'), ('Fleer'), ('Bowman'), ('TriStar'),
-('Donruss'), ('Team Best');
+('Donruss'), ('Team Best'), ('Flair'), ('Just Minors');
 
 INSERT INTO PLAYER (FIRST_NAME, LAST_NAME, DOB) VALUES ('Derek', 'Jeter', '1974-06-26'),
 ('Ichiro', 'Suzuki', '1973-10-22'), ('Ryan', 'Zimmerman', '1984-09-28'), ('Alex', 'Rodriguez', '1975-07-27'),
@@ -25,7 +25,9 @@ INSERT INTO PLAYER (FIRST_NAME, LAST_NAME, DOB) VALUES ('Derek', 'Jeter', '1974-
 ('Ozzie', 'Smith', '1954-12-26'), ('Dale', 'Murphy', '1956-03-12'), ('Ryan', 'Rupe', '1975-03-31'),
 ('Magglio', 'Ordonez', '1974-01-28'), ('Todd', 'Walker', '1973-05-25'), ('Randy', 'Johnson', '1963-09-10'),
 ('Luis', 'Gonzalez', '1967-09-03'), ('Chipper', 'Jones', '1972-04-24'), ('Jim', 'Thome', '1970-08-27'),
-('Juan', 'Gonzalez', '1969-10-20'), ('Roberto', 'Alomar', '1968-02-05'), ('Joe', 'Borchard', '1978-11-25');
+('Juan', 'Gonzalez', '1969-10-20'), ('Roberto', 'Alomar', '1968-02-05'), ('Joe', 'Borchard', '1978-11-25'),
+('J.D.', 'Drew', '1975-11-20'), ('Mike', 'Piazza', '1968-09-08'), ('Andruw', 'Jones', '1977-04-23'),
+('Francisco', 'Cruceta', '1981-07-04'), ('Frank', 'Thomas', '1968-05-27');
 
 INSERT INTO PLAYER (FIRST_NAME, LAST_NAME, SUFFIX, DOB) VALUES ('Ken', 'Griffey', 'Jr.', '1969-11-21'),
                                                                ('Ken', 'Griffey', 'Sr.', '1950-04-10');
@@ -41,7 +43,9 @@ INSERT INTO CARD_SET (YEAR_ID, BRAND_ID, SET_NAME) VALUES ((SELECT id FROM CARD_
 ((SELECT id FROM CARD_YEAR WHERE CARD_YEAR = 2001), 3, 'Platinum'), ((SELECT id FROM CARD_YEAR WHERE CARD_YEAR = 2001), 2, 'Gold Glove'),
 ((SELECT id FROM CARD_YEAR WHERE CARD_YEAR = 2007), 2, 'Masterpieces'), ((SELECT id FROM CARD_YEAR WHERE CARD_YEAR = 2008), 2, 'Masterpieces'),
 ((SELECT id FROM CARD_YEAR WHERE CARD_YEAR = 2017), 1, 'Allen & Ginter'), ((SELECT id FROM CARD_YEAR WHERE CARD_YEAR = 2001), 2, 'SP Game Used Edition'),
-((SELECT id FROM CARD_YEAR WHERE CARD_YEAR = 2001), 2, 'SPX');
+((SELECT id FROM CARD_YEAR WHERE CARD_YEAR = 2001), 2, 'SPX'), ((SELECT id FROM CARD_YEAR WHERE CARD_YEAR = 2002), 8, 'Jersey Heights'),
+((SELECT id FROM CARD_YEAR WHERE CARD_YEAR = 2002), 3, 'Maximum'), ((SELECT id FROM CARD_YEAR WHERE CARD_YEAR = 2002), 2, 'Diamond Connection'),
+((SELECT id FROM CARD_YEAR WHERE CARD_YEAR = 2002), 9, 'Just Rookies'), ((SELECT id FROM CARD_YEAR WHERE CARD_YEAR = 2003), 1, 'Tribute Contemporary Collection');
 
 INSERT INTO CARD (SET_ID, PLAYER_ID, TEAM_ID, CARD_NUM, IMAGE_FRONT) VALUES (14, (SELECT id FROM PLAYER WHERE FIRST_NAME = 'Derek' AND LAST_NAME = 'Jeter'),
                                                                                 (SELECT id FROM TEAM WHERE TEAM_NAME = 'Yankees'), '30', '2007_ud_masterpieces_derek_jeter.jpg'),
@@ -59,34 +63,44 @@ INSERT INTO CARD (SET_ID, PLAYER_ID, TEAM_ID, CARD_NUM) VALUES (2, (SELECT id FR
 
 
 INSERT INTO CARD (SET_ID, PLAYER_ID, TEAM_ID, CARD_NUM, MEM_TYPE) VALUES (1, (SELECT id FROM PLAYER WHERE FIRST_NAME = 'Steve' AND LAST_NAME = 'Stone'),
-                                                                          (SELECT id FROM TEAM WHERE TEAM_NAME = 'Orioles'), '357', 'Autograph');
+                                                                          (SELECT id FROM TEAM WHERE TEAM_NAME = 'Orioles'), '357', 'Autograph'),
+                                                                         (19, (SELECT id FROM PLAYER WHERE FIRST_NAME = 'J.D.'),
+                                                                          (SELECT id FROM TEAM WHERE TEAM_NAME = 'Cardinals'), 'JDDR', 'Relic');
 
 INSERT INTO CARD (SET_ID, PLAYER_ID, TEAM_ID, CARD_NUM, INSERT_TYPE, MEM_TYPE) VALUES (16, (SELECT id FROM PLAYER WHERE FIRST_NAME = 'Giancarlo' AND LAST_NAME = 'Stanton'),
-                                                                                          (SELECT id FROM TEAM WHERE TEAM_NAME = 'Marlins'), 'GS', 'Full-Size Relic Design A', 'Jersey Card'),
+                                                                                          (SELECT id FROM TEAM WHERE TEAM_NAME = 'Marlins'), 'GS', 'Full-Size Relic Design A', 'Relic'),
                                                                                       (16, (SELECT id FROM PLAYER WHERE FIRST_NAME = 'George' AND LAST_NAME = 'Springer'),
-                                                                                          (SELECT id FROM TEAM WHERE TEAM_NAME = 'Astros'), 'GSP', 'Full-Size Relic Design B', 'Jersey Card'),
+                                                                                          (SELECT id FROM TEAM WHERE TEAM_NAME = 'Astros'), 'GSP', 'Full-Size Relic Design B', 'Relic'),
                                                                                       (11, (SELECT id FROM PLAYER WHERE FIRST_NAME = 'Magglio'),
                                                                                           (SELECT id FROM TEAM WHERE TEAM_NAME = 'White Sox'), '23', 'Hit Kings', 'Bat'),
                                                                                       (12, (SELECT id FROM PLAYER WHERE FIRST_NAME = 'Todd' AND LAST_NAME = 'Walker'),
-                                                                                          (SELECT id FROM TEAM WHERE TEAM_NAME = 'Rockies'), 'TOWA', 'National Patch Time', 'Jersey'),
+                                                                                          (SELECT id FROM TEAM WHERE TEAM_NAME = 'Rockies'), 'TOWA', 'National Patch Time', 'Relic'),
                                                                                       (13, (SELECT id FROM PLAYER WHERE FIRST_NAME = 'Randy' AND LAST_NAME = 'Johnson'),
-                                                                                          (SELECT id FROM TEAM WHERE CITY = 'Arizona'), 'JG', 'Official Issue Game Ball', 'Ball'),
+                                                                                          (SELECT id FROM TEAM WHERE CITY = 'Arizona'), 'JG', 'Official Issue Game Ball', 'Relic'),
                                                                                       (13, (SELECT id FROM PLAYER WHERE FIRST_NAME = 'Luis' AND LAST_NAME = 'Gonzalez'),
-                                                                                          (SELECT id FROM TEAM WHERE CITY = 'Arizona'), 'JG', 'Official Issue Game Ball', 'Ball'),
+                                                                                          (SELECT id FROM TEAM WHERE CITY = 'Arizona'), 'JG', 'Official Issue Game Ball', 'Relic'),
                                                                                       (17, (SELECT id FROM PLAYER WHERE FIRST_NAME = 'Chipper'),
-                                                                                          (SELECT id FROM TEAM WHERE CITY = 'Atlanta'), 'CJ', 'Authentic Fabric', 'Jersey'),
+                                                                                          (SELECT id FROM TEAM WHERE CITY = 'Atlanta'), 'CJ', 'Authentic Fabric', 'Relic'),
                                                                                       (18, (SELECT id FROM PLAYER WHERE LAST_NAME = 'Thome'),
-                                                                                          (SELECT id FROM TEAM WHERE TEAM_NAME = 'Indians'), 'TGA', 'Winning Materials', 'Triple Jersey'),
+                                                                                          (SELECT id FROM TEAM WHERE TEAM_NAME = 'Indians'), 'TGA', 'Winning Materials', 'Triple Relic'),
                                                                                       (18, (SELECT id FROM PLAYER WHERE LAST_NAME = 'Gonzalez' AND FIRST_NAME = 'Juan'),
-                                                                                          (SELECT id FROM TEAM WHERE TEAM_NAME = 'Indians'), 'TGA', 'Winning Materials', 'Triple Jersey'),
+                                                                                          (SELECT id FROM TEAM WHERE TEAM_NAME = 'Indians'), 'TGA', 'Winning Materials', 'Triple Relic'),
                                                                                       (18, (SELECT id FROM PLAYER WHERE LAST_NAME = 'Alomar'),
-                                                                                          (SELECT id FROM TEAM WHERE TEAM_NAME = 'Indians'), 'TGA', 'Winning Materials', 'Triple Jersey');
+                                                                                          (SELECT id FROM TEAM WHERE TEAM_NAME = 'Indians'), 'TGA', 'Winning Materials', 'Triple Relic'),
+                                                                                      (20, (SELECT id FROM PLAYER WHERE LAST_NAME = 'Piazza'),
+                                                                                          (SELECT id FROM TEAM WHERE TEAM_NAME = 'Mets'), 'MIPI', 'Americas'' Game', 'Relic'),
+                                                                                      (23, (SELECT id FROM PLAYER WHERE FIRST_NAME = 'Frank' AND LAST_NAME = 'Thomas'),
+                                                                                          (SELECT id FROM TEAM WHERE TEAM_NAME = 'White Sox'), 'FT', 'Tribute to the Stars', 'Dual Relic');
 
 INSERT INTO CARD (SET_ID, PLAYER_ID, TEAM_ID, CARD_NUM, INSERT_TYPE, SERIAL_NUM, MEM_TYPE) VALUES (16, (SELECT id FROM PLAYER WHERE FIRST_NAME = 'Yoshimoto' AND LAST_NAME = 'Tsutsugoh'),
-                                                                                                      (SELECT id FROM TEAM WHERE CITY = 'Japan'), 'YT', 'World Baseball Classic Relic', '92/99', 'Jersey Card'),
+                                                                                                      (SELECT id FROM TEAM WHERE CITY = 'Japan'), 'YT', 'World Baseball Classic Relic', '92/99', 'Relic'),
                                                                                                   (10, (SELECT id FROM PLAYER WHERE FIRST_NAME = 'Ryan' AND LAST_NAME = 'Rupe'),
-                                                                                                      (SELECT id FROM TEAM WHERE TEAM_NAME = 'Rays'), '51', 'Fresh Ink', '613/1000', 'Autograph');
+                                                                                                      (SELECT id FROM TEAM WHERE TEAM_NAME = 'Rays'), '51', 'Fresh Ink', '613/1000', 'Autograph'),
+                                                                                                  (21, (SELECT id FROM PLAYER WHERE FIRST_NAME = 'Andruw'),
+                                                                                                      (SELECT id FROM TEAM WHERE TEAM_NAME = 'Braves'), '559', 'Diamond Connection', '429/775', 'Relic');
 
 INSERT INTO CARD (SET_ID, PLAYER_ID, TEAM_ID, CARD_NUM, SERIAL_NUM, MEM_TYPE) VALUES (8, (SELECT id FROM PLAYER WHERE LAST_NAME = 'Borchard'),
-                                                                                          (SELECT id FROM TEAM WHERE TEAM_NAME = 'White Sox'), '2', '20/150', 'Autograph');
+                                                                                          (SELECT id FROM TEAM WHERE TEAM_NAME = 'White Sox'), '2', '20/150', 'Autograph'),
+                                                                                     (22, (SELECT id FROM PLAYER WHERE LAST_NAME = 'Cruceta'),
+                                                                                          (SELECT id FROM TEAM WHERE TEAM_NAME = 'Dodgers'), '5', '281/400', 'Autograph');
 
