@@ -11,6 +11,8 @@ import java.util.*;
  * @author - Christopher Recinos
  */
 
+//TODO - Add functionality for multiple possible players
+
 @Service
 public class CardService {
 
@@ -40,7 +42,7 @@ public class CardService {
      * 3. cardset and cardnum - DONE
      * 4. cardset and player - DONE
      * 5. player and mem - DONE
-     * 6. player and cardnum
+     * 6. player and cardnum - DONE
      * 7. cardset and insert
      * 8. cardset and team
      * 9. team and mem
@@ -87,14 +89,34 @@ public class CardService {
 
         System.out.println("Set: " + set);
 
+        boolean playerChecked = false;
+
         if(firstName != null && !firstName.equals("") && lastName != null && !lastName.equals("")) {
+            List<Player> players;
             if(suffix != null && !suffix.equals(""))
                 player = this.playerRepository.findByFirstNameIgnoreCaseAndLastNameIgnoreCaseAndSuffixIgnoreCase(firstName, lastName, suffix);
             if(player == null) {
-                List<Player> players = this.playerRepository.findByFirstNameIgnoreCaseAndLastNameIgnoreCaseOrderByDobAsc(firstName, lastName);
+                players = this.playerRepository.findByFirstNameIgnoreCaseAndLastNameIgnoreCaseOrderByDobAsc(firstName, lastName);
                 if(players.size() == 1)
                     player = players.get(0);
             }
+
+            if(player == null) {
+                player = this.findPlayerByFirstName(firstName);
+                if(player == null) {
+                    player = this.findPlayerByLastName(lastName);
+                }
+            }
+
+            playerChecked = true;
+        }
+
+        if(player == null && !playerChecked) {
+            if(firstName != null && !firstName.equals(""))
+                player = this.findPlayerByFirstName(firstName);
+
+            if(player == null && lastName != null && !lastName.equals(""))
+                player = this.findPlayerByLastName(lastName);
         }
 
         System.out.println("Player: " + player);
@@ -142,13 +164,48 @@ public class CardService {
                 cards = getCardsWithSetAndPlayer(set, player);
         }
 
-        if(cards.isEmpty() && realPlayer && hasMem)
-            cards = getCardsWithPlayerAndMem(player, memType);
+        if(cards.isEmpty() && realPlayer) {
+            if(hasMem)
+                cards = getCardsWithPlayerAndMem(player, memType);
+            if(cards.isEmpty() && realNum)
+                cards = getCardsWithPlayerAndNum(player, cardNum);
+        }
 
         if(cards.isEmpty())
-            cards = this.cardRepository.findAllByOrderBySerialNumAscCardNumAsc();
+            cards = this.cardRepository.findAll();
 
         return sortYears(cards);
+    }
+
+    private Player findPlayerByFirstName(String firstName) {
+        Player player = null;
+
+        List<Player> players = this.playerRepository.findByFirstNameIgnoreCaseOrderByLastNameAscDobAsc(firstName);
+
+        if(players.size() == 1)
+            player = players.get(0);
+        else if(players.size() == 0) {
+            players = this.playerRepository.findByFirstNameIgnoreCaseStartingWithOrderByLastNameAscDobAsc(firstName);
+            if(players.size() == 1)
+                player = players.get(0);
+        }
+
+        return player;
+    }
+
+    private Player findPlayerByLastName(String lastName) {
+        Player player = null;
+
+        List<Player> players = this.playerRepository.findByLastNameIgnoreCaseOrderByFirstNameAscDobAsc(lastName);
+        if(players.size() == 1)
+            player = players.get(0);
+        else if(players.size() == 0) {
+            players = this.playerRepository.findByLastNameIgnoreCaseStartingWithOrderByFirstNameAscDobAsc(lastName);
+            if(players.size() == 1)
+                player = players.get(0);
+        }
+
+        return player;
     }
 
     private Card getCardWithSetAndNumAndInsertAndPlayer(CardSet cardSet, String cardNum, String insertType, Player player) {
@@ -160,7 +217,7 @@ public class CardService {
     }
 
     private List<Card> getCardsWithSetAndNum(CardSet cardSet, String cardNum) {
-        return this.cardRepository.findByCardSetAndCardNumIgnoreCaseOrderBySerialNumAsc(cardSet, cardNum);
+        return this.cardRepository.findByCardSetAndCardNumIgnoreCase(cardSet, cardNum);
     }
 
     private List<Card> getCardsWithSetAndPlayer(CardSet cardSet, Player player) {
@@ -171,6 +228,19 @@ public class CardService {
         return this.cardRepository.findByPlayerAndMemTypeIgnoreCase(player, memType);
     }
 
+    private List<Card> getCardsWithPlayerAndNum(Player player, String cardNum) {
+        return this.cardRepository.findByPlayerAndCardNumIgnoreCase(player, cardNum);
+    }
+
+    /**
+     * Helper method that sorts the results by the year value of their respective card year.
+     * Because of how Spring orders foreign keys based upon their id's, I couldn't use
+     * the OrderBy keyword, and so I wrote this collection of helper methods instead
+     * to handle the sorting for me
+     * @param cards - List of Cards being sorted
+     * @return - a List of Cards sorted numerically by year, then alphabetically by
+     * brand, then set, then insert type, then player
+     */
     private List<Card> sortYears(List<Card> cards) {
         Map<Integer, List<Card>> yearsToCards = new HashMap<>();
 
@@ -195,6 +265,13 @@ public class CardService {
         return sortedCards;
     }
 
+    /**
+     * Sorts List of Cards alphabetically according to Brand name before passing it
+     * back to year sort
+     * @param cards - List of Cards being sorted
+     * @return - a List of Cards sorted alphabetically by brand, then set, then insert type, then
+     * player
+     */
     private List<Card> sortBrands(List<Card> cards) {
         Map<String, List<Card>> brandsToCards = new HashMap<>();
 
@@ -219,14 +296,20 @@ public class CardService {
         return sortedCards;
     }
 
+    /**
+     * Sorts List of Cards alphabetically by set name before passing it
+     * back to brand sort
+     * @param cards - List of Cards being sorted
+     * @return - a List of Cards sorted alphabetically by set, then insert type, then player
+     */
     private List<Card> sortSets(List<Card> cards) {
         Map<String, List<Card>> setsToCards = new HashMap<>();
 
         for(Card c : cards) {
-            String c_brand = c.getCardSet().getSetName();
-            if(setsToCards.get(c_brand) == null)
-                setsToCards.put(c_brand, new ArrayList<>());
-            setsToCards.get(c_brand).add(c);
+            String c_set = c.getCardSet().getSetName();
+            if(setsToCards.get(c_set) == null)
+                setsToCards.put(c_set, new ArrayList<>());
+            setsToCards.get(c_set).add(c);
         }
 
         List<String> sortedKeys = new ArrayList<>(setsToCards.keySet());
@@ -243,14 +326,20 @@ public class CardService {
         return sortedCards;
     }
 
+    /**
+     * Sorts List of Cards alphabetically by insert type before passing it
+     * back to set sort
+     * @param cards - List of Cards being sorted
+     * @return - a List of Cards sorted alphabetically by insert type, then player
+     */
     private List<Card> sortInsert(List<Card> cards) {
         Map<String, List<Card>> insertsToCards = new HashMap<>();
 
         for(Card c : cards) {
-            String c_brand = c.getInsertType();
-            if(insertsToCards.get(c_brand) == null)
-                insertsToCards.put(c_brand, new ArrayList<>());
-            insertsToCards.get(c_brand).add(c);
+            String c_insert = c.getInsertType();
+            if(insertsToCards.get(c_insert) == null)
+                insertsToCards.put(c_insert, new ArrayList<>());
+            insertsToCards.get(c_insert).add(c);
         }
 
         List<String> sortedKeys = new ArrayList<>(insertsToCards.keySet());
@@ -267,14 +356,20 @@ public class CardService {
         return sortedCards;
     }
 
+    /**
+     * Sorts List of Cards by player before passing it back to
+     * insert sort
+     * @param cards - List of Cards being sorted
+     * @return - a List of Cards sorted alphabetically by player name
+     */
     private List<Card> sortFirstName(List<Card> cards) {
         Map<String, List<Card>> playersToCards = new HashMap<>();
 
         for(Card c : cards) {
-            String c_brand = c.getPlayer().getFirstName();
-            if(playersToCards.get(c_brand) == null)
-                playersToCards.put(c_brand, new ArrayList<>());
-            playersToCards.get(c_brand).add(c);
+            String c_name = c.getPlayer().getFirstName();
+            if(playersToCards.get(c_name) == null)
+                playersToCards.put(c_name, new ArrayList<>());
+            playersToCards.get(c_name).add(c);
         }
 
         List<String> sortedKeys = new ArrayList<>(playersToCards.keySet());
