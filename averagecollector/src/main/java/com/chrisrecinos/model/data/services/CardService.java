@@ -5,8 +5,7 @@ import com.chrisrecinos.model.data.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author - Christopher Recinos
@@ -147,9 +146,9 @@ public class CardService {
             cards = getCardsWithPlayerAndMem(player, memType);
 
         if(cards.isEmpty())
-            cards = this.cardRepository.findAllByOrderByInsertTypeAscSerialNumAscCardNumAsc();
+            cards = this.cardRepository.findAllByOrderBySerialNumAscCardNumAsc();
 
-        return cards;
+        return sortYears(cards);
     }
 
     private Card getCardWithSetAndNumAndInsertAndPlayer(CardSet cardSet, String cardNum, String insertType, Player player) {
@@ -161,14 +160,134 @@ public class CardService {
     }
 
     private List<Card> getCardsWithSetAndNum(CardSet cardSet, String cardNum) {
-        return this.cardRepository.findByCardSetAndCardNumIgnoreCaseOrderByInsertTypeAscSerialNumAsc(cardSet, cardNum);
+        return this.cardRepository.findByCardSetAndCardNumIgnoreCaseOrderBySerialNumAsc(cardSet, cardNum);
     }
 
     private List<Card> getCardsWithSetAndPlayer(CardSet cardSet, Player player) {
-        return this.cardRepository.findByCardSetAndPlayerOrderByInsertTypeAscMemTypeAsc(cardSet, player);
+        return this.cardRepository.findByCardSetAndPlayerOrderByMemTypeAsc(cardSet, player);
     }
 
     private List<Card> getCardsWithPlayerAndMem(Player player, String memType) {
-        return this.cardRepository.findByPlayerAndMemTypeIgnoreCaseOrderByInsertType(player, memType);
+        return this.cardRepository.findByPlayerAndMemTypeIgnoreCase(player, memType);
+    }
+
+    private List<Card> sortYears(List<Card> cards) {
+        Map<Integer, List<Card>> yearsToCards = new HashMap<>();
+
+        for(Card c : cards) {
+            Integer c_year = c.getCardSet().getCardYear().getCardYear();
+            if(yearsToCards.get(c_year) == null)
+                yearsToCards.put(c_year, new ArrayList<>());
+            yearsToCards.get(c_year).add(c);
+        }
+
+        List<Integer> sortedKeys = new ArrayList<>(yearsToCards.keySet());
+        Collections.sort(sortedKeys);
+
+        List<Card> sortedCards = new ArrayList<>();
+
+        for(Integer key : sortedKeys) {
+            List<Card> temp = sortBrands(yearsToCards.get(key));
+            for(Card card : temp)
+                sortedCards.add(card);
+        }
+
+        return sortedCards;
+    }
+
+    private List<Card> sortBrands(List<Card> cards) {
+        Map<String, List<Card>> brandsToCards = new HashMap<>();
+
+        for(Card c : cards) {
+            String c_brand = c.getCardSet().getBrand().getBrandName();
+            if(brandsToCards.get(c_brand) == null)
+                brandsToCards.put(c_brand, new ArrayList<>());
+            brandsToCards.get(c_brand).add(c);
+        }
+
+        List<String> sortedKeys = new ArrayList<>(brandsToCards.keySet());
+        Collections.sort(sortedKeys);
+
+        List<Card> sortedCards = new ArrayList<>();
+
+        for(String key : sortedKeys) {
+            List<Card> temp = sortSets(brandsToCards.get(key));
+            for(Card card : temp)
+                sortedCards.add(card);
+        }
+
+        return sortedCards;
+    }
+
+    private List<Card> sortSets(List<Card> cards) {
+        Map<String, List<Card>> setsToCards = new HashMap<>();
+
+        for(Card c : cards) {
+            String c_brand = c.getCardSet().getSetName();
+            if(setsToCards.get(c_brand) == null)
+                setsToCards.put(c_brand, new ArrayList<>());
+            setsToCards.get(c_brand).add(c);
+        }
+
+        List<String> sortedKeys = new ArrayList<>(setsToCards.keySet());
+        Collections.sort(sortedKeys);
+
+        List<Card> sortedCards = new ArrayList<>();
+
+        for(String key : sortedKeys) {
+            List<Card> temp = sortInsert(setsToCards.get(key));
+            for(Card card : temp)
+                sortedCards.add(card);
+        }
+
+        return sortedCards;
+    }
+
+    private List<Card> sortInsert(List<Card> cards) {
+        Map<String, List<Card>> insertsToCards = new HashMap<>();
+
+        for(Card c : cards) {
+            String c_brand = c.getInsertType();
+            if(insertsToCards.get(c_brand) == null)
+                insertsToCards.put(c_brand, new ArrayList<>());
+            insertsToCards.get(c_brand).add(c);
+        }
+
+        List<String> sortedKeys = new ArrayList<>(insertsToCards.keySet());
+        Collections.sort(sortedKeys);
+
+        List<Card> sortedCards = new ArrayList<>();
+
+        for(String key : sortedKeys) {
+            List<Card> temp = sortFirstName(insertsToCards.get(key));
+            for(Card card : temp)
+                sortedCards.add(card);
+        }
+
+        return sortedCards;
+    }
+
+    private List<Card> sortFirstName(List<Card> cards) {
+        Map<String, List<Card>> playersToCards = new HashMap<>();
+
+        for(Card c : cards) {
+            String c_brand = c.getPlayer().getFirstName();
+            if(playersToCards.get(c_brand) == null)
+                playersToCards.put(c_brand, new ArrayList<>());
+            playersToCards.get(c_brand).add(c);
+        }
+
+        List<String> sortedKeys = new ArrayList<>(playersToCards.keySet());
+        Collections.sort(sortedKeys);
+
+        List<Card> sortedCards = new ArrayList<>();
+
+        for(String key : sortedKeys) {
+            List<Card> temp = playersToCards.get(key);
+            for(Card card : temp)
+                sortedCards.add(card);
+        }
+
+        return sortedCards;
     }
 }
