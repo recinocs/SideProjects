@@ -17,14 +17,30 @@ import java.util.List;
 @Repository
 public interface CardRepository extends CrudRepository<Card, Long> {
     Card findByCardSetAndCardNumIgnoreCaseAndInsertTypeIgnoreCaseAndPlayer(CardSet cardSet, String cardNum, String insertType, Player player);
+    List<Card> findByCardSetAndCardNumIgnoreCaseAndInsertTypeIgnoreCaseStartingWithAndPlayer(CardSet cardSet, String cardNum, String insertType, Player player);
+    List<Card> findByCardSetAndCardNumIgnoreCaseAndInsertTypeIgnoreCaseStartingWithAndPlayer(CardSet cardSet, String cardNum, Character c, Player player);
     List<Card> findByCardSetAndCardNumIgnoreCaseAndInsertTypeIgnoreCase(CardSet cardSet, String cardNum, String insertType);
+    List<Card> findByCardSetAndCardNumIgnoreCaseAndInsertTypeIgnoreCaseStartingWith(CardSet cardSet, String cardNum, String insertType);
+    List<Card> findByCardSetAndCardNumIgnoreCaseAndInsertTypeIgnoreCaseStartingWith(CardSet cardSet, String cardNum, Character c);
     List<Card> findByCardSetAndCardNumIgnoreCase(CardSet cardSet, String cardNum);
     List<Card> findByCardSetAndPlayerOrderByMemTypeAsc(CardSet cardSet, Player player);
-    List<Card> findByPlayerAndMemTypeIgnoreCase(Player player, String memType);
+    List<Card> findByPlayerAndMemTypeIgnoreCaseContaining(Player player, String memType);
     List<Card> findByPlayerAndCardNumIgnoreCase(Player player, String cardNum);
     List<Card> findByCardSetAndInsertTypeIgnoreCase(CardSet cardSet, String insertType);
+    List<Card> findByCardSetAndInsertTypeIgnoreCaseStartingWith(CardSet cardSet, String insertType);
+    List<Card> findByCardSetAndInsertTypeIgnoreCaseStartingWith(CardSet cardSet, Character c);
     List<Card> findByCardSetAndTeam(CardSet cardSet, Team team);
-    List<Card> findByTeamAndMemTypeIgnoreCase(Team team, String memType);
+    List<Card> findByTeamAndMemTypeIgnoreCaseContaining(Team team, String memType);
     List<Card> findByTeamAndInsertTypeIgnoreCase(Team team, String insertType);
+    List<Card> findByTeamAndInsertTypeIgnoreCaseStartingWith(Team team, String insertType);
+    List<Card> findByTeamAndInsertTypeIgnoreCaseStartingWith(Team team, Character c);
+    List<Card> findByCardSet(CardSet cardSet);
+    List<Card> findByCardNumIgnoreCase(String cardNum);
+    List<Card> findByPlayer(Player player);
+    List<Card> findByTeam(Team team);
+    List<Card> findByMemTypeIgnoreCaseContaining(String memType);
+    List<Card> findByInsertTypeIgnoreCase(String insertType);
+    List<Card> findByInsertTypeIgnoreCaseStartingWith(String insertType);
+    List<Card> findByInsertTypeIgnoreCaseStartingWith(Character c);
     List<Card> findAll();
 }

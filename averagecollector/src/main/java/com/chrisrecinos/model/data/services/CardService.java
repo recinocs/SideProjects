@@ -47,12 +47,12 @@ public class CardService {
      * 8. cardset and team - DONE
      * 9. team and mem - DONE
      * 10. team and insert - DONE
-     * 11. cardset
-     * 12. cardnum
-     * 13. player
-     * 14. team
-     * 15. mem
-     * 16. insert
+     * 11. cardset - DONE
+     * 12. cardnum - DONE
+     * 13. player - DONE
+     * 14. team - DONE
+     * 15. mem - DONE
+     * 16. insert - DONE
      * 17. all - DONE
      */
     public List<Card> getCards(Integer cardYear, String brandName, String setName, String cardNum,
@@ -78,7 +78,6 @@ public class CardService {
 
         if(brandName != null && !brandName.equals(""))
             brand = this.brandRepository.findByBrandNameIgnoreCase(brandName);
-        System.out.println("Brand: " + brand);
 
         if(brand != null && year != null) {
             if(setName != null && !setName.equals(""))
@@ -86,8 +85,6 @@ public class CardService {
             else
                 set = this.cardSetRepository.findByCardYearAndBrandAndSetNameIgnoreCase(year, brand, "Base Set");
         }
-
-        System.out.println("Set: " + set);
 
         boolean playerChecked = false;
 
@@ -112,14 +109,18 @@ public class CardService {
         }
 
         if(player == null && !playerChecked) {
-            if(firstName != null && !firstName.equals(""))
+            if(firstName != null && !firstName.equals("")) {
                 player = this.findPlayerByFirstName(firstName);
+                if(player == null)
+                    player = this.findPlayerByLastName(firstName);
+            }
 
-            if(player == null && lastName != null && !lastName.equals(""))
+            if(player == null && lastName != null && !lastName.equals("")) {
                 player = this.findPlayerByLastName(lastName);
+                if(player == null)
+                    player = this.findPlayerByFirstName(lastName);
+            }
         }
-
-        System.out.println("Player: " + player);
 
         if(teamName != null && !teamName.equals("")) {
             team = this.teamRepository.findByTeamNameIgnoreCase(teamName);
@@ -134,8 +135,6 @@ public class CardService {
             if(team == null)
                 team = this.findTeamByTeamName(city);
         }
-
-        System.out.println("Team: " + team);
 
         if(player != null)
             realPlayer = true;
@@ -196,6 +195,24 @@ public class CardService {
             if(cards.isEmpty() && realInsert)
                 cards = this.getCardsWithTeamAndInsert(team, insertType);
         }
+
+        if(cards.isEmpty() && realSet)
+            cards = this.getCardsWithSet(set);
+
+        if(cards.isEmpty() && realNum)
+            cards = this.getCardsWithCardNum(cardNum);
+
+        if(cards.isEmpty() && realPlayer)
+            cards = this.getCardsWithPlayer(player);
+
+        if(cards.isEmpty() && realTeam)
+            cards = this.getCardsWithTeam(team);
+
+        if(cards.isEmpty() && hasMem)
+            cards = this.getCardsWithMem(memType);
+
+        if(cards.isEmpty() && realInsert)
+            cards = this.getCardsWithInsert(insertType);
 
         if(cards.isEmpty())
             cards = this.cardRepository.findAll();
@@ -260,11 +277,32 @@ public class CardService {
     }
 
     private Card getCardWithSetAndNumAndInsertAndPlayer(CardSet cardSet, String cardNum, String insertType, Player player) {
-        return this.cardRepository.findByCardSetAndCardNumIgnoreCaseAndInsertTypeIgnoreCaseAndPlayer(cardSet, cardNum, insertType, player);
+        Card card = this.cardRepository.findByCardSetAndCardNumIgnoreCaseAndInsertTypeIgnoreCaseAndPlayer(cardSet, cardNum, insertType, player);
+
+        if(card == null) {
+            List<Card> cards = this.cardRepository.findByCardSetAndCardNumIgnoreCaseAndInsertTypeIgnoreCaseStartingWithAndPlayer(cardSet, cardNum, insertType, player);
+            if(cards.size() == 1)
+                card = cards.get(0);
+            else if(cards.size() == 0) {
+                cards = this.cardRepository.findByCardSetAndCardNumIgnoreCaseAndInsertTypeIgnoreCaseStartingWithAndPlayer(cardSet, cardNum, insertType.charAt(0), player);
+                if(cards.size() == 1)
+                    card = cards.get(0);
+            }
+        }
+
+        return card;
     }
 
     private List<Card> getCardsWithSetAndNumAndInsert(CardSet cardSet, String cardNum, String insertType) {
-        return this.cardRepository.findByCardSetAndCardNumIgnoreCaseAndInsertTypeIgnoreCase(cardSet, cardNum, insertType);
+        List<Card> cards = this.cardRepository.findByCardSetAndCardNumIgnoreCaseAndInsertTypeIgnoreCase(cardSet, cardNum, insertType);
+
+        if(cards.isEmpty()) {
+            cards = this.cardRepository.findByCardSetAndCardNumIgnoreCaseAndInsertTypeIgnoreCaseStartingWith(cardSet, cardNum, insertType);
+            if(cards.isEmpty())
+                cards = this.cardRepository.findByCardSetAndCardNumIgnoreCaseAndInsertTypeIgnoreCaseStartingWith(cardSet, cardNum, insertType.charAt(0));
+        }
+
+        return cards;
     }
 
     private List<Card> getCardsWithSetAndNum(CardSet cardSet, String cardNum) {
@@ -276,7 +314,7 @@ public class CardService {
     }
 
     private List<Card> getCardsWithPlayerAndMem(Player player, String memType) {
-        return this.cardRepository.findByPlayerAndMemTypeIgnoreCase(player, memType);
+        return this.cardRepository.findByPlayerAndMemTypeIgnoreCaseContaining(player, memType);
     }
 
     private List<Card> getCardsWithPlayerAndNum(Player player, String cardNum) {
@@ -284,7 +322,15 @@ public class CardService {
     }
 
     private List<Card> getCardsWithSetAndInsert(CardSet cardSet, String insertType) {
-        return this.cardRepository.findByCardSetAndInsertTypeIgnoreCase(cardSet, insertType);
+        List<Card> cards = this.cardRepository.findByCardSetAndInsertTypeIgnoreCase(cardSet, insertType);
+
+        if(cards.isEmpty()) {
+            cards = this.cardRepository.findByCardSetAndInsertTypeIgnoreCaseStartingWith(cardSet, insertType);
+            if(cards.isEmpty())
+                cards = this.cardRepository.findByCardSetAndInsertTypeIgnoreCaseStartingWith(cardSet, insertType.charAt(0));
+        }
+
+        return cards;
     }
 
     private List<Card> getCardsWithSetAndTeam(CardSet cardSet, Team team) {
@@ -292,11 +338,51 @@ public class CardService {
     }
 
     private List<Card> getCardsWithTeamAndMem(Team team, String memType) {
-        return this.cardRepository.findByTeamAndMemTypeIgnoreCase(team, memType);
+        return this.cardRepository.findByTeamAndMemTypeIgnoreCaseContaining(team, memType);
     }
 
     private List<Card> getCardsWithTeamAndInsert(Team team, String insertType) {
-        return this.cardRepository.findByTeamAndInsertTypeIgnoreCase(team, insertType);
+        List<Card> cards = this.cardRepository.findByTeamAndInsertTypeIgnoreCase(team, insertType);
+
+        if(cards.isEmpty()) {
+            cards = this.cardRepository.findByTeamAndInsertTypeIgnoreCaseStartingWith(team, insertType);
+            if(cards.isEmpty())
+                cards = this.cardRepository.findByTeamAndInsertTypeIgnoreCaseStartingWith(team, insertType.charAt(0));
+        }
+
+        return cards;
+    }
+
+    private List<Card> getCardsWithSet(CardSet cardSet) {
+        return this.cardRepository.findByCardSet(cardSet);
+    }
+
+    private List<Card> getCardsWithCardNum(String cardNum) {
+        return this.cardRepository.findByCardNumIgnoreCase(cardNum);
+    }
+
+    private List<Card> getCardsWithPlayer(Player player) {
+        return this.cardRepository.findByPlayer(player);
+    }
+
+    private List<Card> getCardsWithTeam(Team team) {
+        return this.cardRepository.findByTeam(team);
+    }
+
+    private List<Card> getCardsWithMem(String memType) {
+        return this.cardRepository.findByMemTypeIgnoreCaseContaining(memType);
+    }
+
+    private List<Card> getCardsWithInsert(String insertType) {
+        List<Card> cards = this.cardRepository.findByInsertTypeIgnoreCase(insertType);
+
+        if(cards.isEmpty()) {
+            cards = this.cardRepository.findByInsertTypeIgnoreCaseStartingWith(insertType);
+            if(cards.isEmpty())
+                cards = this.cardRepository.findByInsertTypeIgnoreCaseStartingWith(insertType.charAt(0));
+        }
+
+        return cards;
     }
 
     /**
