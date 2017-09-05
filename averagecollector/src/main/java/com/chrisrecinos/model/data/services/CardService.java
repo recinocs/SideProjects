@@ -171,6 +171,11 @@ public class CardService {
                 cards = getCardsWithPlayerAndNum(player, cardNum);
         }
 
+        if(cards.isEmpty() && realSet) {
+            if(realInsert)
+                cards = this.getCardsWithSetAndInsert(set, insertType);
+        }
+
         if(cards.isEmpty())
             cards = this.cardRepository.findAll();
 
@@ -230,6 +235,10 @@ public class CardService {
 
     private List<Card> getCardsWithPlayerAndNum(Player player, String cardNum) {
         return this.cardRepository.findByPlayerAndCardNumIgnoreCase(player, cardNum);
+    }
+
+    private List<Card> getCardsWithSetAndInsert(CardSet cardSet, String insertType) {
+        return this.cardRepository.findByCardSetAndInsertTypeIgnoreCase(cardSet, insertType);
     }
 
     /**
