@@ -44,16 +44,16 @@ public class CardService {
      * 5. player and mem - DONE
      * 6. player and cardnum - DONE
      * 7. cardset and insert - DONE
-     * 8. cardset and team
-     * 9. team and mem
-     * 10. team and insert
+     * 8. cardset and team - DONE
+     * 9. team and mem - DONE
+     * 10. team and insert - DONE
      * 11. cardset
      * 12. cardnum
      * 13. player
      * 14. team
      * 15. mem
      * 16. insert
-     * 17. all
+     * 17. all - DONE
      */
     public List<Card> getCards(Integer cardYear, String brandName, String setName, String cardNum,
                                String firstName, String lastName, String suffix, String teamName,
@@ -190,6 +190,13 @@ public class CardService {
                 cards = this.getCardsWithSetAndTeam(set, team);
         }
 
+        if(cards.isEmpty() && realTeam) {
+            if(hasMem)
+                cards = this.getCardsWithTeamAndMem(team, memType);
+            if(cards.isEmpty() && realInsert)
+                cards = this.getCardsWithTeamAndInsert(team, insertType);
+        }
+
         if(cards.isEmpty())
             cards = this.cardRepository.findAll();
 
@@ -282,6 +289,14 @@ public class CardService {
 
     private List<Card> getCardsWithSetAndTeam(CardSet cardSet, Team team) {
         return this.cardRepository.findByCardSetAndTeam(cardSet, team);
+    }
+
+    private List<Card> getCardsWithTeamAndMem(Team team, String memType) {
+        return this.cardRepository.findByTeamAndMemTypeIgnoreCase(team, memType);
+    }
+
+    private List<Card> getCardsWithTeamAndInsert(Team team, String insertType) {
+        return this.cardRepository.findByTeamAndInsertTypeIgnoreCase(team, insertType);
     }
 
     /**
