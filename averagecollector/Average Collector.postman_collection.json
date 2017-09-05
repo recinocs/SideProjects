@@ -1,0 +1,781 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Average Collector",
+		"_postman_id": "ceae35d3-c603-8863-a7ae-5895c0efda2f",
+		"description": "Collection of all endpoints and returned results for The Average Collector application",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Years With No Parameter",
+			"request": {
+				"url": "http://localhost:8080/years",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Endpoint for all years in the application"
+			},
+			"response": []
+		},
+		{
+			"name": "Years With Valid Parameter",
+			"request": {
+				"url": {
+					"raw": "http://localhost:8080/years?year=2006",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"years"
+					],
+					"query": [
+						{
+							"key": "year",
+							"value": "2006",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Request to years endpoint with valid year"
+			},
+			"response": []
+		},
+		{
+			"name": "Years With Invalid Parameter",
+			"request": {
+				"url": {
+					"raw": "http://localhost:8080/years?year=2020",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"years"
+					],
+					"query": [
+						{
+							"key": "year",
+							"value": "2020",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Request to years endpoint with invalid year. If the year is invalid, the application returns all year values.\n\nA year is invalid if a CardYear with that year value doesn't exist in the database"
+			},
+			"response": []
+		},
+		{
+			"name": "Brands With No Parameter",
+			"request": {
+				"url": "http://localhost:8080/brands",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Endpoint for brands if no parameter is set. Returns all brands, sorted alphabetically"
+			},
+			"response": []
+		},
+		{
+			"name": "Brands With Valid Parameter",
+			"request": {
+				"url": {
+					"raw": "http://localhost:8080/brands?brandName=Topps",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"brands"
+					],
+					"query": [
+						{
+							"key": "brandName",
+							"value": "Topps",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Endpoint for brands if parameter is a brand that exists"
+			},
+			"response": []
+		},
+		{
+			"name": "Brands With Invalid Parameter And No Similar Brands",
+			"request": {
+				"url": {
+					"raw": "http://localhost:8080/brands?brandName=2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"brands"
+					],
+					"query": [
+						{
+							"key": "brandName",
+							"value": "2",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Endpoint for brands if parameter is a brand that does not exist and there are no brands that start with the first character of brandName"
+			},
+			"response": []
+		},
+		{
+			"name": "Brands With Invalid Parameter And Similar Brands",
+			"request": {
+				"url": {
+					"raw": "http://localhost:8080/brands?brandName=T",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"brands"
+					],
+					"query": [
+						{
+							"key": "brandName",
+							"value": "T",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Endpoint for brands if parameter is a brand that does not exist and there are brands that start with the first character of brandName"
+			},
+			"response": []
+		},
+		{
+			"name": "Teams With No Parameter",
+			"request": {
+				"url": "http://localhost:8080/teams",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Returns all teams if no parameter variable is specified, sorted alphabetically"
+			},
+			"response": []
+		},
+		{
+			"name": "Teams With Valid TeamName Parameter",
+			"request": {
+				"url": {
+					"raw": "http://localhost:8080/teams?teamName=Yankees",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"teams"
+					],
+					"query": [
+						{
+							"key": "teamName",
+							"value": "Yankees",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Returns the team associated with teamName"
+			},
+			"response": []
+		},
+		{
+			"name": "Teams With Valid City Parameter",
+			"request": {
+				"url": {
+					"raw": "http://localhost:8080/teams?city=Seattle",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"teams"
+					],
+					"query": [
+						{
+							"key": "city",
+							"value": "Seattle",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Returns the teams associated with the city"
+			},
+			"response": []
+		},
+		{
+			"name": "Team With Valid TeamName And Valid City",
+			"request": {
+				"url": {
+					"raw": "http://localhost:8080/teams?city=Washington&teamName=Yankees",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"teams"
+					],
+					"query": [
+						{
+							"key": "city",
+							"value": "Washington",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "teamName",
+							"value": "Yankees",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "As long as the teamName is valid, the city will not factor into the search."
+			},
+			"response": []
+		},
+		{
+			"name": "Team With Invalid City Starting With Char",
+			"request": {
+				"url": {
+					"raw": "http://localhost:8080/teams?city=Wilmonton",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"teams"
+					],
+					"query": [
+						{
+							"key": "city",
+							"value": "Wilmonton",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "This returns all cities that start with the first letter of the entered invalid city"
+			},
+			"response": []
+		},
+		{
+			"name": "Team With Invalid Teamname Starting With Char",
+			"request": {
+				"url": {
+					"raw": "http://localhost:8080/teams?teamName=Mar",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"teams"
+					],
+					"query": [
+						{
+							"key": "teamName",
+							"value": "Mar",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "This returns all teams that start with the first letter of the entered invalid teamName"
+			},
+			"response": []
+		},
+		{
+			"name": "Team With Invalid Teamname And Valid City",
+			"request": {
+				"url": {
+					"raw": "http://localhost:8080/teams?teamName=Mar&city=Washington",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"teams"
+					],
+					"query": [
+						{
+							"key": "teamName",
+							"value": "Mar",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "city",
+							"value": "Washington",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "This returns all teams that are from the given city if the teamname is invalid"
+			},
+			"response": []
+		},
+		{
+			"name": "Team With Invalid Teamname And Invalid City Starting With Char",
+			"request": {
+				"url": {
+					"raw": "http://localhost:8080/teams?teamName=Mar&city=Wa",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"teams"
+					],
+					"query": [
+						{
+							"key": "teamName",
+							"value": "Mar",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "city",
+							"value": "Wa",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "This returns the results of an invalid teamname and invalid city, with a valid team existing that starts with the first letter of the team name"
+			},
+			"response": []
+		},
+		{
+			"name": "Team With Invalid Teamname And Invalid City Starting With City Char",
+			"request": {
+				"url": {
+					"raw": "http://localhost:8080/teams?teamName=X&city=Wa",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"teams"
+					],
+					"query": [
+						{
+							"key": "teamName",
+							"value": "X",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "city",
+							"value": "Wa",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "This returns the results of an invalid teamname and invalid city, with a valid team existing that starts with the first letter of the city and no results from checking first letter of the team name"
+			},
+			"response": []
+		},
+		{
+			"name": "Players With No Params",
+			"request": {
+				"url": "http://localhost:8080/players",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Returns all players when no parameters entered, sorted by first name and then last name"
+			},
+			"response": []
+		},
+		{
+			"name": "Players With Valid Params",
+			"request": {
+				"url": {
+					"raw": "http://localhost:8080/players?firstName=Ken&lastName=Griffey&suffix=Jr.",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"players"
+					],
+					"query": [
+						{
+							"key": "firstName",
+							"value": "Ken",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "lastName",
+							"value": "Griffey",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "suffix",
+							"value": "Jr.",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Returns player with given name and suffix"
+			},
+			"response": []
+		},
+		{
+			"name": "Players With Valid Name and Invalid Param",
+			"request": {
+				"url": {
+					"raw": "http://localhost:8080/players?firstName=Derek&lastName=Jeter&suffix=Jr.",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"players"
+					],
+					"query": [
+						{
+							"key": "firstName",
+							"value": "Derek",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "lastName",
+							"value": "Jeter",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "suffix",
+							"value": "Jr.",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Returns player with given name, ignoring invalid suffix"
+			},
+			"response": []
+		},
+		{
+			"name": "Players With Valid First Name And Invalid Last Name",
+			"request": {
+				"url": {
+					"raw": "http://localhost:8080/players?firstName=Alex&lastName=Gonzalez",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"players"
+					],
+					"query": [
+						{
+							"key": "firstName",
+							"value": "Alex",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "lastName",
+							"value": "Gonzalez",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Returns a list of players with the given first name"
+			},
+			"response": []
+		},
+		{
+			"name": "Players With Invalid First Name And Valid Last Name",
+			"request": {
+				"url": {
+					"raw": "http://localhost:8080/players?firstName=Marvin&lastName=Rodriguez",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"players"
+					],
+					"query": [
+						{
+							"key": "firstName",
+							"value": "Marvin",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "lastName",
+							"value": "Rodriguez",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Returns a list of players with the given last name if the first name matches no results"
+			},
+			"response": []
+		},
+		{
+			"name": "Players With Partial First Name",
+			"request": {
+				"url": {
+					"raw": "http://localhost:8080/players?firstName=Ry",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"players"
+					],
+					"query": [
+						{
+							"key": "firstName",
+							"value": "Ry",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Finds all players whose first name begins with the parameter"
+			},
+			"response": []
+		},
+		{
+			"name": "Players With Partial Last Name",
+			"request": {
+				"url": {
+					"raw": "http://localhost:8080/players?lastName=Su",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"players"
+					],
+					"query": [
+						{
+							"key": "lastName",
+							"value": "Su",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Finds all players whose last name begins with the parameter"
+			},
+			"response": []
+		},
+		{
+			"name": "Players With First Letter of First Name",
+			"request": {
+				"url": {
+					"raw": "http://localhost:8080/players?firstName=Z",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"players"
+					],
+					"query": [
+						{
+							"key": "firstName",
+							"value": "Z",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "A more expansive version of the partial first name. If someone entered 'Ry', the method would return all players whose first name started with 'Ry', such as Ryan. This check is for any players whose first name starts with 'R', which would include names like Randy, Ralph, Ross, etc. More data is needed to properly represent"
+			},
+			"response": []
+		},
+		{
+			"name": "Players With First Letter of Last Name",
+			"request": {
+				"url": {
+					"raw": "http://localhost:8080/players?lastName=z",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"players"
+					],
+					"query": [
+						{
+							"key": "lastName",
+							"value": "z",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "A more expansive version of the partial last name. If someone entered 'Zi', the method would return all players whose last name started with 'Ry', such as Zimmerman. This check is for any players whose last name starts with 'Z', which would include names like Zahn, Zagurski, etc. Granted Z isn't the best choice for this test, compared to something like J"
+			},
+			"response": []
+		},
+		{
+			"name": "Players With Invalid First Name And Invalid Last Name",
+			"request": {
+				"url": {
+					"raw": "http://localhost:8080/players?firstName=x&lastName=X",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"players"
+					],
+					"query": [
+						{
+							"key": "firstName",
+							"value": "x",
+							"equals": true,
+							"description": ""
+						},
+						{
+							"key": "lastName",
+							"value": "X",
+							"equals": true,
+							"description": ""
+						}
+					],
+					"variable": []
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "If both are invalid, returns all of the players"
+			},
+			"response": []
+		}
+	]
+}
