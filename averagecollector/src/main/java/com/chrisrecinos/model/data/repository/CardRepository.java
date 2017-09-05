@@ -3,6 +3,7 @@ package com.chrisrecinos.model.data.repository;
 import com.chrisrecinos.model.data.entity.Card;
 import com.chrisrecinos.model.data.entity.CardSet;
 import com.chrisrecinos.model.data.entity.Player;
+import com.chrisrecinos.model.data.entity.Team;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -22,5 +23,6 @@ public interface CardRepository extends CrudRepository<Card, Long> {
     List<Card> findByPlayerAndMemTypeIgnoreCase(Player player, String memType);
     List<Card> findByPlayerAndCardNumIgnoreCase(Player player, String cardNum);
     List<Card> findByCardSetAndInsertTypeIgnoreCase(CardSet cardSet, String insertType);
+    List<Card> findByCardSetAndTeam(CardSet cardSet, Team team);
     List<Card> findAll();
 }

@@ -43,7 +43,7 @@ public class CardService {
      * 4. cardset and player - DONE
      * 5. player and mem - DONE
      * 6. player and cardnum - DONE
-     * 7. cardset and insert
+     * 7. cardset and insert - DONE
      * 8. cardset and team
      * 9. team and mem
      * 10. team and insert
@@ -57,7 +57,7 @@ public class CardService {
      */
     public List<Card> getCards(Integer cardYear, String brandName, String setName, String cardNum,
                                String firstName, String lastName, String suffix, String teamName,
-                               String insertType, String memType) {
+                               String city, String insertType, String memType) {
         List<Card> cards = new ArrayList<>();
 
         CardYear year = null;
@@ -123,7 +123,19 @@ public class CardService {
 
         if(teamName != null && !teamName.equals("")) {
             team = this.teamRepository.findByTeamNameIgnoreCase(teamName);
+            if(team == null)
+                team = this.findTeamByTeamName(teamName);
+            if(team == null)
+                team = this.findTeamByCity(teamName);
         }
+
+        if(team == null && city != null && !city.equals("")) {
+            team = this.findTeamByCity(city);
+            if(team == null)
+                team = this.findTeamByTeamName(city);
+        }
+
+        System.out.println("Team: " + team);
 
         if(player != null)
             realPlayer = true;
@@ -174,6 +186,8 @@ public class CardService {
         if(cards.isEmpty() && realSet) {
             if(realInsert)
                 cards = this.getCardsWithSetAndInsert(set, insertType);
+            if(cards.isEmpty() && realTeam)
+                cards = this.getCardsWithSetAndTeam(set, team);
         }
 
         if(cards.isEmpty())
@@ -213,6 +227,31 @@ public class CardService {
         return player;
     }
 
+    private Team findTeamByTeamName(String teamName) {
+        Team team = null;
+
+        List<Team> teams = this.teamRepository.findByTeamNameIgnoreCaseStartingWithOrderByTeamNameAsc(teamName);
+        if(teams.size() == 1)
+            team = teams.get(0);
+
+        return team;
+    }
+
+    private Team findTeamByCity(String city) {
+        Team team = null;
+
+        List<Team> teams = this.teamRepository.findByCityIgnoreCaseOrderByCityAsc(city);
+        if(teams.size() == 1)
+            team = teams.get(0);
+        else if(teams.size() == 0) {
+            teams = this.teamRepository.findByCityIgnoreCaseStartingWithOrderByTeamNameAsc(city);
+            if(teams.size() == 1)
+                team = teams.get(0);
+        }
+
+        return team;
+    }
+
     private Card getCardWithSetAndNumAndInsertAndPlayer(CardSet cardSet, String cardNum, String insertType, Player player) {
         return this.cardRepository.findByCardSetAndCardNumIgnoreCaseAndInsertTypeIgnoreCaseAndPlayer(cardSet, cardNum, insertType, player);
     }
@@ -239,6 +278,10 @@ public class CardService {
 
     private List<Card> getCardsWithSetAndInsert(CardSet cardSet, String insertType) {
         return this.cardRepository.findByCardSetAndInsertTypeIgnoreCase(cardSet, insertType);
+    }
+
+    private List<Card> getCardsWithSetAndTeam(CardSet cardSet, Team team) {
+        return this.cardRepository.findByCardSetAndTeam(cardSet, team);
     }
 
     /**
