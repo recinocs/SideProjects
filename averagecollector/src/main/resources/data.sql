@@ -13,7 +13,7 @@ INSERT INTO TEAM (CITY, TEAM_NAME) VALUES ('New York', 'Yankees'), ('Cincinnati'
   ('Philadelphia', 'Phillies'), ('Miami', 'Marlins'), ('Atlanta', 'Braves'), ('Chicago', 'Cubs'),
   ('Pittsburgh', 'Pirates'), ('Milwaukee', 'Brewers'), ('St. Louis', 'Cardinals'), ('Los Angeles', 'Dodgers'),
   ('San Francisco', 'Giants'), ('San Diego', 'Padres'), ('Arizona', 'Diamondbacks'), ('Colorado', 'Rockies'),
-  ('', 'Not a player'), ('Japan', 'National Team');
+  ('', 'Not a player'), ('Japan', 'National Team'), ('New York', 'Giants');
 
 INSERT INTO BRAND (BRAND_NAME) VALUES ('Topps'), ('Upper Deck'), ('Fleer'), ('Bowman'), ('TriStar'),
 ('Donruss'), ('Team Best'), ('Flair'), ('Just Minors');
@@ -120,7 +120,8 @@ INSERT INTO PLAYER (FIRST_NAME, LAST_NAME, DOB) VALUES ('Jamie', 'Moyer', '1962-
 ('Carlos', 'Carrasco', '1987-03-21'), ('Brett', 'Sinkbeil', '1984-12-26'), ('Cooper', 'Brannan', '1984-11-07'), ('Chris', 'Coghlan', '1985-06-18'),
 ('Chris', 'Volstad', '1986-09-23'), ('Colton', 'Willems', '1988-07-30'), ('Josh', 'Papelbon', '1983-06-24'), ('Matt', 'Antonelli', '1985-04-08'),
 ('Matt', 'Sweeney', '1088-04-04'), ('Edwin', 'Encarnacion', '1983-01-07'), ('Kerry', 'Wood', '1977-06-16'), ('Felipe', 'Paulino', '1983-10-05'),
-('Joey', 'Votto', '1983-09-10'), ('Daric', 'Barton', '1985-08-16'), ('Kelly', 'Pavlik', '1982-04-14');
+('Joey', 'Votto', '1983-09-10'), ('Daric', 'Barton', '1985-08-16'), ('Kelly', 'Pavlik', '1982-04-14'), ('Ross', 'Ohlendorf', '1982-08-08'),
+('Eddie', 'Murray', '1956-02-24'), ('Mel', 'Ott', '1909-03-02');
 
 INSERT INTO CARD_SET (YEAR_ID, BRAND_ID) VALUES ((SELECT id FROM CARD_YEAR WHERE CARD_YEAR = 2004), 2), ((SELECT id FROM CARD_YEAR WHERE CARD_YEAR = 2005), 2),
 ((SELECT id FROM CARD_YEAR WHERE CARD_YEAR = 2006), 3), ((SELECT id FROM CARD_YEAR WHERE CARD_YEAR = 2006), 2), ((SELECT id FROM CARD_YEAR WHERE CARD_YEAR = 2007), 2);
@@ -135,7 +136,8 @@ INSERT INTO CARD_SET (YEAR_ID, BRAND_ID, SET_NAME) VALUES ((SELECT id FROM CARD_
 ((SELECT id FROM CARD_YEAR WHERE CARD_YEAR = 2007), 4, 'Heritage'), ((SELECT id FROM CARD_YEAR WHERE CARD_YEAR = 2007), 4, 'Sterling'),
 ((SELECT id FROM CARD_YEAR WHERE CARD_YEAR = 2007), 2, 'SP Authentic'), ((SELECT id FROM CARD_YEAR WHERE CARD_YEAR = 2007), 2, 'SP Rookie Edition'),
 ((SELECT id FROM CARD_YEAR WHERE CARD_YEAR = 2007), 5, 'Prospects Plus'), ((SELECT id FROM CARD_YEAR WHERE CARD_YEAR = 2007), 5, 'Elegance'),
-((SELECT id FROM CARD_YEAR WHERE CARD_YEAR = 2008), 1, 'Updates & Highlights'), ((SELECT id FROM CARD_YEAR WHERE CARD_YEAR = 2008), 1, 'Co-Signers');
+((SELECT id FROM CARD_YEAR WHERE CARD_YEAR = 2008), 1, 'Updates & Highlights'), ((SELECT id FROM CARD_YEAR WHERE CARD_YEAR = 2008), 1, 'Co-Signers'),
+((SELECT id FROM CARD_YEAR WHERE CARD_YEAR = 2008), 1, 'Moments & Milestones'), ((SELECT id FROM CARD_YEAR WHERE CARD_YEAR = 2008), 1, 'Sterling');
 
 INSERT INTO CARD (SET_ID, PLAYER_ID, TEAM_ID, CARD_NUM) VALUES (52, (SELECT id FROM PLAYER WHERE LAST_NAME = 'Dominguez'),
                                                                     (SELECT id FROM TEAM WHERE TEAM_NAME = 'Marlins'), 10);
@@ -259,7 +261,13 @@ INSERT INTO CARD (SET_ID, PLAYER_ID, TEAM_ID, CARD_NUM, INSERT_TYPE, MEM_TYPE) V
                                                                                       (55, (SELECT id FROM PLAYER WHERE LAST_NAME = 'Barton'),
                                                                                           (SELECT id FROM TEAM WHERE TEAM_NAME = 'Athletics'), 'VC', 'Co-Signers Autographs', 'Dual Autograph'),
                                                                                       (55, (SELECT id FROM PLAYER WHERE LAST_NAME = 'Pavlik'),
-                                                                                          (SELECT id FROM TEAM WHERE TEAM_NAME = 'Not a player'), 'KP', 'Solo Sigs', 'Autograph');
+                                                                                          (SELECT id FROM TEAM WHERE TEAM_NAME = 'Not a player'), 'KP', 'Solo Sigs', 'Autograph'),
+                                                                                      (56, (SELECT id FROM PLAYER WHERE LAST_NAME = 'Rodriguez'),
+                                                                                          (SELECT id FROM TEAM WHERE TEAM_NAME = 'Yankees'), 'AR', '500 HR Wall Relic', 'Relic'),
+                                                                                      (56, (SELECT id FROM PLAYER WHERE LAST_NAME = 'Barton'),
+                                                                                          (SELECT id FROM TEAM WHERE TEAM_NAME = 'Athletics'), 'DB', 'Rookie Autographs', 'Autograph'),
+                                                                                      (56, (SELECT id FROM PLAYER WHERE LAST_NAME = 'Ohlendorf'),
+                                                                                          (SELECT id FROM TEAM WHERE TEAM_NAME = 'Yankees'), 'RO', 'Rookie Autographs', 'Autograph');
 
 INSERT INTO CARD (SET_ID, PLAYER_ID, TEAM_ID, CARD_NUM, INSERT_TYPE, SERIAL_NUM, MEM_TYPE) VALUES (38, (SELECT id FROM PLAYER WHERE FIRST_NAME = 'J.D.' AND LAST_NAME = 'Drew'),
                                                                                                       (SELECT id FROM TEAM WHERE TEAM_NAME = 'Cardinals'), '50', 'Major League Materials', '025/150', 'Relic'),
@@ -290,7 +298,12 @@ INSERT INTO CARD (SET_ID, PLAYER_ID, TEAM_ID, CARD_NUM, INSERT_TYPE, SERIAL_NUM,
                                                                                                   (50, (SELECT id FROM PLAYER WHERE LAST_NAME = 'Lind'),
                                                                                                       (SELECT id FROM TEAM WHERE CITY = 'Toronto'), '119', 'By The Letter Rookie Signatures', '19/75', 'Autograph'),
                                                                                                   (50, (SELECT id FROM PLAYER WHERE FIRST_NAME = 'Joe' AND LAST_NAME = 'Smith'),
-                                                                                                      (SELECT id FROM TEAM WHERE TEAM_NAME = 'Mets'), '160', 'By The Letter Rookie Signatures', '19/75', 'Autograph');
+                                                                                                      (SELECT id FROM TEAM WHERE TEAM_NAME = 'Mets'), '160', 'By The Letter Rookie Signatures', '19/75', 'Autograph'),
+                                                                                                  (57, (SELECT id FROM PLAYER WHERE LAST_NAME = 'Murray'),
+                                                                                                      (SELECT id FROM TEAM WHERE TEAM_NAME = 'Orioles'), 'EM06', 'Super Jumbo Patch', '1/1', 'Jumbo Relic'),
+                                                                                                  (57, (SELECT id FROM PLAYER WHERE LAST_NAME = 'Ott'),
+                                                                                                      (SELECT id FROM TEAM WHERE CITY = 'New York' AND TEAM_NAME = 'Giants'),
+                                                                                                      '7', 'Triple Sterling Stardom', '05/10', 'Triple Relic');
 
 INSERT INTO CARD (SET_ID, PLAYER_ID, TEAM_ID, CARD_NUM, INSERT_TYPE, PARALLEL_TYPE, MEM_TYPE) VALUES (53, (SELECT id FROM PLAYER WHERE LAST_NAME = 'Carrasco'),
                                                                                                         (SELECT id FROM TEAM WHERE TEAM_NAME = 'Indians'), 'CC', 'Showtime', 'Gold Parallel', 'Relic');
