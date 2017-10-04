@@ -58,11 +58,15 @@ public class TeamService {
         if(city != null && !city.equals(""))
             realCity = true;
 
-        if(realTeamName || realCity) {
-            Team team = getTeamWithTeamName(teamName);
-            if(team != null) {
+        if(realCity && realTeamName) {
+            Team team = this.teamRepository.findByCityIgnoreCaseAndTeamNameIgnoreCase(city, teamName);
+            if(team != null)
                 teams.add(team);
-            } else {
+        }
+
+        if(realTeamName || realCity) {
+            teams = getTeamWithTeamName(teamName);
+            if(teams.isEmpty()) {
                 teams = this.getTeamsWithCity(city);
             }
         }
@@ -92,7 +96,7 @@ public class TeamService {
         return teams;
     }
 
-    private Team getTeamWithTeamName(String teamName) {
+    private List<Team> getTeamWithTeamName(String teamName) {
         return this.teamRepository.findByTeamNameIgnoreCase(teamName);
     }
 

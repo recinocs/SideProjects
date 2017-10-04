@@ -122,7 +122,7 @@ public class CardService {
             }
         }
 
-        if(teamName != null && !teamName.equals("")) {
+        /*if(teamName != null && !teamName.equals("")) {
             team = this.teamRepository.findByTeamNameIgnoreCase(teamName);
             if(team == null)
                 team = this.findTeamByTeamName(teamName);
@@ -134,7 +134,29 @@ public class CardService {
             team = this.findTeamByCity(city);
             if(team == null)
                 team = this.findTeamByTeamName(city);
+        }*/
+
+        if(teamName != null && !teamName.equals("") && city != null && !city.equals(""))
+            team = this.teamRepository.findByCityIgnoreCaseAndTeamNameIgnoreCase(city, teamName);
+
+        System.out.println(city);
+        System.out.println(teamName);
+
+        if(team == null) {
+            if(teamName != null && !teamName.equals("")) {
+                team = this.findTeamByTeamName(teamName);
+                if(team == null)
+                    team = this.findTeamByCity(teamName);
+            }
+
+            if(team == null && city != null && !city.equals("")) {
+                team = this.findTeamByCity(city);
+                if(team == null)
+                    team = this.findTeamByCity(teamName);
+            }
         }
+
+        System.out.println(team);
 
         if(player != null)
             realPlayer = true;
@@ -254,9 +276,14 @@ public class CardService {
     private Team findTeamByTeamName(String teamName) {
         Team team = null;
 
-        List<Team> teams = this.teamRepository.findByTeamNameIgnoreCaseStartingWithOrderByTeamNameAsc(teamName);
+        List<Team> teams = this.teamRepository.findByTeamNameIgnoreCase(teamName);
         if(teams.size() == 1)
             team = teams.get(0);
+        else if(teams.size() == 0) {
+            teams = this.teamRepository.findByTeamNameIgnoreCaseStartingWithOrderByTeamNameAsc(teamName);
+            if(teams.size() == 1)
+                team = teams.get(0);
+        }
 
         return team;
     }
