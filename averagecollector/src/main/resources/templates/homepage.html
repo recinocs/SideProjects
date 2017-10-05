@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css"/>
+    <title>Home</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        $(document).ready(function() {
+            var teams = [[${teams}]];
+            var sel = document.createElement('select');
+            var selectHTML = "<option disabled selected>Search By Team</option>\n"
+            for (var i = 0; i < teams.length; i++) {
+                var teamString = teams[i].city + " " + teams[i].teamName;
+                selectHTML += "<option value='" + teamString + "'>" + teamString + "</option>\n";
+            }
+            sel.innerHTML = selectHTML;
+            document.getElementById('teamList').appendChild(sel);
+        });
+        /*]]>*/
+    </script>
+</head>
+<body>
+    <h2>Hi</h2>
+    <div class="u-pull-left">
+        <div id="teamList"></div>
+    </div>
+</body>
+</html>
