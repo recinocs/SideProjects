@@ -11,7 +11,8 @@
         $(document).ready(function() {
             var teams = [[${teams}]];
             var sel = document.createElement('select');
-            var selectHTML = "<option disabled selected>Search By Team</option>\n"
+            sel.className = "u-full-width";
+            var selectHTML = "<option value='' selected='selected'>Choose Team</option>\n";
             for (var i = 0; i < teams.length; i++) {
                 var teamString = teams[i].city + " " + teams[i].teamName;
                 selectHTML += "<option value='" + teamString + "'>" + teamString + "</option>\n";
@@ -19,13 +20,53 @@
             sel.innerHTML = selectHTML;
             document.getElementById('teamList').appendChild(sel);
         });
+
+        $(document).ready(function() {
+            var sets = [[${sets}]];
+            var sel = document.createElement('select');
+            sel.className = "u-full-width";
+            var selectHTML = "<option value='' selected='selected'>Choose Set</option>\n";
+            for (var i = 0; i < sets.length; i++) {
+                var setString = sets[i].cardYear.cardYear + " " + sets[i].brand.brandName
+                    + " " + sets[i].setName;
+                selectHTML += "<option value='" + setString + "'>" + setString + "</option>\n";
+            }
+            sel.innerHTML = selectHTML;
+            document.getElementById('teamList').appendChild(sel)
+        });
         /*]]>*/
     </script>
 </head>
 <body>
     <h2>Hi</h2>
-    <div class="u-pull-left">
-        <div id="teamList"></div>
-    </div>
+    <form th:action="@{/search}" method="get">
+        <div class="u-pull-left">
+            <div class="row">
+                <input type="text" name="player" value="" placeholder="Search By Player"/>
+                <div id="setList"></div>
+                <div id="teamList"></div>
+                <input type="text" name="cardNumber" value="" placeholder="Search By Card Number"/>
+                <input type="text" name="serial" value="" placeholder="Search By Serial Number (ex. just type /99 for all cards numbered to 99)"/>
+                <select class="u-full-width">
+                    <option value="" selected="selected">Search By Memorabilia Type</option>
+                    <option value="Relic">Relic</option>
+                    <option value="Autograph">Autograph</option>
+                    <option value="Autograph Relic">Autograph Relic</option>
+                    <option value="Cut Signature">Cut Signature</option>
+                    <option value="Jumbo Relic">Jumbo Relic</option>
+                    <option value="Dual Relic">Dual Relic</option>
+                    <option value="Dual Autograph">Dual Autograph</option>
+                    <option value="Triple Relic">Triple Relic</option>
+                    <option value="Triple Relic Autograph">Triple Relic Autograph</option>
+                    <option value="Quad Relic">Quad Relic</option>
+                    <option value="Sextuple Relic">Sextuple Relic</option>
+                    <option value="Octuple Relic">Octuple Relic</option>
+                    <option value="Printing Plate">Printing Plate</option>
+                    <option value="Commemorative Patch">Commemorative Patch</option>
+                    <option value="Commemorative Medallion">Commemorative Medallion</option>
+                </select>
+            </div>
+        </div>
+    </form>
 </body>
 </html>
