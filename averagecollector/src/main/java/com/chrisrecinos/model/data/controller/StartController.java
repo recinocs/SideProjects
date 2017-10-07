@@ -2,6 +2,7 @@ package com.chrisrecinos.model.data.controller;
 
 import com.chrisrecinos.model.data.entity.CardSet;
 import com.chrisrecinos.model.data.entity.Team;
+import com.chrisrecinos.model.data.form.SearchForm;
 import com.chrisrecinos.model.data.repository.TeamRepository;
 import com.chrisrecinos.model.data.services.CardSetService;
 import com.chrisrecinos.model.data.services.TeamService;
@@ -39,6 +40,7 @@ public class StartController {
     String navToHomePage(Model model) {
         model.addAttribute("teams", getAllTeams());
         model.addAttribute("sets", getAllSets());
+        model.addAttribute("searchForm", new SearchForm());
         return "homepage";
     }
 

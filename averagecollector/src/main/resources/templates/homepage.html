@@ -5,66 +5,44 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css"/>
     <title>Home</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
-    <script th:inline="javascript">
-        /*<![CDATA[*/
-        $(document).ready(function() {
-            var teams = [[${teams}]];
-            var sel = document.createElement('select');
-            sel.className = "u-full-width";
-            var selectHTML = "<option value='' selected='selected'>Choose Team</option>\n";
-            for (var i = 0; i < teams.length; i++) {
-                var teamString = teams[i].city + " " + teams[i].teamName;
-                selectHTML += "<option value='" + teamString + "'>" + teamString + "</option>\n";
-            }
-            sel.innerHTML = selectHTML;
-            document.getElementById('teamList').appendChild(sel);
-        });
-
-        $(document).ready(function() {
-            var sets = [[${sets}]];
-            var sel = document.createElement('select');
-            sel.className = "u-full-width";
-            var selectHTML = "<option value='' selected='selected'>Choose Set</option>\n";
-            for (var i = 0; i < sets.length; i++) {
-                var setString = sets[i].cardYear.cardYear + " " + sets[i].brand.brandName
-                    + " " + sets[i].setName;
-                selectHTML += "<option value='" + setString + "'>" + setString + "</option>\n";
-            }
-            sel.innerHTML = selectHTML;
-            document.getElementById('teamList').appendChild(sel)
-        });
-        /*]]>*/
-    </script>
 </head>
 <body>
     <h2>Hi</h2>
-    <form th:action="@{/search}" method="get">
+    <form action="#" th:object="${searchForm}" th:action="@{/search}" method="get">
         <div class="u-pull-left">
             <div class="row">
-                <input type="text" name="player" value="" placeholder="Search By Player"/>
-                <div id="setList"></div>
-                <div id="teamList"></div>
-                <input type="text" name="cardNumber" value="" placeholder="Search By Card Number"/>
-                <input type="text" name="serial" value="" placeholder="Search By Serial Number (ex. just type /99 for all cards numbered to 99)"/>
-                <select class="u-full-width">
-                    <option value="" selected="selected">Search By Memorabilia Type</option>
-                    <option value="Relic">Relic</option>
-                    <option value="Autograph">Autograph</option>
-                    <option value="Autograph Relic">Autograph Relic</option>
-                    <option value="Cut Signature">Cut Signature</option>
-                    <option value="Jumbo Relic">Jumbo Relic</option>
-                    <option value="Dual Relic">Dual Relic</option>
-                    <option value="Dual Autograph">Dual Autograph</option>
-                    <option value="Triple Relic">Triple Relic</option>
-                    <option value="Triple Relic Autograph">Triple Relic Autograph</option>
-                    <option value="Quad Relic">Quad Relic</option>
-                    <option value="Sextuple Relic">Sextuple Relic</option>
-                    <option value="Octuple Relic">Octuple Relic</option>
-                    <option value="Printing Plate">Printing Plate</option>
-                    <option value="Commemorative Patch">Commemorative Patch</option>
-                    <option value="Commemorative Medallion">Commemorative Medallion</option>
+                <input type="text" th:field="*{player}" placeholder="Search By Player"/>
+                <select th:field="*{teamId}">
+                    <option th:value="0">Search By Team</option>
+                    <option th:each="team : ${teams}"
+                            th:value="${team.id}" th:text="${team.city} + ' ' + ${team.teamName}">Team</option>
                 </select>
+                <select th:field="*{setId}">
+                    <option th:value="0">Search By Set</option>
+                    <option th:each="set : ${sets}"
+                            th:value="${set.id}" th:text="${set.cardYear.cardYear} + ' ' + ${set.brand.brandName} + ' ' + ${set.setName}">Set</option>
+                </select>
+                <input type="text" style="width: 150px" th:field="*{cardNum}" placeholder="Search By Card Number"/>
+                <input type="text" style="width: 155px" th:field="*{serial}" placeholder="Search By Serial Number"/>
+                <select th:field="*{memType}">
+                    <option selected="selected" th:value="none">Search By Memorabilia Type</option>
+                    <option th:value="Relic">Relic</option>
+                    <option th:value="Autograph">Autograph</option>
+                    <option th:value="Autograph + ' ' + Relic">Autograph Relic</option>
+                    <option th:value="Cut + ' ' + Signature">Cut Signature</option>
+                    <option th:value="Jumbo + ' ' + Relic">Jumbo Relic</option>
+                    <option th:value="Dual + ' ' + Relic">Dual Relic</option>
+                    <option th:value="Dual + ' ' + Autograph">Dual Autograph</option>
+                    <option th:value="Triple + ' ' + Relic">Triple Relic</option>
+                    <option th:value="Triple + ' ' + Relic + ' ' + Autograph">Triple Relic Autograph</option>
+                    <option th:value="Quad + ' ' + Relic">Quad Relic</option>
+                    <option th:value="Sextuple + ' ' + Relic">Sextuple Relic</option>
+                    <option th:value="Octuple + ' ' + Relic">Octuple Relic</option>
+                    <option th:value="Printing + ' ' + Plate">Printing Plate</option>
+                    <option th:value="Commemorative + ' ' + Patch">Commemorative Patch</option>
+                    <option th:value="Commemorative + ' ' + Medallion">Commemorative Medallion</option>
+                </select>
+                <input type="submit" name="search" value="Submit"/>
             </div>
         </div>
     </form>
