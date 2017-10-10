@@ -143,16 +143,16 @@ public class Card {
         String str = cardSet + " " + player + " #" + cardNum;
 
         if(!(insertType.equals("n/a")))
-            str += insertType;
+            str += " " + insertType;
 
         if(!(parallelType.equals("n/a")))
-            str += parallelType;
+            str += " " + parallelType;
 
         if(!(memType.equals("n/a")))
-            str += memType;
+            str += " " + memType;
 
         if(!(serialNum.equals("n/a")))
-            str += serialNum;
+            str += " " + serialNum;
 
 
         return str;

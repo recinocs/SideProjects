@@ -7,43 +7,40 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 <body>
-    <h2>Hi</h2>
-    <form action="#" th:object="${searchForm}" th:action="@{/search}" method="get">
+    <form id="search" action="#" th:object="${searchForm}" th:action="@{/search}" method="get">
         <div class="u-pull-left">
-            <div class="row">
-                <input type="text" th:field="*{player}" placeholder="Search By Player"/>
-                <select th:field="*{teamId}">
-                    <option th:value="0">Search By Team</option>
-                    <option th:each="team : ${teams}"
+            <input type="text" th:field="*{player}" placeholder="Search By Player"/>
+            <select th:field="*{teamId}">
+                <option th:value="0">Search By Team</option>
+                <option th:each="team : ${teams}"
                             th:value="${team.id}" th:text="${team.city} + ' ' + ${team.teamName}">Team</option>
-                </select>
-                <select th:field="*{setId}">
-                    <option th:value="0">Search By Set</option>
-                    <option th:each="set : ${sets}"
-                            th:value="${set.id}" th:text="${set.cardYear.cardYear} + ' ' + ${set.brand.brandName} + ' ' + ${set.setName}">Set</option>
-                </select>
-                <input type="text" style="width: 150px" th:field="*{cardNum}" placeholder="Search By Card Number"/>
-                <input type="text" style="width: 155px" th:field="*{serial}" placeholder="Search By Serial Number"/>
-                <select th:field="*{memType}">
-                    <option selected="selected" th:value="none">Search By Memorabilia Type</option>
-                    <option th:value="Relic">Relic</option>
-                    <option th:value="Autograph">Autograph</option>
-                    <option th:value="Autograph + ' ' + Relic">Autograph Relic</option>
-                    <option th:value="Cut + ' ' + Signature">Cut Signature</option>
-                    <option th:value="Jumbo + ' ' + Relic">Jumbo Relic</option>
-                    <option th:value="Dual + ' ' + Relic">Dual Relic</option>
-                    <option th:value="Dual + ' ' + Autograph">Dual Autograph</option>
-                    <option th:value="Triple + ' ' + Relic">Triple Relic</option>
-                    <option th:value="Triple + ' ' + Relic + ' ' + Autograph">Triple Relic Autograph</option>
-                    <option th:value="Quad + ' ' + Relic">Quad Relic</option>
-                    <option th:value="Sextuple + ' ' + Relic">Sextuple Relic</option>
-                    <option th:value="Octuple + ' ' + Relic">Octuple Relic</option>
-                    <option th:value="Printing + ' ' + Plate">Printing Plate</option>
-                    <option th:value="Commemorative + ' ' + Patch">Commemorative Patch</option>
-                    <option th:value="Commemorative + ' ' + Medallion">Commemorative Medallion</option>
-                </select>
-                <input type="submit" name="search" value="Submit"/>
-            </div>
+            </select>
+            <select th:field="*{setId}">
+                <option th:value="0">Search By Set</option>
+                <option th:each="set : ${sets}"
+                        th:value="${set.id}" th:text="${set.cardYear.cardYear} + ' ' + ${set.brand.brandName} + ' ' + ${set.setName}">Set</option>
+            </select>
+            <input type="text" style="width: 150px" th:field="*{cardNum}" placeholder="Search By Card Number"/>
+            <input type="text" style="width: 155px" th:field="*{serial}" placeholder="Search By Serial Number"/>
+            <select th:field="*{memType}">
+                <option selected="selected" th:value="none">Search By Memorabilia Type</option>
+                <option th:value="Relic">Relic</option>
+                <option th:value="Autograph">Autograph</option>
+                <option th:value="Autograph + ' ' + Relic">Autograph Relic</option>
+                <option th:value="Cut + ' ' + Signature">Cut Signature</option>
+                <option th:value="Jumbo + ' ' + Relic">Jumbo Relic</option>
+                <option th:value="Dual + ' ' + Relic">Dual Relic</option>
+                <option th:value="Dual + ' ' + Autograph">Dual Autograph</option>
+                <option th:value="Triple + ' ' + Relic">Triple Relic</option>
+                <option th:value="Triple + ' ' + Relic + ' ' + Autograph">Triple Relic Autograph</option>
+                <option th:value="Quad + ' ' + Relic">Quad Relic</option>
+                <option th:value="Sextuple + ' ' + Relic">Sextuple Relic</option>
+                <option th:value="Octuple + ' ' + Relic">Octuple Relic</option>
+                <option th:value="Printing + ' ' + Plate">Printing Plate</option>
+                <option th:value="Commemorative + ' ' + Patch">Commemorative Patch</option>
+                <option th:value="Commemorative + ' ' + Medallion">Commemorative Medallion</option>
+            </select>
+            <input type="submit" name="search" value="Run Search"/>
         </div>
     </form>
 </body>

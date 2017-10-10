@@ -1,8 +1,89 @@
-body{
+/* Data Class Styling */
+* {
+    margin:0;
+    padding:0;
+}
+
+body {
     padding-top: 70px;
     padding-bottom: 60px;
 }
 
 footer{
     height: 50px;
+}
+
+/* Landing Page Styling */
+#landing {
+    background-image:url('../images/Aaron%20Judge.jpg');
+    /*background-size:cover;*/
+    background-position: center;
+    height: 100vh;
+    color: mintcream;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0 20px;
+}
+
+#landing h1 {
+    font-size: 50px;
+}
+
+#landing p {
+    font-size: 20px;
+}
+
+#landing button {
+    color: #36454f;
+    border: black 1px solid;
+    background: mintcream;
+    margin-top: 20px;
+}
+
+#landing button:hover {
+    background: #36454f;
+    color: mintcream;
+}
+
+#section-a {
+    padding: 20px;
+    background: #FFEBCD;
+    color: #36454f;
+    font-size: 17px;
+    text-align: center;
+}
+
+#section-b {
+    padding: 20px;
+    background: #36454f;
+    color: mintcream;
+    text-align: center;
+    font-size: 17px;
+}
+
+#section-c {
+    display:flex;
+}
+
+#section-c div {
+    padding: 20px;
+}
+
+#section-c .box1 {
+    background: #BA122B;
+    color: mintcream;
+}
+
+#section-c .box2 {
+    background: #14225A;
+    color: mintcream;
+}
+
+/* Homepage Styling */
+#search {
+    display: flex;
 }
