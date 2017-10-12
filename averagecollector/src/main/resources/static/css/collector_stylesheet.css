@@ -15,8 +15,8 @@ footer{
 
 /* Landing Page Styling */
 #landing {
-    background-image:url('../images/Aaron%20Judge.jpg');
-    /*background-size:cover;*/
+    background-image:url('../images/collector_background.jpg');
+    background-size:cover;
     background-position: center;
     height: 100vh;
     color: mintcream;
