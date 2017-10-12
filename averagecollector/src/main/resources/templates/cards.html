@@ -6,27 +6,6 @@
 
     <link rel="stylesheet" href="css/collector_stylesheet.css"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>
-
-    <script th:inline="javascript">
-        /*<![CDATA[*/
-        function getResults(n) {
-            var results = []
-
-            var cards = /*[[${session.cards}]]*/ []
-            var min = 50 * (n-1) + 1
-            var max = 50 * n
-            if(cards.length < max)
-                max = cards.length
-
-            for(var i = min; i < max + 1; i++) {
-                results.push(cards[i])
-            }
-
-            return results
-        }
-
-        /*]]>*/
-    </script>
 </head>
 <body>
 <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -42,15 +21,15 @@
     </div>
     <table class="table table-striped table-bordered">
         <tr>
-            <td>Set</td>
-            <td>Player</td>
-            <td>Team</td>
-            <td>Card Number</td>
-            <td>Quantity</td>
-            <td>Insert Type</td>
-            <td>Parallel Type</td>
-            <td>Memorabilia Type</td>
-            <td>Serial Number</td>
+            <th>Set</th>
+            <th>Player</th>
+            <th>Team</th>
+            <th>Card Number</th>
+            <th>Quantity</th>
+            <th>Insert Type</th>
+            <th>Parallel Type</th>
+            <th>Memorabilia Type</th>
+            <th>Serial Number</th>
         </tr>
         <tr th:each="card:${cards}">
             <td th:text="${card.cardSet}">Set</td>

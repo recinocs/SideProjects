@@ -55,6 +55,11 @@ public class CardService {
      * 16. insert - DONE
      * 17. all - DONE
      */
+    public List<Card> getCards(String firstName, String lastName, String suffix, Long teamId,
+                               Long setId, String cardNum, String serial, String memType) {
+        return this.cardRepository.findAll();
+    }
+
     public List<Card> getCards(Integer cardYear, String brandName, String setName, String cardNum,
                                String firstName, String lastName, String suffix, String teamName,
                                String city, String insertType, String memType) {
