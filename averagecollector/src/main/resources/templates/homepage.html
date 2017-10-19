@@ -21,7 +21,8 @@
                         th:value="${set.id}" th:text="${set.cardYear.cardYear} + ' ' + ${set.brand.brandName} + ' ' + ${set.setName}">Set</option>
             </select>
             <input type="text" style="width: 150px" th:field="*{cardNum}" placeholder="Search By Card Number"/>
-            <input type="text" style="width: 155px" th:field="*{serial}" placeholder="Search By Serial Number"/>
+            <input type="text" th:field="*{insertType}" placeholder="Search By Insert Type"/>
+            <input type="text" th:field="*{parallelType}" placeholder="Search By Parallel"/>
             <select th:field="*{memType}">
                 <option selected="selected" th:value="none">Search By Memorabilia Type</option>
                 <option th:value="Relic">Relic</option>

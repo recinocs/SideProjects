@@ -1,23 +1,41 @@
 package com.chrisrecinos.model.data.controller;
 
-import org.springframework.http.HttpStatus;
+import org.apache.catalina.servlet4preview.http.HttpServletRequest;
+import org.springframework.boot.autoconfigure.web.ErrorController;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
-import java.io.FileNotFoundException;
 
 /**
  * @author - Christopher Recinos
  */
 
 @Controller
-public class ExceptionController implements ExceptionController {
+public class ExceptionController implements ErrorController {
 
-    @ResponseStatus(value = HttpStatus.NOT_FOUND)
-    @ExceptionHandler(FileNotFoundException.class)
-    public String notFoundError() {
-        System.out.println("404");
-        return "404error";
+    private static final String PATH = "/error";
+
+    @RequestMapping(value = PATH, method = RequestMethod.GET)
+    public String notFoundError(HttpServletRequest request) {
+
+        int httpErrorCode = (Integer)request.getAttribute("javax.servlet.error.status_code");
+        String error;
+
+        switch(httpErrorCode) {
+            case 404: {
+                error = "404error";
+                break;
+            }
+            default: {
+                error = "500error";
+            }
+        }
+        return error;
+    }
+
+    @Override
+    public String getErrorPath() {
+        return PATH;
     }
 }

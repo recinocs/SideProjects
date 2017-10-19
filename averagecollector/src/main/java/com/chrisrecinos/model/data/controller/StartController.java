@@ -44,11 +44,11 @@ public class StartController {
         return "homepage";
     }
 
-    private List<Team> getAllTeams() {
+    protected List<Team> getAllTeams() {
         return this.teamService.getTeams("", "");
     }
 
-    private List<CardSet> getAllSets() {
+    protected List<CardSet> getAllSets() {
         List<CardSet> sets = this.cardSetService.getSets(null, null, null);
 
         return cardSetService.sortYears(sets);

@@ -23,6 +23,8 @@ public interface CardRepository extends CrudRepository<Card, Long> {
     List<Card> findByCardSetAndCardNumIgnoreCaseAndInsertTypeIgnoreCaseStartingWith(CardSet cardSet, String cardNum, String insertType);
     List<Card> findByCardSetAndCardNumIgnoreCaseAndInsertTypeIgnoreCaseStartingWith(CardSet cardSet, String cardNum, Character c);
     List<Card> findByCardSetAndCardNumIgnoreCase(CardSet cardSet, String cardNum);
+    List<Card> findByCardSetAndCardNumIgnoreCaseStartingWith(CardSet cardSet, String cardNum);
+    List<Card> findByCardSetAndCardNumIgnoreCaseStartingWith(CardSet cardSet, Character c);
     List<Card> findByCardSetAndPlayerOrderByMemTypeAsc(CardSet cardSet, Player player);
     List<Card> findByPlayerAndMemTypeIgnoreCaseContaining(Player player, String memType);
     List<Card> findByPlayerAndCardNumIgnoreCase(Player player, String cardNum);
