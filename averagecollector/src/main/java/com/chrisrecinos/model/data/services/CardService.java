@@ -35,15 +35,15 @@ public class CardService {
      * Order to find by
      * 1. cardset and cardnum and insert and player - DONE
      * 2. cardset and cardnum and insert - DONE
-     * 3. cardset and cardnum
-     * 4. cardset and player
-     * 5. player and mem
+     * 3. cardset and cardnum - DONE
+     * 4. cardset and player - DONE
+     * 5. player and mem - DONE
      * 6. player and cardnum
      * 7. cardset and insert
      * 8. cardset and team
      * 9. team and mem
      * 10. team and insert
-     * 11. cardset
+     * 11. cardset - DONE
      * 12. cardnum
      * 13. player
      * 14. team
@@ -55,6 +55,7 @@ public class CardService {
                                Long setId, String cardNum, String memType,
                                String insertType, String parallelType) {
         List<Card> cards = new ArrayList<>();
+        List<Card> results;
         List<Player> players = this.playerService.getPlayers(firstName, lastName, suffix);
 
         Team team = this.teamRepository.findById(teamId);
@@ -70,12 +71,14 @@ public class CardService {
                 if(hasInsert) {
                     if(!players.isEmpty()) {
                         for(Player p : players) {
-                            cards = getCardWithSetAndNumAndInsertAndPlayer(set, cardNum, insertType, p);
+                            results = getCardWithSetAndNumAndInsertAndPlayer(set, cardNum, insertType, p);
+                            for(Card res : results)
+                                cards.add(res);
                         }
                     }
 
                     if(cards.isEmpty()) {
-                        cards = getCardWithSetAndNumAndInsert(set,  cardNum, insertType);
+                        cards = getCardWithSetAndNumAndInsert(set, cardNum, insertType);
                     }
                 }
 
@@ -83,12 +86,29 @@ public class CardService {
                     cards = getCardsWithSetAndNum(set, cardNum);
                 }
             }
+
+            if(cards.isEmpty() && !players.isEmpty()) {
+                for(Player p : players) {
+                    results = getCardsWithSetAndPlayer(set, p);
+                    for(Card res : results)
+                        cards.add(res);
+                }
+            }
+        }
+
+        if(cards.isEmpty() && !players.isEmpty()) {
+            if(hasMem) {
+                for(Player p : players) {
+                    results = getCardsWithPlayerAndMem(p, memType);
+                    for(Card res : results)
+                        cards.add(res);
+                }
+            }
         }
 
         if(cards.isEmpty())
             cards = this.cardRepository.findAll();
 
-        System.out.println(cards);
         return sortYears(cards);
     }
 
@@ -135,6 +155,14 @@ public class CardService {
         }
 
         return cards;
+    }
+
+    private List<Card> getCardsWithSetAndPlayer(CardSet cardSet, Player player) {
+        return this.cardRepository.findByCardSetAndPlayer(cardSet, player);
+    }
+
+    private List<Card> getCardsWithPlayerAndMem(Player player, String memType) {
+        return this.cardRepository.findByPlayerAndMemTypeIgnoreCase(player, memType);
     }
     /**
      * Helper method that sorts the results by the year value of their respective card year.

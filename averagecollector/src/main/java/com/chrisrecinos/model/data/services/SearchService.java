@@ -42,11 +42,10 @@ public class SearchService {
                 firstName = playerNames[0];
                 lastName = playerNames[1];
                 break;
-            case 3:
+            default:
                 firstName = playerNames[0];
                 lastName = playerNames[1];
                 suffix = playerNames[2];
-                break;
         }
 
         results = this.cardService.getCards(firstName, lastName, suffix, teamId, setId, cardNum,
