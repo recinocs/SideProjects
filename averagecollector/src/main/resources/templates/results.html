@@ -42,7 +42,7 @@
     <div class="result-header">
         <form id="search-header" action="#" th:object="${searchForm}" th:action="@{/search}" method="get">
             <div class="u-pull-left">
-                <input type="text" th:field="*{player}" placeholder="Search By Player"/>
+                <input id="player" type="text" th:field="*{player}" placeholder="Search By Player"/>
                 <select th:field="*{teamId}">
                     <option th:value="0">Search By Team</option>
                     <option th:each="team : ${teams}"
@@ -74,7 +74,7 @@
                     <option th:value="Commemorative + ' ' + Patch">Commemorative Patch</option>
                     <option th:value="Commemorative + ' ' + Medallion">Commemorative Medallion</option>
                 </select>
-                <input class="header-submit" type="submit" name="search" value="Run Search"/>
+                <input id="run-search" class="header-submit" type="submit" name="search" value="Run Search"/>
             </div>
         </form>
     </div>

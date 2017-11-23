@@ -13,20 +13,25 @@ public class RunSearchWithSetAndNumAndInsertAndPlayerSteps extends StepDefinitio
     public void user_selects_specified_set(String set) throws Throwable {
         Select val = new Select(driver.findElement(By.id("set")));
         val.selectByVisibleText(set);
+        Thread.sleep(500);
     }
 
     @And("^User enters \"(.*)\" as their specified card number$")
     public void user_enters_specified_card_number(String cardNum) throws Throwable {
         driver.findElement(By.id("card_num")).sendKeys(cardNum);
+        Thread.sleep(500);
     }
 
     @And("^User enters \"(.*)\" as their specified insert$")
     public void user_enters_specified_insert(String insert) throws Throwable {
         driver.findElement(By.id("insert_type")).sendKeys(insert);
+        Thread.sleep(500);
     }
 
     @And("^User enters \"(.*)\" as their specified player$")
     public void user_enters_specified_player(String player) throws Throwable {
+        driver.findElement(By.id("player")).clear();
         driver.findElement(By.id("player")).sendKeys(player);
+        Thread.sleep(500);
     }
 }
