@@ -11,7 +11,6 @@ import java.util.*;
  * @author - Christopher Recinos
  */
 
-//TODO - Add functionality for multiple possible players
 
 @Service
 public class CardService {
@@ -38,7 +37,7 @@ public class CardService {
      * 3. cardset and cardnum - DONE
      * 4. cardset and player - DONE
      * 5. player and mem - DONE
-     * 6. player and cardnum
+     * 6. player and cardnum - DONE
      * 7. cardset and insert
      * 8. cardset and team
      * 9. team and mem
@@ -104,6 +103,14 @@ public class CardService {
                         cards.add(res);
                 }
             }
+
+            if(cards.isEmpty() && hasNum) {
+                for(Player p : players) {
+                    results = getCardsWithPlayerAndCardNum(p, cardNum);
+                    for(Card res : results)
+                        cards.add(res);
+                }
+            }
         }
 
         if(cards.isEmpty())
@@ -117,7 +124,7 @@ public class CardService {
      ***************************/
 
     private boolean strIsValid(String str) {
-        return str != null && !str.equals("");
+        return str != null && !str.equals("") && !str.equals("none");
     }
 
     private List<Card> getCardWithSetAndNumAndInsertAndPlayer(CardSet set, String cardNum, String insertType, Player player) {
@@ -163,6 +170,13 @@ public class CardService {
 
     private List<Card> getCardsWithPlayerAndMem(Player player, String memType) {
         return this.cardRepository.findByPlayerAndMemTypeIgnoreCase(player, memType);
+    }
+
+    private List<Card> getCardsWithPlayerAndCardNum(Player player, String cardNum) {
+        List<Card> results = this.cardRepository.findByPlayerAndCardNumIgnoreCase(player, cardNum);
+        if(results.isEmpty())
+            results = this.cardRepository.findByPlayerAndCardNumIgnoreCaseStartingWith(player, cardNum);
+        return results;
     }
     /**
      * Helper method that sorts the results by the year value of their respective card year.
