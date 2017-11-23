@@ -45,6 +45,7 @@ public class SearchController {
         model.addAttribute("sets", startController.getAllSets());
         model.addAttribute("results", results);
         model.addAttribute("prev_search", "You searched for: " + getPreviousSearch(searchForm));
+        model.addAttribute("result_size", results.size());
 
         return "results";
     }
