@@ -128,15 +128,10 @@ public class CardService {
     }
 
     private List<Card> getCardWithSetAndNumAndInsertAndPlayer(CardSet set, String cardNum, String insertType, Player player) {
-        List<Card> cards = new ArrayList<>();
-        Card card = this.cardRepository.findByCardSetAndCardNumIgnoreCaseAndInsertTypeIgnoreCaseAndPlayer(set, cardNum, insertType, player);
-        if(card != null)
-            cards.add(card);
-        else {
-            cards = this.cardRepository.findByCardSetAndCardNumIgnoreCaseAndInsertTypeIgnoreCaseStartingWithAndPlayer(set, cardNum, insertType, player);
-            if(cards.isEmpty())
-                cards = this.cardRepository.findByCardSetAndCardNumIgnoreCaseAndInsertTypeIgnoreCaseStartingWithAndPlayer(set, cardNum, insertType.charAt(0), player);
-        }
+        List<Card> cards = this.cardRepository.findByCardSetAndCardNumIgnoreCaseStartingWithAndInsertTypeIgnoreCaseStartingWithAndPlayer(set, cardNum, insertType, player);
+
+        if(cards.isEmpty())
+            cards = this.cardRepository.findByCardSetAndCardNumIgnoreCaseStartingWithAndInsertTypeIgnoreCaseStartingWithAndPlayer(set, cardNum, insertType.charAt(0), player);
 
         return cards;
     }
@@ -154,12 +149,10 @@ public class CardService {
     }
 
     private List<Card> getCardsWithSetAndNum(CardSet cardSet, String cardNum) {
-        List<Card> cards = this.cardRepository.findByCardSetAndCardNumIgnoreCase(cardSet, cardNum);
-        if(cards.isEmpty()) {
-            cards = this.cardRepository.findByCardSetAndCardNumIgnoreCaseStartingWith(cardSet, cardNum);
+        List<Card> cards = this.cardRepository.findByCardSetAndCardNumIgnoreCaseStartingWith(cardSet, cardNum);
+
             if(cards.isEmpty())
                 cards = this.cardRepository.findByCardSetAndCardNumIgnoreCaseStartingWith(cardSet, cardNum.charAt(0));
-        }
 
         return cards;
     }

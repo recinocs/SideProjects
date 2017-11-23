@@ -35,6 +35,5 @@ public class RunSearchWithNoParametersSteps extends StepDefinition {
         if(!test_num.equals(num))
             throw new AssertionError("Results don't match");
         Thread.sleep(6000); //Sleep in order to scroll down and confirm result size. Increase or decrease as needed
-        driver.quit();
     }
 }
