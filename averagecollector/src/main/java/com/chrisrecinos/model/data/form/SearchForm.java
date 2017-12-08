@@ -8,11 +8,12 @@ import java.io.Serializable;
 
 public class SearchForm implements Serializable {
     private String player;
-    private String serial;
     private Long teamId;
     private Long setId;
     private String memType;
     private String cardNum;
+    private String insertType;
+    private String serialNum;
 
     public String getPlayer() {
         return player;
@@ -20,14 +21,6 @@ public class SearchForm implements Serializable {
 
     public void setPlayer(String player) {
         this.player = player;
-    }
-
-    public String getSerial() {
-        return serial;
-    }
-
-    public void setSerial(String serial) {
-        this.serial = serial;
     }
 
     public Long getTeamId() {
@@ -60,5 +53,21 @@ public class SearchForm implements Serializable {
 
     public void setSetId(Long setId) {
         this.setId = setId;
+    }
+
+    public String getInsertType() {
+        return insertType;
+    }
+
+    public void setInsertType(String insertType) {
+        this.insertType = insertType;
+    }
+
+    public String getSerialNum() {
+        return serialNum;
+    }
+
+    public void setSerialNum(String serialNum) {
+        this.serialNum = serialNum;
     }
 }

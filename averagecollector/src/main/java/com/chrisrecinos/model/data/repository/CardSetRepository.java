@@ -14,11 +14,10 @@ import java.util.List;
  *
  */
 
-//TODO - Add searching for first character in addition to LIKE
-
 @Repository
 public interface CardSetRepository extends CrudRepository<CardSet, Long> {
     CardSet findByCardYearAndBrandAndSetNameIgnoreCase(CardYear year, Brand brand, String setName);
+    CardSet findById(Long id);
     List<CardSet> findByCardYearAndBrandAndSetNameIgnoreCaseStartingWithOrderBySetNameAsc(CardYear year, Brand brand, String setName);
     List<CardSet> findByCardYearAndBrandAndSetNameIgnoreCaseStartingWithOrderBySetNameAsc(CardYear year, Brand brand, Character c);
     List<CardSet> findByBrandAndSetNameIgnoreCaseOrderByCardYearAsc(Brand brand, String setName);

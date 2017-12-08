@@ -11,37 +11,32 @@ import java.util.*;
  * @author - Christopher Recinos
  */
 
-//TODO - Add functionality for multiple possible players
 
 @Service
 public class CardService {
 
     private CardRepository cardRepository;
-    private CardSetRepository cardSetRepository;
-    private PlayerRepository playerRepository;
-    private BrandRepository brandRepository;
-    private CardYearRepository cardYearRepository;
     private TeamRepository teamRepository;
+    private CardSetRepository cardSetRepository;
+
+    private PlayerService playerService;
 
     @Autowired
-    public CardService(CardRepository cardRepository, CardSetRepository cardSetRepository,
-                       PlayerRepository playerRepository, BrandRepository brandRepository,
-                       CardYearRepository cardYearRepository, TeamRepository teamRepository) {
+    public CardService(CardRepository cardRepository, PlayerService playerService,
+                       TeamRepository teamRepository, CardSetRepository cardSetRepository) {
         this.cardRepository = cardRepository;
-        this.cardSetRepository = cardSetRepository;
-        this.playerRepository = playerRepository;
-        this.brandRepository = brandRepository;
-        this.cardYearRepository = cardYearRepository;
+        this.playerService = playerService;
         this.teamRepository = teamRepository;
+        this.cardSetRepository = cardSetRepository;
     }
 
     /**
      * Order to find by
-     * 1. cardset and cardnum and insert and player - DONE
-     * 2. cardset and cardnum and insert - DONE
-     * 3. cardset and cardnum - DONE
-     * 4. cardset and player - DONE
-     * 5. player and mem - DONE
+     * 1. cardset and cardnum and insert and player - DONE, Test Written
+     * 2. cardset and cardnum and insert - DONE, Test Written
+     * 3. cardset and cardnum - DONE, Test Written
+     * 4. cardset and player - DONE, Test Written
+     * 5. player and mem - DONE, Test Written
      * 6. player and cardnum - DONE
      * 7. cardset and insert - DONE
      * 8. cardset and team - DONE
@@ -54,315 +49,180 @@ public class CardService {
      * 15. mem - DONE
      * 16. insert - DONE
      * 17. all - DONE
+     *
+     * After all scenarios have been run through, the list is then
+     * filtered based on the parallel option chosen
      */
     public List<Card> getCards(String firstName, String lastName, String suffix, Long teamId,
-                               Long setId, String cardNum, String serial, String memType) {
-        return this.cardRepository.findAll();
-    }
-
-    public List<Card> getCards(Integer cardYear, String brandName, String setName, String cardNum,
-                               String firstName, String lastName, String suffix, String teamName,
-                               String city, String insertType, String memType) {
+                               Long setId, String cardNum, String memType,
+                               String insertType, String serialNum) {
         List<Card> cards = new ArrayList<>();
+        List<Card> results;
+        List<Player> players = new ArrayList<>();
 
-        CardYear year = null;
-        Brand brand = null;
-        CardSet set = null;
-        Player player = null;
-        Team team = null;
+        if(firstName != null && !firstName.equalsIgnoreCase(""))
+            players = this.playerService.getPlayers(firstName, lastName, suffix);
 
-        boolean realSet = false;
-        boolean realNum = false;
-        boolean realPlayer = false;
-        boolean realTeam = false;
-        boolean realInsert = false;
-        boolean hasMem = false;
+        Team team = this.teamRepository.findById(teamId);
+        CardSet set = this.cardSetRepository.findById(setId);
 
-        if(cardYear != null)
-            year = this.cardYearRepository.findByCardYear(cardYear);
+        boolean hasNum = strIsValid(cardNum);
+        boolean hasMem = strIsValid(memType);
+        boolean hasInsert = strIsValid(insertType);
+        boolean hasSerial = strIsValid(serialNum);
 
-        if(brandName != null && !brandName.equals(""))
-            brand = this.brandRepository.findByBrandNameIgnoreCase(brandName);
-
-        if(brand != null && year != null) {
-            if(setName != null && !setName.equals(""))
-                set = this.cardSetRepository.findByCardYearAndBrandAndSetNameIgnoreCase(year, brand, setName);
-            else
-                set = this.cardSetRepository.findByCardYearAndBrandAndSetNameIgnoreCase(year, brand, "Base Set");
-        }
-
-        boolean playerChecked = false;
-
-        if(firstName != null && !firstName.equals("") && lastName != null && !lastName.equals("")) {
-            List<Player> players;
-            if(suffix != null && !suffix.equals(""))
-                player = this.playerRepository.findByFirstNameIgnoreCaseAndLastNameIgnoreCaseAndSuffixIgnoreCase(firstName, lastName, suffix);
-            if(player == null) {
-                players = this.playerRepository.findByFirstNameIgnoreCaseAndLastNameIgnoreCaseOrderByDobAsc(firstName, lastName);
-                if(players.size() == 1)
-                    player = players.get(0);
-            }
-
-            if(player == null) {
-                player = this.findPlayerByFirstName(firstName);
-                if(player == null) {
-                    player = this.findPlayerByLastName(lastName);
-                }
-            }
-
-            playerChecked = true;
-        }
-
-        if(player == null && !playerChecked) {
-            if(firstName != null && !firstName.equals("")) {
-                player = this.findPlayerByFirstName(firstName);
-                if(player == null)
-                    player = this.findPlayerByLastName(firstName);
-            }
-
-            if(player == null && lastName != null && !lastName.equals("")) {
-                player = this.findPlayerByLastName(lastName);
-                if(player == null)
-                    player = this.findPlayerByFirstName(lastName);
-            }
-        }
-
-        /*if(teamName != null && !teamName.equals("")) {
-            team = this.teamRepository.findByTeamNameIgnoreCase(teamName);
-            if(team == null)
-                team = this.findTeamByTeamName(teamName);
-            if(team == null)
-                team = this.findTeamByCity(teamName);
-        }
-
-        if(team == null && city != null && !city.equals("")) {
-            team = this.findTeamByCity(city);
-            if(team == null)
-                team = this.findTeamByTeamName(city);
-        }*/
-
-        if(teamName != null && !teamName.equals("") && city != null && !city.equals(""))
-            team = this.teamRepository.findByCityIgnoreCaseAndTeamNameIgnoreCase(city, teamName);
-
-        System.out.println(city);
-        System.out.println(teamName);
-
-        if(team == null) {
-            if(teamName != null && !teamName.equals("")) {
-                team = this.findTeamByTeamName(teamName);
-                if(team == null)
-                    team = this.findTeamByCity(teamName);
-            }
-
-            if(team == null && city != null && !city.equals("")) {
-                team = this.findTeamByCity(city);
-                if(team == null)
-                    team = this.findTeamByCity(teamName);
-            }
-        }
-
-        System.out.println(team);
-
-        if(player != null)
-            realPlayer = true;
-
-        if(team != null)
-            realTeam = true;
-
-        if(set != null)
-            realSet = true;
-
-        if(cardNum != null && !cardNum.equals(""))
-            realNum = true;
-
-        if(insertType != null && !insertType.equals(""))
-            realInsert = true;
-
-        if(memType != null && !memType.equals(""))
-            hasMem = true;
-
-        if(realSet) {
-            if(realNum) {
-                if(realInsert) {
-                    if(realPlayer) {
-                        Card card = getCardWithSetAndNumAndInsertAndPlayer(set, cardNum, insertType, player);
-                        if (card != null)
-                            cards.add(card);
+        if(set != null) {
+            if(hasNum) {
+                if(hasInsert) {
+                    if(!players.isEmpty()) {
+                        for(Player p : players) {
+                            results = getCardWithSetAndNumAndInsertAndPlayer(set, cardNum, insertType, p);
+                            cards.addAll(results);
+                        }
                     }
 
-                    if(cards.isEmpty())
-                        cards = getCardsWithSetAndNumAndInsert(set, cardNum, insertType);
+                    if(cards.isEmpty()) {
+                        cards = getCardWithSetAndNumAndInsert(set, cardNum, insertType);
+                    }
                 }
 
-                if(cards.isEmpty())
-                    cards = this.getCardsWithSetAndNum(set, cardNum);
+                if(cards.isEmpty()) {
+                    cards = getCardsWithSetAndNum(set, cardNum);
+                }
             }
 
-            if(cards.isEmpty() && realPlayer)
-                cards = getCardsWithSetAndPlayer(set, player);
+            if(cards.isEmpty() && !players.isEmpty()) {
+                for(Player p : players) {
+                    results = getCardsWithSetAndPlayer(set, p);
+                    cards.addAll(results);
+                }
+            }
         }
 
-        if(cards.isEmpty() && realPlayer) {
+        if(cards.isEmpty() && !players.isEmpty()) {
+            if(hasMem) {
+                for(Player p : players) {
+                    results = getCardsWithPlayerAndMem(p, memType);
+                    cards.addAll(results);
+                }
+            }
+
+            if(cards.isEmpty() && hasNum) {
+                for(Player p : players) {
+                    results = getCardsWithPlayerAndCardNum(p, cardNum);
+                    cards.addAll(results);
+                }
+            }
+        }
+
+        if(cards.isEmpty() && set != null) {
+            if(hasInsert)
+                cards = getCardsWithSetAndInsert(set, insertType);
+
+            if(cards.isEmpty() && team != null)
+                cards = getCardsWithSetAndTeam(set, team);
+        }
+
+        if(cards.isEmpty() && team != null) {
             if(hasMem)
-                cards = getCardsWithPlayerAndMem(player, memType);
-            if(cards.isEmpty() && realNum)
-                cards = getCardsWithPlayerAndNum(player, cardNum);
+                cards = getCardsWithTeamAndMem(team, memType);
+
+            if(cards.isEmpty() && hasInsert)
+                cards = getCardsWithTeamAndInsert(team, insertType);
         }
 
-        if(cards.isEmpty() && realSet) {
-            if(realInsert)
-                cards = this.getCardsWithSetAndInsert(set, insertType);
-            if(cards.isEmpty() && realTeam)
-                cards = this.getCardsWithSetAndTeam(set, team);
+        if(cards.isEmpty() && set != null)
+            cards = getCardsWithSet(set);
+
+        if(cards.isEmpty() && hasNum)
+            cards = getCardsWithNum(cardNum);
+
+        if(cards.isEmpty() && !players.isEmpty()) {
+            for(Player p : players) {
+                results = getCardsWithPlayer(p);
+                cards.addAll(results);
+            }
         }
 
-        if(cards.isEmpty() && realTeam) {
-            if(hasMem)
-                cards = this.getCardsWithTeamAndMem(team, memType);
-            if(cards.isEmpty() && realInsert)
-                cards = this.getCardsWithTeamAndInsert(team, insertType);
-        }
-
-        if(cards.isEmpty() && realSet)
-            cards = this.getCardsWithSet(set);
-
-        if(cards.isEmpty() && realNum)
-            cards = this.getCardsWithCardNum(cardNum);
-
-        if(cards.isEmpty() && realPlayer)
-            cards = this.getCardsWithPlayer(player);
-
-        if(cards.isEmpty() && realTeam)
-            cards = this.getCardsWithTeam(team);
+        if(cards.isEmpty() && team != null)
+            cards = getCardsWithTeam(team);
 
         if(cards.isEmpty() && hasMem)
-            cards = this.getCardsWithMem(memType);
+            cards = getCardsWithMem(memType);
 
-        if(cards.isEmpty() && realInsert)
-            cards = this.getCardsWithInsert(insertType);
+        if(cards.isEmpty() && hasInsert)
+            cards = getCardsWithInsert(insertType);
 
         if(cards.isEmpty())
             cards = this.cardRepository.findAll();
 
+        if(hasSerial)
+            cards = serialFilter(cards, serialNum);
+
+        if(cards.size() == this.cardRepository.findAll().size())
+            cards = new ArrayList<>();
+
         return sortYears(cards);
     }
 
-    private Player findPlayerByFirstName(String firstName) {
-        Player player = null;
+    /****************************
+     * HELPER METHODS
+     ***************************/
 
-        List<Player> players = this.playerRepository.findByFirstNameIgnoreCaseOrderByLastNameAscDobAsc(firstName);
-
-        if(players.size() == 1)
-            player = players.get(0);
-        else if(players.size() == 0) {
-            players = this.playerRepository.findByFirstNameIgnoreCaseStartingWithOrderByLastNameAscDobAsc(firstName);
-            if(players.size() == 1)
-                player = players.get(0);
-        }
-
-        return player;
+    private boolean strIsValid(String str) {
+        return str != null && !str.equals("") && !str.equals("none");
     }
 
-    private Player findPlayerByLastName(String lastName) {
-        Player player = null;
+    private List<Card> getCardWithSetAndNumAndInsertAndPlayer(CardSet set, String cardNum, String insertType, Player player) {
+        List<Card> cards = this.cardRepository.findByCardSetAndCardNumIgnoreCaseStartingWithAndInsertTypeIgnoreCaseStartingWithAndPlayer(set, cardNum, insertType, player);
 
-        List<Player> players = this.playerRepository.findByLastNameIgnoreCaseOrderByFirstNameAscDobAsc(lastName);
-        if(players.size() == 1)
-            player = players.get(0);
-        else if(players.size() == 0) {
-            players = this.playerRepository.findByLastNameIgnoreCaseStartingWithOrderByFirstNameAscDobAsc(lastName);
-            if(players.size() == 1)
-                player = players.get(0);
-        }
+        if(cards.isEmpty())
+            cards = this.cardRepository.findByCardSetAndCardNumIgnoreCaseStartingWithAndInsertTypeIgnoreCaseStartingWithAndPlayer(set, cardNum, insertType.charAt(0), player);
 
-        return player;
+        return cards;
     }
 
-    private Team findTeamByTeamName(String teamName) {
-        Team team = null;
-
-        List<Team> teams = this.teamRepository.findByTeamNameIgnoreCase(teamName);
-        if(teams.size() == 1)
-            team = teams.get(0);
-        else if(teams.size() == 0) {
-            teams = this.teamRepository.findByTeamNameIgnoreCaseStartingWithOrderByTeamNameAsc(teamName);
-            if(teams.size() == 1)
-                team = teams.get(0);
-        }
-
-        return team;
-    }
-
-    private Team findTeamByCity(String city) {
-        Team team = null;
-
-        List<Team> teams = this.teamRepository.findByCityIgnoreCaseOrderByCityAsc(city);
-        if(teams.size() == 1)
-            team = teams.get(0);
-        else if(teams.size() == 0) {
-            teams = this.teamRepository.findByCityIgnoreCaseStartingWithOrderByTeamNameAsc(city);
-            if(teams.size() == 1)
-                team = teams.get(0);
-        }
-
-        return team;
-    }
-
-    private Card getCardWithSetAndNumAndInsertAndPlayer(CardSet cardSet, String cardNum, String insertType, Player player) {
-        Card card = this.cardRepository.findByCardSetAndCardNumIgnoreCaseAndInsertTypeIgnoreCaseAndPlayer(cardSet, cardNum, insertType, player);
-
-        if(card == null) {
-            List<Card> cards = this.cardRepository.findByCardSetAndCardNumIgnoreCaseAndInsertTypeIgnoreCaseStartingWithAndPlayer(cardSet, cardNum, insertType, player);
-            if(cards.size() == 1)
-                card = cards.get(0);
-            else if(cards.size() == 0) {
-                cards = this.cardRepository.findByCardSetAndCardNumIgnoreCaseAndInsertTypeIgnoreCaseStartingWithAndPlayer(cardSet, cardNum, insertType.charAt(0), player);
-                if(cards.size() == 1)
-                    card = cards.get(0);
-            }
-        }
-
-        return card;
-    }
-
-    private List<Card> getCardsWithSetAndNumAndInsert(CardSet cardSet, String cardNum, String insertType) {
+    private List<Card> getCardWithSetAndNumAndInsert(CardSet cardSet, String cardNum, String insertType) {
         List<Card> cards = this.cardRepository.findByCardSetAndCardNumIgnoreCaseAndInsertTypeIgnoreCase(cardSet, cardNum, insertType);
-
         if(cards.isEmpty()) {
             cards = this.cardRepository.findByCardSetAndCardNumIgnoreCaseAndInsertTypeIgnoreCaseStartingWith(cardSet, cardNum, insertType);
-            if(cards.isEmpty())
+            if(cards.isEmpty()) {
                 cards = this.cardRepository.findByCardSetAndCardNumIgnoreCaseAndInsertTypeIgnoreCaseStartingWith(cardSet, cardNum, insertType.charAt(0));
+            }
         }
 
         return cards;
     }
 
     private List<Card> getCardsWithSetAndNum(CardSet cardSet, String cardNum) {
-        return this.cardRepository.findByCardSetAndCardNumIgnoreCase(cardSet, cardNum);
+        List<Card> cards = this.cardRepository.findByCardSetAndCardNumIgnoreCaseStartingWith(cardSet, cardNum);
+
+            if(cards.isEmpty())
+                cards = this.cardRepository.findByCardSetAndCardNumIgnoreCaseStartingWith(cardSet, cardNum.charAt(0));
+
+        return cards;
     }
 
     private List<Card> getCardsWithSetAndPlayer(CardSet cardSet, Player player) {
-        return this.cardRepository.findByCardSetAndPlayerOrderByMemTypeAsc(cardSet, player);
+        return this.cardRepository.findByCardSetAndPlayer(cardSet, player);
     }
 
     private List<Card> getCardsWithPlayerAndMem(Player player, String memType) {
-        return this.cardRepository.findByPlayerAndMemTypeIgnoreCaseContaining(player, memType);
+        return this.cardRepository.findByPlayerAndMemTypeIgnoreCase(player, memType);
     }
 
-    private List<Card> getCardsWithPlayerAndNum(Player player, String cardNum) {
-        return this.cardRepository.findByPlayerAndCardNumIgnoreCase(player, cardNum);
+    private List<Card> getCardsWithPlayerAndCardNum(Player player, String cardNum) {
+        List<Card> results = this.cardRepository.findByPlayerAndCardNumIgnoreCase(player, cardNum);
+        if(results.isEmpty())
+            results = this.cardRepository.findByPlayerAndCardNumIgnoreCaseStartingWith(player, cardNum);
+        return results;
     }
 
-    private List<Card> getCardsWithSetAndInsert(CardSet cardSet, String insertType) {
-        List<Card> cards = this.cardRepository.findByCardSetAndInsertTypeIgnoreCase(cardSet, insertType);
-
-        if(cards.isEmpty()) {
-            cards = this.cardRepository.findByCardSetAndInsertTypeIgnoreCaseStartingWith(cardSet, insertType);
-            if(cards.isEmpty())
-                cards = this.cardRepository.findByCardSetAndInsertTypeIgnoreCaseStartingWith(cardSet, insertType.charAt(0));
-        }
-
-        return cards;
+    private List<Card> getCardsWithSetAndInsert(CardSet cardSet, String insert) {
+        List<Card> results = this.cardRepository.findByCardSetAndInsertTypeIgnoreCaseStartingWith(cardSet, insert);
+        if(results.isEmpty())
+            results = this.cardRepository.findByCardSetAndInsertTypeIgnoreCaseStartingWith(cardSet, insert.charAt(0));
+        return results;
     }
 
     private List<Card> getCardsWithSetAndTeam(CardSet cardSet, Team team) {
@@ -374,23 +234,18 @@ public class CardService {
     }
 
     private List<Card> getCardsWithTeamAndInsert(Team team, String insertType) {
-        List<Card> cards = this.cardRepository.findByTeamAndInsertTypeIgnoreCase(team, insertType);
-
-        if(cards.isEmpty()) {
-            cards = this.cardRepository.findByTeamAndInsertTypeIgnoreCaseStartingWith(team, insertType);
-            if(cards.isEmpty())
-                cards = this.cardRepository.findByTeamAndInsertTypeIgnoreCaseStartingWith(team, insertType.charAt(0));
-        }
-
-        return cards;
+        List<Card> results = this.cardRepository.findByTeamAndInsertTypeIgnoreCaseStartingWith(team, insertType);
+        if(results.isEmpty())
+            results = this.cardRepository.findByTeamAndInsertTypeIgnoreCaseStartingWith(team, insertType.charAt(0));
+        return results;
     }
 
     private List<Card> getCardsWithSet(CardSet cardSet) {
         return this.cardRepository.findByCardSet(cardSet);
     }
 
-    private List<Card> getCardsWithCardNum(String cardNum) {
-        return this.cardRepository.findByCardNumIgnoreCase(cardNum);
+    private List<Card> getCardsWithNum(String cardNum) {
+        return this.cardRepository.findByCardNumIgnoreCaseContaining(cardNum);
     }
 
     private List<Card> getCardsWithPlayer(Player player) {
@@ -406,15 +261,10 @@ public class CardService {
     }
 
     private List<Card> getCardsWithInsert(String insertType) {
-        List<Card> cards = this.cardRepository.findByInsertTypeIgnoreCase(insertType);
-
-        if(cards.isEmpty()) {
-            cards = this.cardRepository.findByInsertTypeIgnoreCaseStartingWith(insertType);
-            if(cards.isEmpty())
-                cards = this.cardRepository.findByInsertTypeIgnoreCaseStartingWith(insertType.charAt(0));
-        }
-
-        return cards;
+        List<Card> results = this.cardRepository.findByInsertTypeIgnoreCaseStartingWith(insertType);
+        if(results.isEmpty())
+            results = this.cardRepository.findByInsertTypeIgnoreCaseStartingWith(insertType.charAt(0));
+        return results;
     }
 
     /**
@@ -431,8 +281,7 @@ public class CardService {
 
         for(Card c : cards) {
             Integer c_year = c.getCardSet().getCardYear().getCardYear();
-            if(yearsToCards.get(c_year) == null)
-                yearsToCards.put(c_year, new ArrayList<>());
+            yearsToCards.putIfAbsent(c_year, new ArrayList<>());
             yearsToCards.get(c_year).add(c);
         }
 
@@ -443,8 +292,7 @@ public class CardService {
 
         for(Integer key : sortedKeys) {
             List<Card> temp = sortBrands(yearsToCards.get(key));
-            for(Card card : temp)
-                sortedCards.add(card);
+            sortedCards.addAll(temp);
         }
 
         return sortedCards;
@@ -462,8 +310,7 @@ public class CardService {
 
         for(Card c : cards) {
             String c_brand = c.getCardSet().getBrand().getBrandName();
-            if(brandsToCards.get(c_brand) == null)
-                brandsToCards.put(c_brand, new ArrayList<>());
+            brandsToCards.putIfAbsent(c_brand, new ArrayList<>());
             brandsToCards.get(c_brand).add(c);
         }
 
@@ -474,8 +321,7 @@ public class CardService {
 
         for(String key : sortedKeys) {
             List<Card> temp = sortSets(brandsToCards.get(key));
-            for(Card card : temp)
-                sortedCards.add(card);
+            sortedCards.addAll(temp);
         }
 
         return sortedCards;
@@ -492,8 +338,7 @@ public class CardService {
 
         for(Card c : cards) {
             String c_set = c.getCardSet().getSetName();
-            if(setsToCards.get(c_set) == null)
-                setsToCards.put(c_set, new ArrayList<>());
+            setsToCards.putIfAbsent(c_set, new ArrayList<>());
             setsToCards.get(c_set).add(c);
         }
 
@@ -504,8 +349,7 @@ public class CardService {
 
         for(String key : sortedKeys) {
             List<Card> temp = sortInsert(setsToCards.get(key));
-            for(Card card : temp)
-                sortedCards.add(card);
+            sortedCards.addAll(temp);
         }
 
         return sortedCards;
@@ -522,8 +366,7 @@ public class CardService {
 
         for(Card c : cards) {
             String c_insert = c.getInsertType();
-            if(insertsToCards.get(c_insert) == null)
-                insertsToCards.put(c_insert, new ArrayList<>());
+            insertsToCards.putIfAbsent(c_insert, new ArrayList<>());
             insertsToCards.get(c_insert).add(c);
         }
 
@@ -534,8 +377,7 @@ public class CardService {
 
         for(String key : sortedKeys) {
             List<Card> temp = sortFirstName(insertsToCards.get(key));
-            for(Card card : temp)
-                sortedCards.add(card);
+            sortedCards.addAll(temp);
         }
 
         return sortedCards;
@@ -552,8 +394,7 @@ public class CardService {
 
         for(Card c : cards) {
             String c_name = c.getPlayer().getFirstName();
-            if(playersToCards.get(c_name) == null)
-                playersToCards.put(c_name, new ArrayList<>());
+            playersToCards.putIfAbsent(c_name, new ArrayList<>());
             playersToCards.get(c_name).add(c);
         }
 
@@ -564,10 +405,21 @@ public class CardService {
 
         for(String key : sortedKeys) {
             List<Card> temp = playersToCards.get(key);
-            for(Card card : temp)
-                sortedCards.add(card);
+            sortedCards.addAll(temp);
         }
 
         return sortedCards;
+    }
+
+    private List<Card> serialFilter(List<Card> cards, String serial) {
+        List<Card> filteredCards = new ArrayList<>();
+
+        for(Card c : cards) {
+            String cardSerialNumber = c.getSerialNum().split("/")[1];
+            if(cardSerialNumber.equals(serial))
+                filteredCards.add(c);
+        }
+
+        return filteredCards;
     }
 }

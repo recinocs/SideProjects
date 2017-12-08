@@ -38,10 +38,11 @@ public class CardSetService {
      * 5. Set
      * 6. Year
      * 7. Brand
-     * @param year
-     * @param brandName
-     * @param setName
-     * @return
+     *
+     * @param year - year the set was released
+     * @param brandName - the brand that released the set
+     * @param setName - the name of the set
+     * @return - a list of sets with the given year, brand, and/or set name
      */
     public List<CardSet> getSets(Integer year, String brandName, String setName) {
         List<CardSet> cardSets = new ArrayList<>();
@@ -206,8 +207,7 @@ public class CardSetService {
 
         for(CardSet c : sets) {
             Integer c_year = c.getCardYear().getCardYear();
-            if(yearsToSets.get(c_year) == null)
-                yearsToSets.put(c_year, new ArrayList<>());
+            yearsToSets.putIfAbsent(c_year, new ArrayList<>());
             yearsToSets.get(c_year).add(c);
         }
 
@@ -218,8 +218,7 @@ public class CardSetService {
 
         for(Integer key : sortedKeys) {
             List<CardSet> temp = sortBrands(yearsToSets.get(key));
-            for(CardSet set : temp)
-                sortedSets.add(set);
+            sortedSets.addAll(temp);
         }
 
         return sortedSets;
@@ -230,8 +229,7 @@ public class CardSetService {
 
         for(CardSet c : sets) {
             String c_brand = c.getBrand().getBrandName();
-            if(brandsToSets.get(c_brand) == null)
-                brandsToSets.put(c_brand, new ArrayList<>());
+            brandsToSets.putIfAbsent(c_brand, new ArrayList<>());
             brandsToSets.get(c_brand).add(c);
         }
 
@@ -242,8 +240,7 @@ public class CardSetService {
 
         for(String key : sortedKeys) {
             List<CardSet> temp = brandsToSets.get(key);
-            for(CardSet set : temp)
-                sortedSets.add(set);
+            sortedSets.addAll(temp);
         }
 
         return sortedSets;
