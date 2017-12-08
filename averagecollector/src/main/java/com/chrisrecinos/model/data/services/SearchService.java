@@ -25,14 +25,14 @@ public class SearchService {
         List<Card> results;
 
         String[] playerNames = searchForm.getPlayer().split(" ");
-        String firstName = "", lastName = "", suffix = "";
+        String firstName, lastName = "", suffix = "";
 
         Long teamId = searchForm.getTeamId();
         Long setId = searchForm.getSetId();
         String cardNum = searchForm.getCardNum();
         String memType = searchForm.getMemType();
         String insertType = searchForm.getInsertType();
-        String parallelType = searchForm.getParallelType();
+        String serialNum = searchForm.getSerialNum();
 
         switch (playerNames.length) {
             case 1:
@@ -49,7 +49,7 @@ public class SearchService {
         }
 
         results = this.cardService.getCards(firstName, lastName, suffix, teamId, setId, cardNum,
-                                            memType, insertType, parallelType);
+                                            memType, insertType, serialNum);
 
         return results;
     }

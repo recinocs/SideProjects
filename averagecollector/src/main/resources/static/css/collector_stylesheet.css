@@ -132,3 +132,8 @@ footer {
     margin: 20px 0 20px;
     border-bottom: 1px solid #eee
 }
+
+/* Results Styling */
+.no_results {
+    font-style: italic;
+}

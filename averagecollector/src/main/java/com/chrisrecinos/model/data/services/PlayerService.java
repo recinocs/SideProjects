@@ -66,7 +66,7 @@ public class PlayerService {
         }
 
         if (players.isEmpty()){
-            if (players.isEmpty() && realFirst)
+            if (realFirst)
                 players = this.getPlayersByFirstName(firstName);
 
             if (players.isEmpty() && realLast)

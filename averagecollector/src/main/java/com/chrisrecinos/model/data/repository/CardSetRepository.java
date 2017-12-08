@@ -14,8 +14,6 @@ import java.util.List;
  *
  */
 
-//TODO - Add searching for first character in addition to LIKE
-
 @Repository
 public interface CardSetRepository extends CrudRepository<CardSet, Long> {
     CardSet findByCardYearAndBrandAndSetNameIgnoreCase(CardYear year, Brand brand, String setName);

@@ -67,7 +67,7 @@ public class SearchController {
         }
 
         ret_str += searchForm.getCardNum() + " " + searchForm.getInsertType() + " " +
-                searchForm.getParallelType() + " ";
+                searchForm.getSerialNum() + " ";
 
         if(!searchForm.getMemType().equals("none"))
             ret_str += searchForm.getMemType();

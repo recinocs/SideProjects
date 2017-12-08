@@ -13,7 +13,7 @@ public class SearchForm implements Serializable {
     private String memType;
     private String cardNum;
     private String insertType;
-    private String parallelType;
+    private String serialNum;
 
     public String getPlayer() {
         return player;
@@ -63,11 +63,11 @@ public class SearchForm implements Serializable {
         this.insertType = insertType;
     }
 
-    public String getParallelType() {
-        return parallelType;
+    public String getSerialNum() {
+        return serialNum;
     }
 
-    public void setParallelType(String parallelType) {
-        this.parallelType = parallelType;
+    public void setSerialNum(String serialNum) {
+        this.serialNum = serialNum;
     }
 }
