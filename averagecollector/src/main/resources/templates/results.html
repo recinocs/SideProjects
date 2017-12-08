@@ -31,10 +31,6 @@
             cursor: pointer;
             font-weight: bold;
         }
-
-        .pageNumber {
-            padding: 2px;
-        }
     </style>
 
 </head>
@@ -56,7 +52,7 @@
                 <input id="card_num" type="text" style="width: 150px" th:field="*{cardNum}" placeholder="Search By Card Number"/>
                 <input id="insert_type" type="text" th:field="*{insertType}" placeholder="Search By Insert Type"/>
                 <input type="text" th:field="*{parallelType}" placeholder="Search By Parallel"/>
-                <select th:field="*{memType}">
+                <select id="mem_type" th:field="*{memType}">
                     <option selected="selected" th:value="none">Search By Memorabilia Type</option>
                     <option th:value="Relic">Relic</option>
                     <option th:value="Autograph">Autograph</option>

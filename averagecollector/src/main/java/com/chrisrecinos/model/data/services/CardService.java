@@ -32,11 +32,11 @@ public class CardService {
 
     /**
      * Order to find by
-     * 1. cardset and cardnum and insert and player - DONE
-     * 2. cardset and cardnum and insert - DONE
-     * 3. cardset and cardnum - DONE
-     * 4. cardset and player - DONE
-     * 5. player and mem - DONE
+     * 1. cardset and cardnum and insert and player - DONE, Test Written
+     * 2. cardset and cardnum and insert - DONE, Test Written
+     * 3. cardset and cardnum - DONE, Test Written
+     * 4. cardset and player - DONE, Test Written
+     * 5. player and mem - DONE, Test Written
      * 6. player and cardnum - DONE
      * 7. cardset and insert
      * 8. cardset and team

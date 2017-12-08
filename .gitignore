@@ -1,6 +1,7 @@
 .gradle
 build/
 .DS_Store
+out/
 
 ### IntelliJ IDEA ###
 .idea
