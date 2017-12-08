@@ -10,9 +10,13 @@ import java.util.List;
  * @author - Christopher Recinos
  */
 
+
+//TODO - Add in Starting withs for both team and city
 @Repository
 public interface TeamRepository extends CrudRepository<Team, Long>{
-    Team findByTeamNameIgnoreCase(String teamName);
+    Team findByCityIgnoreCaseAndTeamNameIgnoreCase(String city, String teamName);
+    Team findById(Long id);
+    List<Team> findByTeamNameIgnoreCase(String teamName);
     List<Team> findByTeamNameIgnoreCaseStartingWithOrderByTeamNameAsc(String teamName);
     List<Team> findByTeamNameIgnoreCaseStartingWithOrderByTeamNameAsc(Character c);
     List<Team> findByCityIgnoreCaseOrderByCityAsc(String city);

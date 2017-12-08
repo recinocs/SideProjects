@@ -9,8 +9,7 @@ import com.chrisrecinos.model.data.repository.CardYearRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author - Christopher Recinos
@@ -139,7 +138,7 @@ public class CardSetService {
             cardSets = this.cardSetRepository.findAllByOrderBySetNameAsc();
         }
 
-        return cardSets;
+        return sortYears(cardSets);
     }
 
     private CardSet getResultsWithYearAndBrandAndSetName(CardYear year, Brand brand, String setName) {
@@ -200,5 +199,53 @@ public class CardSetService {
 
     private List<CardSet> getResultsWithBrand(Brand brand) {
         return this.cardSetRepository.findByBrandOrderBySetNameAsc(brand);
+    }
+
+    public List<CardSet> sortYears(List<CardSet> sets) {
+        Map<Integer, List<CardSet>> yearsToSets = new HashMap<>();
+
+        for(CardSet c : sets) {
+            Integer c_year = c.getCardYear().getCardYear();
+            if(yearsToSets.get(c_year) == null)
+                yearsToSets.put(c_year, new ArrayList<>());
+            yearsToSets.get(c_year).add(c);
+        }
+
+        List<Integer> sortedKeys = new ArrayList<>(yearsToSets.keySet());
+        Collections.sort(sortedKeys);
+
+        List<CardSet> sortedSets = new ArrayList<>();
+
+        for(Integer key : sortedKeys) {
+            List<CardSet> temp = sortBrands(yearsToSets.get(key));
+            for(CardSet set : temp)
+                sortedSets.add(set);
+        }
+
+        return sortedSets;
+    }
+
+    private List<CardSet> sortBrands(List<CardSet> sets) {
+        Map<String, List<CardSet>> brandsToSets = new HashMap<>();
+
+        for(CardSet c : sets) {
+            String c_brand = c.getBrand().getBrandName();
+            if(brandsToSets.get(c_brand) == null)
+                brandsToSets.put(c_brand, new ArrayList<>());
+            brandsToSets.get(c_brand).add(c);
+        }
+
+        List<String> sortedKeys = new ArrayList<>(brandsToSets.keySet());
+        Collections.sort(sortedKeys);
+
+        List<CardSet> sortedSets = new ArrayList<>();
+
+        for(String key : sortedKeys) {
+            List<CardSet> temp = brandsToSets.get(key);
+            for(CardSet set : temp)
+                sortedSets.add(set);
+        }
+
+        return sortedSets;
     }
 }

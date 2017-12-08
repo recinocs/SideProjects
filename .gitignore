@@ -1,6 +1,7 @@
 .gradle
 build/
 .DS_Store
+out/
 
 ### IntelliJ IDEA ###
 .idea
@@ -10,3 +11,4 @@ build/
 
 style-ref/
 Webapp/
+style examples/

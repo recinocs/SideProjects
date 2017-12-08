@@ -36,9 +36,9 @@ public class CardController {
                            @RequestParam(required = false) String insertType,
                            @RequestParam(required = false) String memType,
                            Model model) {
-        List<Card> cards = this.cardService.getCards(year, brandName, setName, cardNum, firstName,
-                lastName, suffix, teamName, city, insertType, memType);
-        model.addAttribute("cards", cards);
+        //List<Card> cards = this.cardService.getCards(year, brandName, setName, cardNum, firstName,
+                //lastName, suffix, teamName, city, insertType, memType);
+        model.addAttribute("cards", new ArrayList<>());
         return "cards";
     }
 }
