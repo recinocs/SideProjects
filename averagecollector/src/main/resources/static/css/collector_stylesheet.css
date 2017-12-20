@@ -119,10 +119,10 @@ footer {
 
 /* Header and Footer Styling */
 .result-header {
-    padding-bottom: 40px;
+    padding-bottom: 20px;
     background: #FF6961;
     margin: 0;
-    padding-top: 40px;
+    padding-top: 20px;
     padding-left: 40px;
     height: 8vh;
 }
@@ -136,6 +136,22 @@ footer {
 /* Results Styling */
 .no_results {
     font-style: italic;
+}
+
+#result-body {
+    background-image:url('../images/collector_background.jpg');
+    background-size:cover;
+    background-position: center;
+    min-height: 570px;
+    height: 70%;
+}
+
+#table-body {
+    min-height: 570px;
+    background: white;
+    width: 65%;
+    margin: 0 18%;
+
 }
 
 /* Profile Styling */
