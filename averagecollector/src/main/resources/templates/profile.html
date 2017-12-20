@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Player Profile</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css"/>
+    <link rel="stylesheet" href="../css/collector_stylesheet.css"/>
+</head>
+<body>
+    <div id="profile">
+        <div class="profile-field">
+            <p id="player-name">Full Name:
+                <span th:text="${id}">Name</span>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

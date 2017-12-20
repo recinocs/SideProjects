@@ -74,50 +74,56 @@
             </div>
         </form>
     </div>
-<div class="container">
-    <div class="page-header">
-        <h2>Search Results</h2>
-        <h4 th:text="${prev_search}">Previous Search</h4>
-        <h6 style="font-style: italic">Total Results:
-            <span th:text="${result_size}" id="total_res">None</span>
-        </h6>
-    </div>
-    <div th:switch="${result_size}">
-        <div th:case="0">
-            <div class="sixteen columns">
-                <div class="six columns offset-by-four">
-                    <h4 class="no_results">No results found for search.</h4>
-                    <p class="no_results">Please edit your search options and try again.</p>
+
+    <div class="container">
+        <div class="page-header">
+            <h2>Search Results</h2>
+            <h4 th:text="${prev_search}">Previous Search</h4>
+            <h6 style="font-style: italic">Total Results:
+                <span th:text="${result_size}" id="total_res">None</span>
+            </h6>
+        </div>
+
+        <div th:switch="${result_size}">
+            <div th:case="0">
+                <div class="sixteen columns">
+                    <div class="six columns offset-by-four">
+                        <h4 class="no_results">No results found for search.</h4>
+                        <p class="no_results">Please edit your search options and try again.</p>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div th:case="*">
-            <table id = "results" class="table table-striped table-bordered">
-                <tr>
-                    <th>Set</th>
-                    <th>Player</th>
-                    <th>Team</th>
-                    <th>Card Number</th>
-                    <th>Quantity</th>
-                    <th>Insert Type</th>
-                    <th>Parallel Type</th>
-                    <th>Memorabilia Type</th>
-                    <th>Serial Number</th>
-                </tr>
-                <tr th:each="card:${results}">
-                    <td th:text="${card.cardSet}">Set</td>
-                    <td th:text="${card.player}">Player</td>
-                    <td th:text="${card.team}">Team</td>
-                    <td th:text="${card.cardNum}">Card Number</td>
-                    <td th:text="${card.quantity}">Quantity</td>
-                    <td th:text="${card.insertType}">Insert Type</td>
-                    <td th:text="${card.parallelType}">Parallel Type</td>
-                    <td th:text="${card.memType}">Memorabilia Type</td>
-                    <td th:text="${card.serialNum}">Parallel Num</td>
-                </tr>
-            </table>
+
+            <div th:case="*">
+                <table id = "results" class="table table-striped table-bordered">
+                    <tr>
+                        <th>Set</th>
+                        <th>Player</th>
+                        <th>Team</th>
+                        <th>Card Number</th>
+                        <th>Quantity</th>
+                        <th>Insert Type</th>
+                        <th>Parallel Type</th>
+                        <th>Memorabilia Type</th>
+                        <th>Serial Number</th>
+                        <th>Card Profile</th>
+                    </tr>
+
+                    <tr th:each="card:${results}">
+                        <td th:text="${card.cardSet}">Set</td>
+                        <td th:text="${card.player}">Player</td>
+                        <td th:text="${card.team}">Team</td>
+                        <td th:text="${card.cardNum}">Card Number</td>
+                        <td th:text="${card.quantity}">Quantity</td>
+                        <td th:text="${card.insertType}">Insert Type</td>
+                        <td th:text="${card.parallelType}">Parallel Type</td>
+                        <td th:text="${card.memType}">Memorabilia Type</td>
+                        <td th:text="${card.serialNum}">Parallel Num</td>
+                        <td><a th:href="@{'/profile/' + ${card.id}}">View Card</a></td>
+                    </tr>
+                </table>
+            </div>
         </div>
     </div>
-</div>
 </body>
 </html>

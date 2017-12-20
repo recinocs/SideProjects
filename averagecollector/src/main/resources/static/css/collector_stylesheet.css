@@ -137,3 +137,9 @@ footer {
 .no_results {
     font-style: italic;
 }
+
+/* Profile Styling */
+#profile {
+    text-align: center;
+    margin-top: 30%;
+}
