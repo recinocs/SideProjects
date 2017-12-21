@@ -7,34 +7,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css"/>
     <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet"/>
     <link rel="stylesheet" href="css/collector_stylesheet.css"/>
-
-    <style>
-        h2, h4 {
-            font-family: 'Lato', sans-serif;
-        }
-
-        body {
-            background: whitesmoke;
-        }
-
-        h2 {
-            font-size: 55px;
-        }
-        
-        h4 {
-            font-weight: 600;
-        }
-
-        .focus {
-            background-color: #ff00ff;
-            color: #fff;
-            cursor: pointer;
-            font-weight: bold;
-        }
-    </style>
-
 </head>
-<body>
+
+<body id="result-page">
     <div class="result-header">
         <form id="search-header" action="#" th:object="${searchForm}" th:action="@{/search}" method="get">
             <div class="u-pull-left">

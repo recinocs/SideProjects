@@ -43,6 +43,11 @@ footer {
 }
 
 /* Landing Page Styling */
+#landing-page section {
+    font-family: 'Lato', sans-serif;
+    font-weight: bolder;
+}
+
 #landing {
     background-image:url('../images/collector_background.jpg');
     background-size:cover;
@@ -59,10 +64,12 @@ footer {
 }
 
 #landing h1 {
+    font-family: 'Pacifico', cursive;
     font-size: 50px;
 }
 
 #landing p {
+    font-family: 'Source Code Pro', monospace;
     font-size: 20px;
 }
 
@@ -112,11 +119,6 @@ footer {
     color: mintcream;
 }
 
-/* Homepage Styling */
-#search {
-    display: flex;
-}
-
 /* Header and Footer Styling */
 .result-header {
     padding-bottom: 20px;
@@ -131,6 +133,40 @@ footer {
     padding-bottom: 9px;
     margin: 20px 0 20px;
     border-bottom: 1px solid #eee
+}
+
+.page-header h2, h4 {
+    font-family: 'Lato', sans-serif;
+}
+
+.page-header h2 {
+    font-size: 55px;
+}
+
+.page-header h4 {
+    font-weight: 600;
+}
+
+/* Homepage Styling */
+#homepage, #result-page {
+    background: whitesmoke;
+}
+
+#search {
+    padding-left: 2%;
+}
+
+#homepage-header {
+    padding-top: 10px;
+    background: #AEC6CF;
+    padding-bottom: 10px;
+}
+
+#homepage-header h1 {
+    font-family: 'Pacifico', cursive;
+    text-align: center;
+    color: mintcream;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
 }
 
 /* Results Styling */
