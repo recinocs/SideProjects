@@ -2,6 +2,7 @@ package com.chrisrecinos.model.data.services;
 
 import com.chrisrecinos.model.data.entity.*;
 import com.chrisrecinos.model.data.repository.*;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -66,10 +67,10 @@ public class CardService {
         Team team = this.teamRepository.findById(teamId);
         CardSet set = this.cardSetRepository.findById(setId);
 
-        boolean hasNum = strIsValid(cardNum);
-        boolean hasMem = strIsValid(memType);
-        boolean hasInsert = strIsValid(insertType);
-        boolean hasSerial = strIsValid(serialNum);
+        boolean hasNum = StringUtils.isNotEmpty(cardNum);
+        boolean hasMem = StringUtils.isNotEmpty(memType);
+        boolean hasInsert = StringUtils.isNotEmpty(insertType);
+        boolean hasSerial = StringUtils.isNotEmpty(serialNum);
 
         if(set != null) {
             if(hasNum) {
@@ -168,10 +169,6 @@ public class CardService {
     /****************************
      * HELPER METHODS
      ***************************/
-
-    private boolean strIsValid(String str) {
-        return str != null && !str.equals("") && !str.equals("none");
-    }
 
     private List<Card> getCardWithSetAndNumAndInsertAndPlayer(CardSet set, String cardNum, String insertType, Player player) {
         List<Card> cards = this.cardRepository.findByCardSetAndCardNumIgnoreCaseStartingWithAndInsertTypeIgnoreCaseStartingWithAndPlayer(set, cardNum, insertType, player);
