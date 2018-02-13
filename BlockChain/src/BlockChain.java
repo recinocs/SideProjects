@@ -1,28 +1,30 @@
+import java.security.Security;
 import java.util.ArrayList;
 import com.google.gson.GsonBuilder;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 public class BlockChain {
 
     private static ArrayList<Block> blockchain = new ArrayList<>();
     private static int difficulty = 5;
+    public static Wallet walletA;
+    public static Wallet walletB;
 
     public static void main(String[] args) {
-        blockchain.add(new Block("First block", "0"));
-        System.out.println("Mining first block...");
-        blockchain.get(0).mineBlock(difficulty);
+        Security.addProvider(new BouncyCastleProvider());
 
-        blockchain.add(new Block("Second block", blockchain.get(blockchain.size()-1).getHash()));
-        System.out.println("Mining second block...");
-        blockchain.get(1).mineBlock(difficulty);
+        walletA = new Wallet();
+        walletB = new Wallet();
 
-        blockchain.add(new Block("Third block", blockchain.get(blockchain.size()-1).getHash()));
-        System.out.println("Mining third block...");
-        blockchain.get(2).mineBlock(difficulty);
+        System.out.println("Private and public keys: ");
+        System.out.println(StringUtil.getStringFromKey(walletA.getPrivateKey()));
+        System.out.println(StringUtil.getStringFromKey(walletA.getPublicKey()));
 
-        System.out.println("\nBlockchain is Valid: " + isChainValid());
+        Transaction transaction = new Transaction(walletA.getPublicKey(), walletB.getPublicKey(), 5, null);
+        transaction.generateSignature(walletA.getPrivateKey());
 
-        String blockchainJson = new GsonBuilder().setPrettyPrinting().create().toJson(blockchain);
-        System.out.println(blockchainJson);
+        System.out.println("Is signature verified");
+        System.out.println(transaction.verifySignature());
     }
 
     private static Boolean isChainValid() {
