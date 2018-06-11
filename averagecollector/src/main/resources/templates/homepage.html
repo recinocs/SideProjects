@@ -3,46 +3,53 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css"/>
+    <link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet"/>
+    <link rel="stylesheet" href="css/collector_stylesheet.css"/>
     <title>Home</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
-<body>
-    <form id="search" action="#" th:object="${searchForm}" th:action="@{/search}" method="get">
-        <div class="u-pull-left">
-            <input id="player" type="text" th:field="*{player}" placeholder="Search By Player"/>
-            <select id="team" th:field="*{teamId}">
-                <option th:value="0">Search By Team</option>
-                <option th:each="team : ${teams}"
+
+<body id="homepage">
+    <div id="homepage-header">
+        <h1>Average Collector</h1>
+    </div>
+    <div>
+        <form id="search" action="#" th:object="${searchForm}" th:action="@{/search}" method="get">
+            <div class="u-pull-left">
+                <input id="player" type="text" th:field="*{player}" placeholder="Search By Player"/>
+                <select id="team" th:field="*{teamId}">
+                    <option th:value="0">Search By Team</option>
+                    <option th:each="team : ${teams}"
                             th:value="${team.id}" th:text="${team.city} + ' ' + ${team.teamName}">Team</option>
-            </select>
-            <select id ="set" th:field="*{setId}">
-                <option th:value="0">Search By Set</option>
-                <option th:each="set : ${sets}"
-                        th:value="${set.id}" th:text="${set.cardYear.cardYear} + ' ' + ${set.brand.brandName} + ' ' + ${set.setName}">Set</option>
-            </select>
-            <input id="card_num" type="text" style="width: 150px" th:field="*{cardNum}" placeholder="Search By Card Number"/>
-            <input id="insert_type" type="text" th:field="*{insertType}" placeholder="Search By Insert Type"/>
-            <input id = "serial" type="text" th:field="*{serialNum}" placeholder="Search By Serial Number"/>
-            <select id="mem_type" th:field="*{memType}">
-                <option selected="selected" th:value="none">Search By Memorabilia Type</option>
-                <option th:value="Relic">Relic</option>
-                <option th:value="Autograph">Autograph</option>
-                <option th:value="Autograph + ' ' + Relic">Autograph Relic</option>
-                <option th:value="Cut + ' ' + Signature">Cut Signature</option>
-                <option th:value="Jumbo + ' ' + Relic">Jumbo Relic</option>
-                <option th:value="Dual + ' ' + Relic">Dual Relic</option>
-                <option th:value="Dual + ' ' + Autograph">Dual Autograph</option>
-                <option th:value="Triple + ' ' + Relic">Triple Relic</option>
-                <option th:value="Triple + ' ' + Relic + ' ' + Autograph">Triple Relic Autograph</option>
-                <option th:value="Quad + ' ' + Relic">Quad Relic</option>
-                <option th:value="Sextuple + ' ' + Relic">Sextuple Relic</option>
-                <option th:value="Octuple + ' ' + Relic">Octuple Relic</option>
-                <option th:value="Printing + ' ' + Plate">Printing Plate</option>
-                <option th:value="Commemorative + ' ' + Patch">Commemorative Patch</option>
-                <option th:value="Commemorative + ' ' + Medallion">Commemorative Medallion</option>
-            </select>
-            <input type="submit" id="run-search" name="search" value="Run Search"/>
-        </div>
-    </form>
+                </select>
+                <select id ="set" th:field="*{setId}">
+                    <option th:value="0">Search By Set</option>
+                    <option th:each="set : ${sets}"
+                            th:value="${set.id}" th:text="${set.cardYear.cardYear} + ' ' + ${set.brand.brandName} + ' ' + ${set.setName}">Set</option>
+                </select>
+                <input id="card_num" type="text" style="width: 150px" th:field="*{cardNum}" placeholder="Search By Card Number"/>
+                <input id="insert_type" type="text" th:field="*{insertType}" placeholder="Search By Insert Type"/>
+                <input id = "serial" type="text" th:field="*{serialNum}" placeholder="Search By Serial Number"/>
+                <select id="mem_type" th:field="*{memType}">
+                    <option selected="selected" th:value="none">Search By Memorabilia Type</option>
+                    <option th:value="Relic">Relic</option>
+                    <option th:value="Autograph">Autograph</option>
+                    <option th:value="Autograph + ' ' + Relic">Autograph Relic</option>
+                    <option th:value="Cut + ' ' + Signature">Cut Signature</option>
+                    <option th:value="Jumbo + ' ' + Relic">Jumbo Relic</option>
+                    <option th:value="Dual + ' ' + Relic">Dual Relic</option>
+                    <option th:value="Dual + ' ' + Autograph">Dual Autograph</option>
+                    <option th:value="Triple + ' ' + Relic">Triple Relic</option>
+                    <option th:value="Triple + ' ' + Relic + ' ' + Autograph">Triple Relic Autograph</option>
+                    <option th:value="Quad + ' ' + Relic">Quad Relic</option>
+                    <option th:value="Sextuple + ' ' + Relic">Sextuple Relic</option>
+                    <option th:value="Octuple + ' ' + Relic">Octuple Relic</option>
+                    <option th:value="Printing + ' ' + Plate">Printing Plate</option>
+                    <option th:value="Commemorative + ' ' + Patch">Commemorative Patch</option>
+                    <option th:value="Commemorative + ' ' + Medallion">Commemorative Medallion</option>
+                </select>
+                <input type="submit" id="run-search" name="search" value="Run Search"/>
+            </div>
+        </form>
+    </div>
 </body>
 </html>
